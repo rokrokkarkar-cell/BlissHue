@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Now — Bliss Hue Café</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@500;600&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --dark: #0e0e0e;
+    --card: #141414;
+    --card2: #1a1a1a;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --cream: #f5ead6;
+    --white: #ffffff;
+    --muted: #777;
+    --border: rgba(255,255,255,0.07);
+    --gold-border: rgba(201,168,76,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(8,8,8,0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 5%;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .header-logo {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .header-logo img {
+    width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
+  }
+  .header-logo-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem; letter-spacing: .12em; color: var(--white);
+  }
+  .header-logo-text span { color: var(--gold); }
+  .header-logo-sub {
+    font-size: .65rem; letter-spacing: .3em; color: var(--muted);
+    text-transform: uppercase; display: block; margin-top: 1px;
+  }
+  .header-back {
+    display: flex; align-items: center; gap: 7px;
+    color: var(--muted); text-decoration: none; font-size: .78rem;
+    letter-spacing: .1em; text-transform: uppercase; font-weight: 500;
+    transition: color .2s;
+  }
+  .header-back:hover { color: var(--gold); }
+  .header-back svg { width: 14px; height: 14px; }
+
+  /* ── LAYOUT ── */
+  .page-wrap {
+    max-width: 1100px; margin: 0 auto;
+    padding: 40px 5% 80px;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 32px;
+    align-items: start;
+  }
+
+  /* ── STEP HEADER ── */
+  .step-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: .66rem; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 8px; font-weight: 600;
+  }
+  .step-badge::before { content:''; width:20px; height:1px; background:var(--gold); }
+
+  .section-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    letter-spacing: .08em; color: var(--white);
+    line-height: 1; margin-bottom: 28px;
+  }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 28px;
+    margin-bottom: 20px;
+    border-radius: 3px;
+    transition: border-color .3s;
+  }
+  .card:hover { border-color: var(--gold-border); }
+  .card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem; letter-spacing: .1em;
+    color: var(--gold); margin-bottom: 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .card-title svg { width: 16px; height: 16px; fill: var(--gold); }
+
+  /* ── BRANCH SELECTOR ── */
+  .branch-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .branch-btn {
+    padding: 16px; border: 1px solid var(--border);
+    background: transparent; color: var(--cream);
+    cursor: pointer; border-radius: 2px; text-align: left;
+    transition: all .2s; font-family: 'DM Sans', sans-serif;
+  }
+  .branch-btn:hover { border-color: var(--gold-border); }
+  .branch-btn.selected {
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.08);
+  }
+  .branch-btn-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem; letter-spacing: .08em; color: var(--white);
+    display: block; margin-bottom: 3px;
+  }
+  .branch-btn.selected .branch-btn-name { color: var(--gold); }
+  .branch-btn-loc { font-size: .72rem; color: var(--muted); line-height: 1.4; }
+
+  /* ── SERVICE TYPE ── */
+  .service-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  }
+  .service-btn {
+    padding: 18px 10px; border: 1px solid var(--border);
+    background: transparent; cursor: pointer; border-radius: 2px;
+    text-align: center; transition: all .2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .service-btn:hover { border-color: var(--gold-border); }
+  .service-btn.selected {
+    border-color: var(--gold); background: rgba(201,168,76,0.08);
+  }
+  .service-icon { font-size: 1.6rem; display: block; margin-bottom: 6px; }
+  .service-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: .95rem; letter-spacing: .1em; color: var(--white); display: block;
+  }
+  .service-btn.selected .service-label { color: var(--gold); }
+
+  /* ── INPUTS ── */
+  .form-group { margin-bottom: 16px; }
+  .form-group label {
+    display: block; font-size: .7rem; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 7px; font-weight: 500;
+  }
+  .form-group label span { color: var(--gold); }
+  .form-input {
+    width: 100%; padding: 12px 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: .9rem;
+    border-radius: 2px; outline: none; transition: border-color .2s;
+    -webkit-appearance: none;
+  }
+  .form-input:focus { border-color: rgba(201,168,76,0.5); }
+  .form-input::placeholder { color: #444; }
+  textarea.form-input { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+  /* ── MENU ── */
+  .menu-tabs {
+    display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 20px;
+  }
+  .menu-tab {
+    padding: 8px 18px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+    cursor: pointer; border-radius: 2px; font-weight: 600;
+    transition: all .2s;
+  }
+  .menu-tab.active, .menu-tab:hover {
+    background: var(--gold); color: var(--black); border-color: var(--gold);
+  }
+  .menu-panel { display: none; }
+  .menu-panel.active { display: block; }
+  .menu-items { display: flex; flex-direction: column; gap: 2px; }
+
+  .menu-item-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px;
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 2px; transition: border-color .2s;
+    gap: 12px;
+  }
+  .menu-item-row:hover { border-color: var(--gold-border); }
+  .menu-item-info { flex: 1; }
+  .menu-item-name {
+    font-family: 'Caveat', cursive;
+    font-size: 1.25rem; color: var(--white); font-weight: 600;
+    display: block; margin-bottom: 2px;
+  }
+  .menu-item-desc { font-size: .73rem; color: var(--muted); }
+  .menu-item-price {
+    font-size: .85rem; font-weight: 600; color: var(--gold-light);
+    white-space: nowrap; margin-right: 12px;
+  }
+  .qty-ctrl {
+    display: flex; align-items: center; gap: 0;
+    border: 1px solid var(--gold-border); border-radius: 2px; overflow: hidden;
+  }
+  .qty-btn {
+    width: 32px; height: 32px; background: transparent;
+    border: none; color: var(--gold); font-size: 1.1rem;
+    cursor: pointer; transition: background .15s;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .qty-btn:hover { background: rgba(201,168,76,0.15); }
+  .qty-val {
+    width: 30px; text-align: center; font-size: .85rem;
+    color: var(--white); font-weight: 600; pointer-events: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* ── PAYMENT ── */
+  .payment-option {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 2px; cursor: pointer;
+    margin-bottom: 8px; transition: all .2s; background: var(--card2);
+  }
+  .payment-option:hover { border-color: var(--gold-border); }
+  .payment-option.selected {
+    border-color: var(--gold); background: rgba(201,168,76,0.06);
+  }
+  .payment-radio {
+    width: 18px; height: 18px; border-radius: 50%;
+    border: 2px solid var(--muted); flex-shrink: 0; margin-top: 2px;
+    transition: all .2s; display: flex; align-items: center; justify-content: center;
+  }
+  .payment-option.selected .payment-radio {
+    border-color: var(--gold); background: var(--gold);
+  }
+  .payment-option.selected .payment-radio::after {
+    content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--black);
+  }
+  .payment-qr {
+    width: 56px; height: 56px; background: #fff;
+    border-radius: 2px; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; overflow: hidden; font-size: .5rem; color: #333; text-align: center;
+    padding: 4px;
+  }
+  .payment-qr img { width: 100%; height: 100%; object-fit: contain; }
+  .payment-qr-placeholder {
+    width: 100%; height: 100%; background: #eee;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 3px;
+    font-size: .5rem; color: #999; text-align: center;
+  }
+  .payment-name {
+    font-weight: 600; font-size: .88rem; color: var(--white); display: block; margin-bottom: 3px;
+  }
+  .payment-option.selected .payment-name { color: var(--gold); }
+  .payment-desc { font-size: .73rem; color: var(--muted); line-height: 1.5; }
+  .payment-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem; letter-spacing: .08em; color: var(--gold-light);
+    display: block; margin-bottom: 2px;
+  }
+
+  /* ── ORDER SUMMARY (sticky right) ── */
+  .summary-wrap {
+    position: sticky; top: 90px;
+  }
+  .summary-card {
+    background: var(--card);
+    border: 1px solid var(--gold-border);
+    padding: 24px; border-radius: 3px;
+  }
+  .summary-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem; letter-spacing: .1em; color: var(--white);
+    margin-bottom: 20px; padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .summary-empty {
+    text-align: center; padding: 28px 0;
+    color: var(--muted); font-size: .82rem;
+    font-style: italic;
+  }
+  .summary-items { margin-bottom: 16px; }
+  .summary-item {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 10px; gap: 12px;
+  }
+  .summary-item-name {
+    font-family: 'Caveat', cursive; font-size: 1rem;
+    color: var(--cream); flex: 1;
+  }
+  .summary-item-qty {
+    font-size: .72rem; color: var(--muted); display: block;
+  }
+  .summary-item-price {
+    font-size: .82rem; font-weight: 600; color: var(--gold-light);
+    white-space: nowrap;
+  }
+  .summary-divider {
+    border: none; border-top: 1px solid var(--border); margin: 16px 0;
+  }
+  .summary-row {
+    display: flex; justify-content: space-between;
+    font-size: .8rem; color: var(--muted); margin-bottom: 8px;
+  }
+  .summary-total {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem; letter-spacing: .06em; color: var(--white);
+    margin-top: 12px;
+  }
+  .summary-total-val { color: var(--gold); }
+  .summary-info {
+    margin-top: 16px; padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: .73rem; color: var(--muted); line-height: 1.7;
+  }
+  .summary-info-row { display: flex; gap: 8px; margin-bottom: 4px; }
+  .summary-info-label { color: var(--gold); font-weight: 600; min-width: 70px; }
+
+  /* ── PLACE ORDER BTN ── */
+  .place-order-btn {
+    width: 100%; padding: 15px;
+    background: var(--gold); color: var(--black);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem; letter-spacing: .15em;
+    border: none; border-radius: 2px; cursor: pointer;
+    transition: all .2s; margin-top: 16px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .place-order-btn:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .place-order-btn:disabled {
+    background: #333; color: #666; cursor: not-allowed; transform: none;
+  }
+  .place-order-btn svg { width: 18px; height: 18px; fill: var(--black); }
+
+  /* ── VALIDATION NOTICE ── */
+  .validation-msg {
+    font-size: .72rem; color: #e05555; margin-top: 8px;
+    display: none; letter-spacing: .05em;
+  }
+  .validation-msg.show { display: block; }
+
+  /* ── CONFIRMATION MODAL ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.9); backdrop-filter: blur(12px);
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal-box {
+    background: var(--card);
+    border: 1px solid var(--gold-border);
+    padding: 40px 36px; width: 100%; max-width: 480px;
+    border-radius: 4px; position: relative;
+    animation: modalIn .3s ease;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: translateY(20px) scale(.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .modal-icon {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: rgba(201,168,76,0.12); border: 1px solid var(--gold-border);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px; font-size: 1.8rem;
+  }
+  .modal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; letter-spacing: .1em; color: var(--white);
+    text-align: center; margin-bottom: 8px;
+  }
+  .modal-subtitle {
+    font-size: .82rem; color: var(--muted); text-align: center;
+    margin-bottom: 28px; line-height: 1.6;
+  }
+  .order-preview {
+    background: #0a0a0a;
+    border: 1px solid var(--border);
+    border-radius: 3px; padding: 18px;
+    font-size: .78rem; color: var(--cream);
+    line-height: 1.8; margin-bottom: 24px;
+    font-family: 'DM Sans', monospace;
+    max-height: 240px; overflow-y: auto;
+  }
+  .order-preview-label {
+    font-size: .65rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 10px; display: block; font-weight: 600;
+  }
+  .modal-actions { display: flex; flex-direction: column; gap: 10px; }
+  .btn-fb {
+    width: 100%; padding: 14px;
+    background: #1877f2; color: #fff;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem; letter-spacing: .12em;
+    border: none; border-radius: 2px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    transition: background .2s;
+  }
+  .btn-fb:hover { background: #1565d8; }
+  .btn-fb svg { width: 20px; height: 20px; fill: #fff; }
+  .btn-copy {
+    width: 100%; padding: 12px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
+    border-radius: 2px; cursor: pointer;
+    transition: all .2s; font-weight: 600;
+  }
+  .btn-copy:hover { border-color: var(--gold-border); color: var(--gold); }
+  .modal-note {
+    font-size: .7rem; color: var(--muted); text-align: center;
+    margin-top: 14px; line-height: 1.6;
+  }
+  .modal-note strong { color: var(--gold-light); }
+  .modal-close {
+    position: absolute; top: 14px; right: 18px;
+    background: none; border: none; color: var(--muted);
+    font-size: 1.2rem; cursor: pointer; transition: color .2s; line-height: 1;
+  }
+  .modal-close:hover { color: var(--cream); }
+
+  /* ── ADMIN ── */
+  .admin-login-overlay {
+    display: none; position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,.88); backdrop-filter: blur(10px);
+    align-items: center; justify-content: center;
+  }
+  .admin-login-overlay.show { display: flex; }
+  .admin-login-box {
+    background: var(--card); border: 1px solid rgba(201,168,76,.25);
+    padding: 48px 40px; width: 100%; max-width: 380px; position: relative;
+  }
+  .admin-login-box h2 {
+    font-family: 'Bebas Neue', sans-serif; font-size: 2rem;
+    letter-spacing: .1em; color: var(--gold); margin-bottom: 6px;
+  }
+  .admin-login-box p { font-size: .76rem; color: var(--muted); margin-bottom: 28px; letter-spacing: .05em; }
+  .admin-field { margin-bottom: 16px; }
+  .admin-field label {
+    display: block; font-size: .7rem; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 7px;
+  }
+  .admin-field input {
+    width: 100%; padding: 12px 14px;
+    background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+    color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: .9rem;
+    border-radius: 2px; outline: none; transition: border-color .2s;
+  }
+  .admin-field input:focus { border-color: rgba(201,168,76,.5); }
+  .admin-error { font-size: .73rem; color: #e05555; margin-bottom: 16px; display: none; letter-spacing: .05em; }
+  .admin-error.show { display: block; }
+  .admin-btn {
+    width: 100%; padding: 13px; background: var(--gold); color: var(--black);
+    font-family: 'DM Sans', sans-serif; font-size: .8rem; font-weight: 700;
+    letter-spacing: .15em; text-transform: uppercase;
+    border: none; border-radius: 2px; cursor: pointer; transition: background .2s;
+  }
+  .admin-btn:hover { background: var(--gold-light); }
+  .admin-close {
+    position: absolute; top: 14px; right: 18px;
+    background: none; border: none; color: var(--muted); font-size: 1.3rem;
+    cursor: pointer; line-height: 1; transition: color .2s;
+  }
+  .admin-close:hover { color: var(--cream); }
+  .admin-bar {
+    display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 9998;
+    background: var(--gold); color: var(--black);
+    padding: 12px 5%; flex-direction: row;
+    align-items: center; justify-content: space-between;
+    font-size: .78rem; font-weight: 700; letter-spacing: .1em;
+  }
+  .admin-bar.show { display: flex; }
+  .admin-bar-actions { display: flex; gap: 10px; }
+  .admin-save-btn, .admin-exit-btn {
+    padding: 7px 18px; font-family: 'DM Sans', sans-serif;
+    font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    border: 2px solid var(--black); border-radius: 2px; cursor: pointer; transition: all .2s;
+  }
+  .admin-save-btn { background: var(--black); color: var(--gold); }
+  .admin-save-btn:hover { background: #222; }
+  .admin-exit-btn { background: transparent; color: var(--black); }
+  .admin-exit-btn:hover { background: rgba(0,0,0,.15); }
+  body.admin-mode [data-editable] {
+    outline: 1px dashed rgba(201,168,76,.5);
+    cursor: text; border-radius: 1px; min-height: 1em;
+  }
+  body.admin-mode [data-editable]:hover { outline-color: var(--gold); background: rgba(201,168,76,.04); }
+  body.admin-mode [data-editable]:focus { outline: 2px solid var(--gold); }
+
+
+    .page-wrap { grid-template-columns: 1fr; }
+    .summary-wrap { position: static; order: -1; }
+  }
+  @media (max-width: 520px) {
+    .branch-grid { grid-template-columns: 1fr; }
+    .service-grid { gap: 8px; }
+    .service-btn { padding: 14px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-logo">
+    <img src="616832777_869321136009598_1733452069387058365_n.jpg" alt="Logo" onerror="this.style.display='none'">
+    <div>
+      <div class="header-logo-text">Bliss <span>Hue</span></div>
+      <span class="header-logo-sub">Café</span>
+    </div>
+  </div>
+  <a href="index.html" class="header-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to Site
+  </a>
+</header>
+
+<div class="page-wrap">
+
+  <!-- LEFT COLUMN -->
+  <div class="left-col">
+
+    <div class="step-badge">Online Ordering</div>
+    <div class="section-heading">Place Your Order</div>
+
+    <!-- BRANCH -->
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        Select Branch <span style="color:var(--gold);margin-left:4px;">*</span>
+      </div>
+      <div class="branch-grid">
+        <button class="branch-btn" data-branch="Roxas City" onclick="selectBranch(this)">
+          <span class="branch-btn-name" data-editable="order-br-1-name">Roxas City</span>
+          <span class="branch-btn-loc" data-editable="order-br-1-loc">CoOzy Food Park, Arnaldo Blvd., Roxas City 5800</span>
+        </button>
+        <button class="branch-btn" data-branch="Las Piñas" onclick="selectBranch(this)">
+          <span class="branch-btn-name" data-editable="order-br-2-name">Las Piñas</span>
+          <span class="branch-btn-loc" data-editable="order-br-2-loc">Location coming soon — inquire via Facebook</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- CUSTOMER INFO -->
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+        Customer Information
+      </div>
+      <div class="form-group">
+        <label>Full Name <span>*</span></label>
+        <input class="form-input" id="custName" type="text" placeholder="Enter your full name">
+      </div>
+      <div class="form-group">
+        <label>Contact Number <span>*</span></label>
+        <input class="form-input" id="custPhone" type="tel" placeholder="09XX XXX XXXX">
+      </div>
+
+      <!-- SERVICE TYPE -->
+      <div class="form-group" style="margin-top:24px;">
+        <label>Service Type <span>*</span></label>
+        <div class="service-grid" style="grid-template-columns: repeat(2,1fr);">
+          <button class="service-btn" data-service="Pickup" onclick="selectService(this)">
+            <span class="service-icon">🚶</span>
+            <span class="service-label">Pickup</span>
+          </button>
+          <button class="service-btn" data-service="Delivery" onclick="selectService(this)">
+            <span class="service-icon">🛵</span>
+            <span class="service-label">Delivery</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- CONDITIONAL: Address for Delivery -->
+      <div class="form-group" id="addressGroup" style="display:none;">
+        <label>Delivery Address <span>*</span></label>
+        <textarea class="form-input" id="deliveryAddress" rows="2" placeholder="Street, Barangay, City..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Special Instructions</label>
+        <textarea class="form-input" id="specialInstructions" placeholder="Any special requests or notes..."></textarea>
+      </div>
+    </div>
+
+    <!-- MENU -->
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24"><path d="M8.1 13.34l2.83-2.83L3.91 3.5c-1.56 1.56-1.56 4.09 0 5.65l4.19 4.19zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z"/></svg>
+        Choose Your Order
+      </div>
+
+      <div class="menu-tabs">
+        <button class="menu-tab active" onclick="switchMenuTab(event,'signature')">Signature Frappe</button>
+        <button class="menu-tab" onclick="switchMenuTab(event,'cookies')">Cookies</button>
+        <button class="menu-tab" onclick="switchMenuTab(event,'nutella')">Nutella</button>
+        <button class="menu-tab" onclick="switchMenuTab(event,'coffee')">Coffee</button>
+      </div>
+
+      <!-- Signature Frappe -->
+      <div class="menu-panel active" id="menu-signature">
+        <div class="menu-items">
+          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Yummie</span><span class="menu-item-desc">Signature blended frappe</span></div><span class="menu-item-price">₱119</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Yummie" data-price="119">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Valmond</span><span class="menu-item-desc">Vanilla almond frappe</span></div><span class="menu-item-price">₱119</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Valmond" data-price="119">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Tarow</span><span class="menu-item-desc">Taro quezo almonds</span></div><span class="menu-item-price">₱119</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Tarow" data-price="119">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Velto</span><span class="menu-item-desc">Refreshing Ube Quezo</span></div><span class="menu-item-price">₱119</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Velto" data-price="119">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <!-- Cookies -->
+      <div class="menu-panel" id="menu-cookies">
+        <div class="menu-items">
+          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Biscoff</span><span class="menu-item-desc">Lotus Biscoff blend</span></div><span class="menu-item-price">₱169</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Biscoff" data-price="169">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Ochee</span><span class="menu-item-desc">Oreo Cheesecake</span></div><span class="menu-item-price">₱119</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Ochee" data-price="119">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Darko</span><span class="menu-item-desc">Dark Choco Drink</span></div><span class="menu-item-price">₱119</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Darko" data-price="119">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Cookie</span><span class="menu-item-desc">Cookies & Crème</span></div><span class="menu-item-price">₱119</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Cookie" data-price="119">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <!-- Nutella -->
+      <div class="menu-panel" id="menu-nutella">
+        <div class="menu-items">
+          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Cashew</span><span class="menu-item-desc">Caramel Cashew blend</span></div><span class="menu-item-price">₱159</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Cashew" data-price="159">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Tella</span><span class="menu-item-desc">Dark Choco Nutella Cashew</span></div><span class="menu-item-price">₱119</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Tella" data-price="119">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Vella</span><span class="menu-item-desc">Nutella Fudge</span></div><span class="menu-item-price">₱119</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Vella" data-price="119">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Muckie</span><span class="menu-item-desc">Milk Nutella Fudge</span></div><span class="menu-item-price">₱119</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Muckie" data-price="119">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+
+      <!-- Coffee -->
+      <div class="menu-panel" id="menu-coffee">
+        <div class="menu-items">
+          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Carmel Mac</span><span class="menu-item-desc">Caramel Macchiato</span></div><span class="menu-item-price">₱129</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Carmel Mac" data-price="129">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Mocha</span><span class="menu-item-desc">Dark Mocha blend</span></div><span class="menu-item-price">₱129</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Mocha" data-price="129">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Java C.</span><span class="menu-item-desc">Dark Mocha Java</span></div><span class="menu-item-price">₱139</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Java C." data-price="139">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYMENT -->
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+        Payment Method <span style="color:var(--gold);margin-left:4px;">*</span>
+      </div>
+
+      <div class="payment-option" onclick="selectPayment(this,'GCash QR')">
+        <div class="payment-radio"></div>
+        <div class="payment-qr">
+          <!-- TO ADD YOUR QR: replace this div with <img src="your-gcash-qr.jpg" alt="GCash QR"> -->
+          <div class="payment-qr-placeholder" style="background:#1a1a1a;border:1px dashed rgba(201,168,76,0.4);border-radius:2px;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(201,168,76,0.5)"><path d="M3 11h8V3H3v8zm2-6h4v4H5V5zm8-2v8h8V3h-8zm6 6h-4V5h4v4zM3 21h8v-8H3v8zm2-6h4v4H5v-4zm13 0h-2v2h2v-2zm-4 0h-2v2h2v-2zm4 4h-2v2h2v-2zm-4 0h-2v2h2v-2z"/></svg>
+            <span style="font-size:.42rem;color:rgba(201,168,76,0.6);text-align:center;line-height:1.3;">GCash QR<br>📷 Add image</span>
+          </div>
+        </div>
+        <div>
+          <span class="payment-name" data-editable="pay-1-name">GCash Only</span>
+          <span class="payment-desc" data-editable="pay-1-desc">Scan and pay after placing your order.<br>Send screenshot alongside your order details.</span>
+        </div>
+      </div>
+
+      <div class="payment-option" onclick="selectPayment(this,'QR Ph')">
+        <div class="payment-radio"></div>
+        <div class="payment-qr">
+          <!-- TO ADD YOUR QR: replace this div with <img src="your-qrph.jpg" alt="QR Ph"> -->
+          <div class="payment-qr-placeholder" style="background:#1a1a1a;border:1px dashed rgba(201,168,76,0.4);border-radius:2px;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(201,168,76,0.5)"><path d="M3 11h8V3H3v8zm2-6h4v4H5V5zm8-2v8h8V3h-8zm6 6h-4V5h4v4zM3 21h8v-8H3v8zm2-6h4v4H5v-4zm13 0h-2v2h2v-2zm-4 0h-2v2h2v-2zm4 4h-2v2h2v-2zm-4 0h-2v2h2v-2z"/></svg>
+            <span style="font-size:.42rem;color:rgba(201,168,76,0.6);text-align:center;line-height:1.3;">QR Ph<br>📷 Add image</span>
+          </div>
+        </div>
+        <div>
+          <span class="payment-name" data-editable="pay-2-name">QR Ph</span>
+          <span class="payment-desc" data-editable="pay-2-desc">Scan with any PH bank or e-wallet.<br>(BPI, BDO, Maya, GCash, UnionBank, etc.)</span>
+        </div>
+      </div>
+
+      <div class="payment-option" onclick="selectPayment(this,'GCash Number (09126499445)')">
+        <div class="payment-radio"></div>
+        <div style="width:56px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--gold)"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+        </div>
+        <div>
+          <span class="payment-number" data-editable="pay-3-number">09126499445</span>
+          <span class="payment-name" data-editable="pay-3-name" style="font-size:.75rem;font-family:'DM Sans',sans-serif;font-weight:400;">Copy &amp; send to this GCash number</span>
+          <span class="payment-desc" data-editable="pay-3-desc">Send payment screenshot with your order.</span>
+        </div>
+      </div>
+
+      <div class="payment-option" onclick="selectPayment(this,'Cash on Pickup/Delivery')">
+        <div class="payment-radio"></div>
+        <div style="width:56px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--gold)"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+        </div>
+        <div>
+          <span class="payment-name" data-editable="pay-4-name">Cash on Pickup / Delivery</span>
+          <span class="payment-desc" data-editable="pay-4-desc">Pay when you pick up or upon delivery.</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="validationMsg" class="validation-msg">⚠ Please fill in all required fields before placing your order.</div>
+
+  </div><!-- end left-col -->
+
+  <!-- RIGHT COLUMN — ORDER SUMMARY -->
+  <div class="summary-wrap">
+    <div class="summary-card">
+      <div class="summary-title">📋 &nbsp;Order Summary</div>
+
+      <div id="summaryEmpty" class="summary-empty">No items added yet.<br>Start selecting from the menu! ☕</div>
+
+      <div class="summary-items" id="summaryItems" style="display:none;"></div>
+
+      <hr class="summary-divider" id="summaryDivider" style="display:none;">
+
+      <div id="summaryMeta" style="display:none;">
+        <div class="summary-row"><span>Branch</span><span id="sBranch" style="color:var(--cream);">—</span></div>
+        <div class="summary-row"><span>Service</span><span id="sService" style="color:var(--cream);">—</span></div>
+        <div class="summary-row"><span>Payment</span><span id="sPayment" style="color:var(--cream);">—</span></div>
+      </div>
+
+      <div class="summary-total" id="summaryTotal" style="display:none;">
+        <span>Total</span>
+        <span class="summary-total-val" id="sTotalAmt">₱0</span>
+      </div>
+
+      <button class="place-order-btn" id="placeOrderBtn" onclick="placeOrder()">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        Send Order to Facebook
+      </button>
+    </div>
+  </div>
+
+</div><!-- end page-wrap -->
+
+<!-- CONFIRMATION MODAL -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-icon">☕</div>
+    <div class="modal-title">Order Ready!</div>
+    <div class="modal-subtitle">Your order has been prepared. Click below to send it to our Facebook Page — we'll confirm it right away!</div>
+
+    <div class="order-preview">
+      <span class="order-preview-label">Message Preview</span>
+      <div id="orderPreviewText"></div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-fb" onclick="sendToFacebook()">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        Send to Bliss Hue Facebook Page
+      </button>
+      <button class="btn-copy" onclick="copyOrder()">📋 &nbsp;Copy Order Text</button>
+    </div>
+    <p class="modal-note">
+      This will open Facebook Messenger with your order pre-filled.<br>
+      <strong>Just hit Send — we'll confirm your order ASAP! 🎉</strong>
+    </p>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN MODAL -->
+<div class="admin-login-overlay" id="adminOverlay">
+  <div class="admin-login-box">
+    <button class="admin-close" onclick="closeAdminLogin()" aria-label="Close">✕</button>
+    <h2>Admin Access</h2>
+    <p>Enter your credentials to enable edit mode.</p>
+    <div class="admin-field">
+      <label>Username</label>
+      <input type="text" id="adminUser" placeholder="Username" autocomplete="off" />
+    </div>
+    <div class="admin-field">
+      <label>Password</label>
+      <input type="password" id="adminPass" placeholder="Password" autocomplete="off"
+             onkeydown="if(event.key==='Enter') attemptLogin()" />
+    </div>
+    <div class="admin-error" id="adminError">Incorrect username or password.</div>
+    <button class="admin-btn" onclick="attemptLogin()">Enter Admin Mode</button>
+  </div>
+</div>
+
+<!-- ADMIN BAR -->
+<div class="admin-bar" id="adminBar">
+  <span>✏️ &nbsp;Admin Mode — click any highlighted text to edit it</span>
+  <div class="admin-bar-actions">
+    <button class="admin-save-btn" onclick="saveChanges()">Save Changes</button>
+    <button class="admin-exit-btn" onclick="exitAdmin()">Exit</button>
+  </div>
+</div>
+
+<script>
+  // ── ADMIN SYSTEM (order.html) ──
+  const _uh = '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918';
+  const _ph = '002d8b4beee88cb94d944ac12cb84ed367fe939c717984b722c674a1aa3b8e4f';
+  let _failCount = 0, _lockUntil = 0;
+
+  async function _hash(str) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.altKey && e.key === '5') {
+      document.body.classList.contains('admin-mode') ? exitAdmin() : openAdminLogin();
+    }
+    if (e.key === 'Escape') closeAdminLogin();
+  });
+
+  function openAdminLogin() {
+    document.getElementById('adminOverlay').classList.add('show');
+    setTimeout(() => document.getElementById('adminUser').focus(), 100);
+  }
+  function closeAdminLogin() {
+    document.getElementById('adminOverlay').classList.remove('show');
+    document.getElementById('adminUser').value = '';
+    document.getElementById('adminPass').value = '';
+    document.getElementById('adminError').classList.remove('show');
+  }
+  async function attemptLogin() {
+    const now = Date.now();
+    if (now < _lockUntil) {
+      const secs = Math.ceil((_lockUntil - now) / 1000);
+      const errEl = document.getElementById('adminError');
+      errEl.textContent = `Too many attempts. Try again in ${secs}s.`;
+      errEl.classList.add('show'); return;
+    }
+    const u = document.getElementById('adminUser').value.trim();
+    const p = document.getElementById('adminPass').value;
+    const [uh, ph] = await Promise.all([_hash(u), _hash(p)]);
+    if (uh === _uh && ph === _ph) {
+      _failCount = 0;
+      closeAdminLogin(); enableAdminMode();
+    } else {
+      _failCount++;
+      document.getElementById('adminPass').value = '';
+      const errEl = document.getElementById('adminError');
+      if (_failCount >= 3) {
+        _lockUntil = Date.now() + 30000; _failCount = 0;
+        errEl.textContent = 'Too many attempts. Locked for 30s.';
+      } else {
+        errEl.textContent = `Incorrect username or password. (${3-_failCount} attempt${3-_failCount!==1?'s':''} left)`;
+      }
+      errEl.classList.add('show');
+      document.getElementById('adminPass').focus();
+    }
+  }
+  function enableAdminMode() {
+    document.body.classList.add('admin-mode');
+    document.getElementById('adminBar').classList.add('show');
+    document.querySelectorAll('[data-editable]').forEach(el => {
+      el.setAttribute('contenteditable', 'true');
+      el.setAttribute('spellcheck', 'false');
+    });
+  }
+  function exitAdmin() {
+    document.body.classList.remove('admin-mode');
+    document.getElementById('adminBar').classList.remove('show');
+    document.querySelectorAll('[data-editable]').forEach(el => el.removeAttribute('contenteditable'));
+  }
+  // ── KV API ──
+  const KV_API = 'https://blisshue-admin-api.YOUR_SUBDOMAIN.workers.dev/api/edits?page=order';
+
+  async function saveChanges() {
+    const btn = document.querySelector('.admin-save-btn');
+    const data = {};
+    document.querySelectorAll('[data-editable]').forEach(el => {
+      data[el.getAttribute('data-editable')] = el.innerHTML;
+    });
+    btn.textContent = 'Saving…';
+    try {
+      const res = await fetch(KV_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error('Server error');
+      btn.textContent = '✓ Saved!';
+      localStorage.setItem('blisshue_order_edits', JSON.stringify(data));
+    } catch (err) {
+      btn.textContent = '⚠ Save failed';
+      console.error('KV save error:', err);
+    }
+    setTimeout(() => btn.textContent = 'Save Changes', 2500);
+  }
+
+  async function loadSavedEdits() {
+    let data = null;
+    try {
+      const res = await fetch(KV_API);
+      if (res.ok) data = await res.json();
+    } catch (err) {
+      console.warn('KV load failed, falling back to localStorage:', err);
+    }
+    if (!data || Object.keys(data).length === 0) {
+      const raw = localStorage.getItem('blisshue_order_edits');
+      if (raw) { try { data = JSON.parse(raw); } catch(e) {} }
+    }
+    if (!data) return;
+    Object.keys(data).forEach(key => {
+      const el = document.querySelector('[data-editable="' + key + '"]');
+      if (el) el.innerHTML = data[key];
+    });
+  }
+  loadSavedEdits();
+</script>
+  let selectedBranch = '';
+  let selectedService = '';
+  let selectedPayment = '';
+  const cart = {}; // { itemName: { qty, price } }
+
+  // Facebook Page IDs
+  const FB_PAGES = {
+    'Roxas City': '100087951589602',
+    'Las Piñas': '100090357404367'
+  };
+
+  // ── SELECTORS ──
+  function selectBranch(btn) {
+    document.querySelectorAll('.branch-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedBranch = btn.dataset.branch;
+    updateSummary();
+  }
+
+  function selectService(btn) {
+    document.querySelectorAll('.service-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedService = btn.dataset.service;
+    document.getElementById('addressGroup').style.display = selectedService === 'Delivery' ? 'block' : 'none';
+    updateSummary();
+  }
+
+  function selectPayment(el, name) {
+    document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedPayment = name;
+    updateSummary();
+  }
+
+  // ── MENU TABS ──
+  function switchMenuTab(e, name) {
+    document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+    e.target.classList.add('active');
+    document.getElementById('menu-' + name).classList.add('active');
+  }
+
+  // ── CART ──
+  function changeQty(btn, delta) {
+    const span = btn.parentElement.querySelector('.qty-val');
+    const item = span.dataset.item;
+    const price = parseInt(span.dataset.price);
+    let qty = parseInt(span.textContent) + delta;
+    if (qty < 0) qty = 0;
+    span.textContent = qty;
+    if (qty === 0) { delete cart[item]; }
+    else { cart[item] = { qty, price }; }
+    updateSummary();
+  }
+
+  // ── SUMMARY ──
+  function updateSummary() {
+    const items = Object.entries(cart).filter(([k, v]) => v.qty > 0);
+    const summaryItems = document.getElementById('summaryItems');
+    const summaryEmpty = document.getElementById('summaryEmpty');
+    const summaryDivider = document.getElementById('summaryDivider');
+    const summaryMeta = document.getElementById('summaryMeta');
+    const summaryTotal = document.getElementById('summaryTotal');
+
+    if (items.length === 0) {
+      summaryEmpty.style.display = 'block';
+      summaryItems.style.display = 'none';
+      summaryDivider.style.display = 'none';
+      summaryMeta.style.display = 'none';
+      summaryTotal.style.display = 'none';
+    } else {
+      summaryEmpty.style.display = 'none';
+      summaryItems.style.display = 'block';
+      summaryDivider.style.display = 'block';
+      summaryMeta.style.display = 'block';
+      summaryTotal.style.display = 'flex';
+
+      let html = '';
+      let total = 0;
+      items.forEach(([name, {qty, price}]) => {
+        const sub = qty * price;
+        total += sub;
+        html += `<div class="summary-item">
+          <div>
+            <span class="summary-item-name">${name}</span>
+            <span class="summary-item-qty">x${qty} @ ₱${price}</span>
+          </div>
+          <span class="summary-item-price">₱${sub}</span>
+        </div>`;
+      });
+      summaryItems.innerHTML = html;
+      document.getElementById('sTotalAmt').textContent = '₱' + total;
+    }
+
+    document.getElementById('sBranch').textContent = selectedBranch || '—';
+    document.getElementById('sService').textContent = selectedService || '—';
+    document.getElementById('sPayment').textContent = selectedPayment || '—';
+  }
+
+  // ── BUILD ORDER MESSAGE ──
+  function buildOrderMessage() {
+    const name = document.getElementById('custName').value.trim();
+    const phone = document.getElementById('custPhone').value.trim();
+    const address = document.getElementById('deliveryAddress').value.trim();
+    const notes = document.getElementById('specialInstructions').value.trim();
+
+    const items = Object.entries(cart).filter(([k,v]) => v.qty > 0);
+    let total = 0;
+    let orderLines = '';
+    items.forEach(([itemName, {qty, price}], i) => {
+      const sub = qty * price;
+      total += sub;
+      orderLines += `${i+1}. ${itemName}  x${qty}\n   Price: ₱${sub}.00\n`;
+    });
+
+    let extra = '';
+    if (selectedService === 'Delivery' && address) extra = `\n📍 Delivery Address:\n   ${address}`;
+    if (notes) extra += `\n📝 Notes: ${notes}`;
+
+    return `🧋 New Order from Bliss Hue Website
+
+📍 Branch: ${selectedBranch}
+🔖 Order Type: ${selectedService}${extra}
+
+👤 Customer Information:
+• Name: ${name}
+• Contact: ${phone}
+
+📋 Order Details:
+${orderLines}
+💰 Total: ₱${total}.00
+
+💳 Payment Method:
+${selectedPayment}
+
+Please confirm my order! 🎉`;
+  }
+
+  // ── VALIDATION ──
+  function validateForm() {
+    const name = document.getElementById('custName').value.trim();
+    const phone = document.getElementById('custPhone').value.trim();
+    const items = Object.entries(cart).filter(([k,v]) => v.qty > 0);
+    if (!selectedBranch || !selectedService || !selectedPayment || !name || !phone || items.length === 0) return false;
+    if (selectedService === 'Delivery' && !document.getElementById('deliveryAddress').value.trim()) return false;
+    return true;
+  }
+
+  // ── PLACE ORDER ──
+  function placeOrder() {
+    const validMsg = document.getElementById('validationMsg');
+    if (!validateForm()) {
+      validMsg.classList.add('show');
+      validMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    validMsg.classList.remove('show');
+    const msg = buildOrderMessage();
+    document.getElementById('orderPreviewText').innerText = msg;
+    document.getElementById('confirmModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('confirmModal').classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  // ── SEND TO FACEBOOK ──
+  function sendToFacebook() {
+    const msg = buildOrderMessage();
+    const pageId = FB_PAGES[selectedBranch] || FB_PAGES['Roxas City'];
+    const encoded = encodeURIComponent(msg);
+    const url = `https://m.me/${pageId}?text=${encoded}`;
+    window.open(url, '_blank');
+  }
+
+  // ── COPY ──
+  function copyOrder() {
+    const msg = buildOrderMessage();
+    navigator.clipboard.writeText(msg).then(() => {
+      const btn = document.querySelector('.btn-copy');
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => btn.textContent = '📋  Copy Order Text', 2000);
+    });
+  }
+
+  // Close modal on overlay click
+  document.getElementById('confirmModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // Initial summary render
+  updateSummary();
+</script>
+</body>
+</html>
