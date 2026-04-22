@@ -238,20 +238,21 @@
   }
 
   .hero-scroll {
-    position: absolute; bottom: 28px; left: 5%;
-    display: flex; align-items: center; gap: 12px;
+    position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
     color: var(--muted); font-size: .68rem; letter-spacing: .2em; text-transform: uppercase;
     animation: fadeUp 1s .5s ease both;
     z-index: 2;
   }
   .scroll-line {
-    width: 40px; height: 1px;
-    background: linear-gradient(to right, var(--gold), transparent);
+    width: 1px; height: 48px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
     animation: scrollLine 2s ease-in-out infinite;
+    transform-origin: top;
   }
   @keyframes scrollLine {
-    0%,100%{ transform: scaleX(1); opacity:1; }
-    50%{ transform: scaleX(.5); opacity:.3; }
+    0%,100%{ transform: scaleY(1); opacity:1; }
+    50%{ transform: scaleY(.5); opacity:.3; }
   }
 
   @keyframes fadeUp {
@@ -907,9 +908,17 @@
   });
 
   // ── ADMIN SYSTEM ──
-  const _cx = [97,100,109,105,110];
-  const _cy = [98,108,105,115,104,117,101,49,48,49,53,48,56];
-  function _decode(arr) { return arr.map(c => String.fromCharCode(c)).join(''); }
+  // Credentials stored as SHA-256 hashes only — plain text never exists at runtime
+  const _uh = '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918';
+  const _ph = 'f4b4a7607545345ced1d4839e5860f429d3e4558871d632ef35a2fd9e9d2ea17';
+
+  let _failCount = 0;
+  let _lockUntil = 0;
+
+  async function _hash(str) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
 
   document.addEventListener('keydown', function(e) {
     if (e.altKey && e.key === '5') {
@@ -928,14 +937,33 @@
     document.getElementById('adminPass').value = '';
     document.getElementById('adminError').classList.remove('show');
   }
-  function attemptLogin() {
+  async function attemptLogin() {
+    const now = Date.now();
+    if (now < _lockUntil) {
+      const secs = Math.ceil((_lockUntil - now) / 1000);
+      const errEl = document.getElementById('adminError');
+      errEl.textContent = `Too many attempts. Try again in ${secs}s.`;
+      errEl.classList.add('show');
+      return;
+    }
     const u = document.getElementById('adminUser').value.trim();
     const p = document.getElementById('adminPass').value;
-    if (u === _decode(_cx) && p === _decode(_cy)) {
+    const [uh, ph] = await Promise.all([_hash(u), _hash(p)]);
+    if (uh === _uh && ph === _ph) {
+      _failCount = 0;
       closeAdminLogin(); enableAdminMode();
     } else {
-      document.getElementById('adminError').classList.add('show');
+      _failCount++;
       document.getElementById('adminPass').value = '';
+      const errEl = document.getElementById('adminError');
+      if (_failCount >= 3) {
+        _lockUntil = Date.now() + 30000;
+        _failCount = 0;
+        errEl.textContent = 'Too many attempts. Locked for 30s.';
+      } else {
+        errEl.textContent = `Incorrect username or password. (${3 - _failCount} attempt${3 - _failCount !== 1 ? 's' : ''} left)`;
+      }
+      errEl.classList.add('show');
       document.getElementById('adminPass').focus();
     }
   }
