@@ -238,7 +238,7 @@
   }
 
   .hero-scroll {
-    position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+    position: absolute; bottom: 28px; left: 0; right: 0;
     display: flex; flex-direction: column; align-items: center; gap: 10px;
     color: var(--muted); font-size: .68rem; letter-spacing: .2em; text-transform: uppercase;
     animation: fadeUp 1s .5s ease both;
@@ -531,7 +531,6 @@
     .hero-cta { justify-content: center; }
     .hero-logo-display img { margin: 0 auto; }
     .hero-right { order: -1; max-width: 500px; margin: 0 auto; }
-    .hero-scroll { left: 50%; transform: translateX(-50%); bottom: 32px; }
   }
   @media (max-width: 768px) {
     #about { grid-template-columns: 1fr; gap: 44px; }
