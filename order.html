@@ -642,7 +642,8 @@
     max-width: 1100px; margin: 0 auto;
     display: flex; align-items: center; gap: 20px;
   }
-  .sticky-order-info { flex: 1; }
+  .sticky-order-info { flex: 1; background: none; border: none; text-align: left; cursor: pointer; padding: 6px 10px; border-radius: 4px; transition: background .2s; }
+  .sticky-order-info:hover { background: rgba(201,168,76,.08); }
   .sticky-order-label {
     display: block; font-size: .65rem; letter-spacing: .2em;
     text-transform: uppercase; color: var(--muted); font-weight: 600;
@@ -664,6 +665,80 @@
     .sticky-order-inner { flex-wrap: wrap; gap: 10px; }
     .sticky-place-btn { width: 100%; }
   }
+
+  /* ── ORDER PEEK MODAL ── */
+  .peek-overlay {
+    display: none; position: fixed; inset: 0; z-index: 490;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+  }
+  .peek-overlay.open { display: block; }
+  .peek-drawer {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 495;
+    background: var(--card);
+    border-top: 1px solid rgba(201,168,76,0.3);
+    border-radius: 16px 16px 0 0;
+    padding: 0 0 120px;
+    max-height: 75vh; overflow-y: auto;
+    transform: translateY(100%);
+    transition: transform .35s cubic-bezier(.32,.72,0,1);
+  }
+  .peek-drawer.open { transform: translateY(0); }
+  .peek-handle-wrap {
+    position: sticky; top: 0; background: var(--card);
+    padding: 14px 20px 12px;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    display: flex; align-items: center; justify-content: space-between;
+    z-index: 2;
+  }
+  .peek-handle {
+    width: 36px; height: 4px; background: rgba(255,255,255,.15);
+    border-radius: 4px; margin: 0 auto 12px;
+    position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+  }
+  .peek-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem; letter-spacing: .1em; color: var(--white);
+  }
+  .peek-close {
+    background: none; border: none; color: var(--muted);
+    font-size: 1.1rem; cursor: pointer; line-height: 1;
+    transition: color .2s; padding: 4px 8px; border-radius: 2px;
+  }
+  .peek-close:hover { color: var(--cream); }
+  .peek-list { padding: 14px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .peek-item {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 3px; padding: 14px 16px; gap: 12px;
+    animation: cfadeIn .2s ease;
+  }
+  .peek-item-left { flex: 1; }
+  .peek-item-name {
+    font-family: 'Caveat', cursive; font-size: 1.2rem;
+    color: var(--white); font-weight: 600; display: block; margin-bottom: 3px;
+  }
+  .peek-item-meta { font-size: .72rem; color: var(--muted); line-height: 1.6; }
+  .peek-item-tag {
+    display: inline-block; background: rgba(201,168,76,.1);
+    border: 1px solid rgba(201,168,76,.2); color: var(--gold);
+    font-size: .6rem; letter-spacing: .06em;
+    padding: 1px 7px; border-radius: 2px; margin: 2px 2px 0 0;
+  }
+  .peek-item-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+  .peek-item-price { font-size: .9rem; font-weight: 700; color: var(--gold-light); white-space: nowrap; }
+  .peek-remove-btn {
+    background: none; border: 1px solid rgba(255,255,255,.1);
+    color: var(--muted); font-size: .62rem; letter-spacing: .08em;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 2px;
+    cursor: pointer; transition: all .2s; white-space: nowrap;
+  }
+  .peek-remove-btn:hover { border-color: #e05555; color: #e05555; }
+  .peek-empty {
+    text-align: center; padding: 40px 20px;
+    color: var(--muted); font-size: .85rem;
+  }
+  .peek-empty span { font-size: 2rem; display: block; margin-bottom: 10px; opacity: .4; }
 </style>
 </head>
 <body>
@@ -899,16 +974,29 @@
 <!-- STICKY BOTTOM ORDER BAR -->
 <div class="sticky-order-bar" id="stickyOrderBar">
   <div class="sticky-order-inner">
-    <div class="sticky-order-info">
-      <span class="sticky-order-label">Your Order</span>
+    <button class="sticky-order-info" onclick="togglePeek()" aria-label="View your order">
+      <span class="sticky-order-label">Your Order <span style="color:var(--gold);font-size:.55rem;">▲ tap to review</span></span>
       <span class="sticky-order-count" id="stickyCount">0 items</span>
-    </div>
+    </button>
     <div class="sticky-order-total" id="stickyTotal">₱0</div>
     <button class="place-order-btn sticky-place-btn" onclick="placeOrder()">
       <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
       Send Order to Facebook
     </button>
   </div>
+</div>
+
+<!-- ORDER PEEK OVERLAY -->
+<div class="peek-overlay" id="peekOverlay" onclick="closePeek()"></div>
+
+<!-- ORDER PEEK DRAWER -->
+<div class="peek-drawer" id="peekDrawer">
+  <div class="peek-handle-wrap">
+    <div class="peek-handle"></div>
+    <div class="peek-title">🧋 Your Order</div>
+    <button class="peek-close" onclick="closePeek()">✕</button>
+  </div>
+  <div class="peek-list" id="peekList"></div>
 </div>
 
 <!-- CONFIRMATION MODAL -->
@@ -1260,6 +1348,60 @@
     panel.innerHTML = '';
 
     updateSummary();
+  }
+
+
+  // ── ORDER PEEK ──
+  function renderPeek() {
+    const list = document.getElementById('peekList');
+    if (cart.length === 0) {
+      list.innerHTML = '<div class="peek-empty"><span>☕</span>No items yet.</div>';
+      return;
+    }
+    list.innerHTML = cart.map((item, idx) => {
+      const addonTags = item.addons.map(a => `<span class="peek-item-tag">${a.name} +₱${a.price}</span>`).join('');
+      return `<div class="peek-item">
+        <div class="peek-item-left">
+          <span class="peek-item-name">${item.itemName}</span>
+          <div class="peek-item-meta">
+            <span class="peek-item-tag">${item.sizeName}</span>
+            <span class="peek-item-tag">${item.sweetness}</span>
+            ${addonTags}
+          </div>
+        </div>
+        <div class="peek-item-right">
+          <span class="peek-item-price">₱${item.total}</span>
+          <button class="peek-remove-btn" onclick="peekRemove(${idx})">✕ Remove</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function togglePeek() {
+    const drawer = document.getElementById('peekDrawer');
+    const overlay = document.getElementById('peekOverlay');
+    const info = document.querySelector('.sticky-order-info');
+    if (drawer.classList.contains('open')) {
+      closePeek();
+    } else {
+      renderPeek();
+      drawer.classList.add('open');
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closePeek() {
+    document.getElementById('peekDrawer').classList.remove('open');
+    document.getElementById('peekOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function peekRemove(idx) {
+    cart.splice(idx, 1);
+    updateSummary();
+    if (cart.length === 0) { closePeek(); return; }
+    renderPeek();
   }
 
   function updateStickyBar() {
