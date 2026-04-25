@@ -515,6 +515,116 @@
     .service-grid { gap: 8px; }
     .service-btn { padding: 14px 8px; }
   }
+
+  /* ── CUSTOMIZER DROPDOWN ── */
+  .menu-item-row { flex-wrap: wrap; }
+  .item-expand-btn {
+    background: rgba(201,168,76,.12);
+    border: 1px solid rgba(201,168,76,.3);
+    color: var(--gold);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 600;
+    padding: 6px 14px; border-radius: 2px; cursor: pointer;
+    transition: all .2s; white-space: nowrap;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .item-expand-btn:hover { background: rgba(201,168,76,.22); border-color: var(--gold); }
+  .item-expand-btn .expand-icon { font-size: 1rem; font-weight: 900; line-height: 1; transition: transform .2s; }
+  .item-expand-btn.open .expand-icon { transform: rotate(45deg); }
+
+  .item-customizer {
+    display: none; width: 100%;
+    background: rgba(255,255,255,.02);
+    border: 1px solid rgba(201,168,76,.15);
+    border-top: none; padding: 16px;
+    animation: cfadeIn .2s ease;
+  }
+  @keyframes cfadeIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+  .item-customizer.open { display: block; }
+
+  .cust-row { margin-bottom: 14px; }
+  .cust-row:last-child { margin-bottom: 0; }
+  .cust-row-label {
+    font-size: .62rem; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--gold); font-weight: 600; margin-bottom: 8px;
+  }
+
+  /* Size */
+  .size-opts { display: flex; gap: 8px; }
+  .size-opt {
+    flex: 1; padding: 9px 8px; text-align: center;
+    background: rgba(255,255,255,.04); border: 1px solid var(--border);
+    color: var(--cream); font-family: 'DM Sans', sans-serif;
+    font-size: .74rem; cursor: pointer; border-radius: 2px;
+    transition: all .15s; line-height: 1.3;
+  }
+  .size-opt small { display: block; font-size: .62rem; color: var(--muted); margin-top: 2px; }
+  .size-opt.sel, .size-opt:hover { background: var(--gold); color: var(--black); border-color: var(--gold); }
+  .size-opt.sel small { color: rgba(0,0,0,.55); }
+
+  /* Add-ons */
+  .addon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+  .addon-opt {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 7px 10px;
+    background: rgba(255,255,255,.03); border: 1px solid var(--border);
+    color: var(--cream); font-family: 'DM Sans', sans-serif;
+    font-size: .72rem; cursor: pointer; border-radius: 2px; transition: all .15s;
+  }
+  .addon-opt .ao-price { color: var(--muted); font-size: .66rem; }
+  .addon-opt .ao-check {
+    width: 14px; height: 14px; border-radius: 2px;
+    border: 1px solid rgba(255,255,255,.2); flex-shrink: 0;
+    margin-left: 6px; display: flex; align-items: center; justify-content: center;
+    font-size: .6rem; transition: all .15s;
+  }
+  .addon-opt.sel { background: rgba(201,168,76,.12); border-color: rgba(201,168,76,.45); color: var(--gold-light); }
+  .addon-opt.sel .ao-price { color: var(--gold); }
+  .addon-opt.sel .ao-check { background: var(--gold); border-color: var(--gold); color: var(--black); }
+
+  /* Sweetness */
+  .sweet-opts { display: flex; gap: 5px; flex-wrap: wrap; }
+  .sweet-opt {
+    padding: 7px 12px;
+    background: rgba(255,255,255,.03); border: 1px solid var(--border);
+    color: var(--cream); font-family: 'DM Sans', sans-serif;
+    font-size: .72rem; cursor: pointer; border-radius: 2px; transition: all .15s;
+  }
+  .sweet-opt.sel, .sweet-opt:hover { background: rgba(201,168,76,.12); border-color: rgba(201,168,76,.45); color: var(--gold-light); }
+  .sweet-custom-in {
+    display: none; width: 100%; margin-top: 7px; padding: 8px 12px;
+    background: rgba(255,255,255,.04); border: 1px solid var(--border);
+    color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: .8rem;
+    border-radius: 2px; outline: none; transition: border-color .2s;
+  }
+  .sweet-custom-in:focus { border-color: rgba(201,168,76,.5); }
+  .sweet-custom-in.show { display: block; }
+
+  /* Add to cart btn */
+  .add-cart-btn {
+    margin-top: 14px; width: 100%;
+    padding: 10px; background: var(--gold); color: var(--black);
+    font-family: 'DM Sans', sans-serif; font-size: .76rem; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase;
+    border: none; border-radius: 2px; cursor: pointer; transition: background .2s;
+  }
+  .add-cart-btn:hover { background: var(--gold-light); }
+
+  /* Summary item meta tags */
+  .summary-item-meta { margin-top: 3px; }
+  .s-tag {
+    display: inline-block; background: rgba(201,168,76,.1);
+    border: 1px solid rgba(201,168,76,.2); color: var(--gold);
+    font-size: .58rem; letter-spacing: .06em; padding: 1px 6px;
+    border-radius: 2px; margin: 1px 2px 0 0;
+  }
+  .summary-item-remove {
+    background: none; border: none; color: var(--muted);
+    font-size: .65rem; cursor: pointer; padding: 0; margin-top: 4px;
+    letter-spacing: .06em; text-transform: uppercase;
+    transition: color .2s; display: block;
+  }
+  .summary-item-remove:hover { color: #e05555; }
 </style>
 </head>
 <body>
@@ -618,39 +728,39 @@
       <!-- Signature Frappe -->
       <div class="menu-panel active" id="menu-signature">
         <div class="menu-items">
-          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Yummie</span><span class="menu-item-desc">Signature blended frappe</span></div><span class="menu-item-price">₱119</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Yummie" data-price="119">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
-          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Valmond</span><span class="menu-item-desc">Vanilla almond frappe</span></div><span class="menu-item-price">₱119</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Valmond" data-price="119">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
-          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Tarow</span><span class="menu-item-desc">Taro quezo almonds</span></div><span class="menu-item-price">₱119</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Tarow" data-price="119">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
-          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Velto</span><span class="menu-item-desc">Refreshing Ube Quezo</span></div><span class="menu-item-price">₱119</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Velto" data-price="119">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="menu-item-row" id="row-Yummie"><div class="menu-item-info"><span class="menu-item-name">Yummie</span><span class="menu-item-desc">Signature blended frappe</span></div><span class="menu-item-price">₱119</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Yummie',119)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
+          <div class="menu-item-row" id="row-Valmond"><div class="menu-item-info"><span class="menu-item-name">Valmond</span><span class="menu-item-desc">Vanilla almond frappe</span></div><span class="menu-item-price">₱119</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Valmond',119)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
+          <div class="menu-item-row" id="row-Tarow"><div class="menu-item-info"><span class="menu-item-name">Tarow</span><span class="menu-item-desc">Taro quezo almonds</span></div><span class="menu-item-price">₱119</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Tarow',119)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
+          <div class="menu-item-row" id="row-Velto"><div class="menu-item-info"><span class="menu-item-name">Velto</span><span class="menu-item-desc">Refreshing Ube Quezo</span></div><span class="menu-item-price">₱119</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Velto',119)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
         </div>
       </div>
 
       <!-- Cookies -->
       <div class="menu-panel" id="menu-cookies">
         <div class="menu-items">
-          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Biscoff</span><span class="menu-item-desc">Lotus Biscoff blend</span></div><span class="menu-item-price">₱169</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Biscoff" data-price="169">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
-          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Ochee</span><span class="menu-item-desc">Oreo Cheesecake</span></div><span class="menu-item-price">₱119</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Ochee" data-price="119">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
-          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Darko</span><span class="menu-item-desc">Dark Choco Drink</span></div><span class="menu-item-price">₱119</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Darko" data-price="119">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
-          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Cookie</span><span class="menu-item-desc">Cookies & Crème</span></div><span class="menu-item-price">₱119</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Cookie" data-price="119">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="menu-item-row" id="row-Biscoff"><div class="menu-item-info"><span class="menu-item-name">Biscoff</span><span class="menu-item-desc">Lotus Biscoff blend</span></div><span class="menu-item-price">₱169</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Biscoff',169)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
+          <div class="menu-item-row" id="row-Ochee"><div class="menu-item-info"><span class="menu-item-name">Ochee</span><span class="menu-item-desc">Oreo Cheesecake</span></div><span class="menu-item-price">₱119</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Ochee',119)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
+          <div class="menu-item-row" id="row-Darko"><div class="menu-item-info"><span class="menu-item-name">Darko</span><span class="menu-item-desc">Dark Choco Drink</span></div><span class="menu-item-price">₱119</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Darko',119)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
+          <div class="menu-item-row" id="row-Cookie"><div class="menu-item-info"><span class="menu-item-name">Cookie</span><span class="menu-item-desc">Cookies &amp; Crème</span></div><span class="menu-item-price">₱119</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Cookie',119)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
         </div>
       </div>
 
       <!-- Nutella -->
       <div class="menu-panel" id="menu-nutella">
         <div class="menu-items">
-          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Cashew</span><span class="menu-item-desc">Caramel Cashew blend</span></div><span class="menu-item-price">₱159</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Cashew" data-price="159">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
-          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Tella</span><span class="menu-item-desc">Dark Choco Nutella Cashew</span></div><span class="menu-item-price">₱119</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Tella" data-price="119">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
-          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Vella</span><span class="menu-item-desc">Nutella Fudge</span></div><span class="menu-item-price">₱119</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Vella" data-price="119">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
-          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Muckie</span><span class="menu-item-desc">Milk Nutella Fudge</span></div><span class="menu-item-price">₱119</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Muckie" data-price="119">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="menu-item-row" id="row-NutellaCashew"><div class="menu-item-info"><span class="menu-item-name">Cashew</span><span class="menu-item-desc">Caramel Cashew blend</span></div><span class="menu-item-price">₱159</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Cashew',159)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
+          <div class="menu-item-row" id="row-Tella"><div class="menu-item-info"><span class="menu-item-name">Tella</span><span class="menu-item-desc">Dark Choco Nutella Cashew</span></div><span class="menu-item-price">₱119</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Tella',119)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
+          <div class="menu-item-row" id="row-Vella"><div class="menu-item-info"><span class="menu-item-name">Vella</span><span class="menu-item-desc">Nutella Fudge</span></div><span class="menu-item-price">₱119</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Vella',119)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
+          <div class="menu-item-row" id="row-Muckie"><div class="menu-item-info"><span class="menu-item-name">Muckie</span><span class="menu-item-desc">Milk Nutella Fudge</span></div><span class="menu-item-price">₱119</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Muckie',119)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
         </div>
       </div>
 
       <!-- Coffee -->
       <div class="menu-panel" id="menu-coffee">
         <div class="menu-items">
-          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Carmel Mac</span><span class="menu-item-desc">Caramel Macchiato</span></div><span class="menu-item-price">₱129</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Carmel Mac" data-price="129">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
-          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Mocha</span><span class="menu-item-desc">Dark Mocha blend</span></div><span class="menu-item-price">₱129</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Mocha" data-price="129">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
-          <div class="menu-item-row"><div class="menu-item-info"><span class="menu-item-name">Java C.</span><span class="menu-item-desc">Dark Mocha Java</span></div><span class="menu-item-price">₱139</span><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(this,-1)">−</button><span class="qty-val" data-item="Java C." data-price="139">0</span><button class="qty-btn" onclick="changeQty(this,1)">+</button></div></div>
+          <div class="menu-item-row" id="row-CarmelMac"><div class="menu-item-info"><span class="menu-item-name">Carmel Mac</span><span class="menu-item-desc">Caramel Macchiato</span></div><span class="menu-item-price">₱129</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Carmel Mac',129)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
+          <div class="menu-item-row" id="row-Mocha"><div class="menu-item-info"><span class="menu-item-name">Mocha</span><span class="menu-item-desc">Dark Mocha blend</span></div><span class="menu-item-price">₱129</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Mocha',129)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
+          <div class="menu-item-row" id="row-JavaC"><div class="menu-item-info"><span class="menu-item-name">Java C.</span><span class="menu-item-desc">Dark Mocha Java</span></div><span class="menu-item-price">₱139</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Java C.',139)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
         </div>
       </div>
     </div>
@@ -927,13 +1037,22 @@
   let selectedBranch = '';
   let selectedService = '';
   let selectedPayment = '';
-  const cart = {}; // { itemName: { qty, price } }
+  // cart is now an array of line items (each with name, size, addons, sweetness, total)
+  let cart = [];
 
-  // Facebook Page IDs
   const FB_PAGES = {
     'Roxas City': '100087951589602',
     'Las Piñas': '100090357404367'
   };
+
+  const ADDONS = [
+    { name: 'Oreo', price: 15 }, { name: 'Fudge', price: 15 },
+    { name: 'Grahams', price: 15 }, { name: 'Nata', price: 15 },
+    { name: 'Chips', price: 20 }, { name: 'Queso', price: 20 },
+    { name: 'Cashew', price: 25 }, { name: 'Almonds', price: 25 },
+    { name: 'Whipped Cream', price: 25 }, { name: 'Kitkat', price: 30 },
+    { name: 'Nutella', price: 30 }
+  ];
 
   // ── SELECTORS ──
   function selectBranch(btn) {
@@ -942,7 +1061,6 @@
     selectedBranch = btn.dataset.branch;
     updateSummary();
   }
-
   function selectService(btn) {
     document.querySelectorAll('.service-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
@@ -950,7 +1068,6 @@
     document.getElementById('addressGroup').style.display = selectedService === 'Delivery' ? 'block' : 'none';
     updateSummary();
   }
-
   function selectPayment(el, name) {
     document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
@@ -966,29 +1083,129 @@
     document.getElementById('menu-' + name).classList.add('active');
   }
 
-  // ── CART ──
-  function changeQty(btn, delta) {
-    const span = btn.parentElement.querySelector('.qty-val');
-    const item = span.dataset.item;
-    const price = parseInt(span.dataset.price);
-    let qty = parseInt(span.textContent) + delta;
-    if (qty < 0) qty = 0;
-    span.textContent = qty;
-    if (qty === 0) { delete cart[item]; }
-    else { cart[item] = { qty, price }; }
+  // ── CUSTOMIZER ──
+  function buildCustomizerHTML() {
+    const sizeHTML = `
+      <div class="size-opt sel" onclick="selSize(this,0)">16oz<small>Normal</small></div>
+      <div class="size-opt" onclick="selSize(this,20)">22oz<small>+₱20</small></div>`;
+
+    const addonHTML = ADDONS.map(a =>
+      `<div class="addon-opt" onclick="togAddon(this,${a.price})">
+        <span>${a.name}</span><span class="ao-price">+₱${a.price}</span>
+        <span class="ao-check"></span>
+      </div>`).join('');
+
+    const sweetHTML = ['Less Sweet','Normal Sweet','Extra Sweet','Custom'].map((s,i) =>
+      `<div class="sweet-opt${i===1?' sel':''}" onclick="selSweet(this,'${s}')">${s}</div>`).join('');
+
+    return `
+      <div class="cust-row">
+        <div class="cust-row-label">Size</div>
+        <div class="size-opts">${sizeHTML}</div>
+      </div>
+      <div class="cust-row">
+        <div class="cust-row-label">Add-ons</div>
+        <div class="addon-grid">${addonHTML}</div>
+      </div>
+      <div class="cust-row">
+        <div class="cust-row-label">Sweetness</div>
+        <div class="sweet-opts">${sweetHTML}</div>
+        <input class="sweet-custom-in" placeholder="Describe your sweetness preference…" />
+      </div>
+      <button class="add-cart-btn" onclick="addToCart(this)">Add to Order →</button>`;
+  }
+
+  function toggleCustomizer(btn, name, basePrice) {
+    const panel = btn.nextElementSibling;
+    const isOpen = panel.classList.contains('open');
+
+    // close all others
+    document.querySelectorAll('.item-customizer.open').forEach(p => {
+      p.classList.remove('open');
+      p.previousElementSibling.classList.remove('open');
+    });
+
+    if (!isOpen) {
+      if (!panel.dataset.built) {
+        panel.innerHTML = buildCustomizerHTML();
+        panel.dataset.itemName = name;
+        panel.dataset.basePrice = basePrice;
+        panel.dataset.built = '1';
+      }
+      panel.classList.add('open');
+      btn.classList.add('open');
+      setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 60);
+    }
+  }
+
+  function selSize(el, extra) {
+    el.closest('.size-opts').querySelectorAll('.size-opt').forEach(s => s.classList.remove('sel'));
+    el.classList.add('sel');
+  }
+  function togAddon(el, price) {
+    el.classList.toggle('sel');
+    el.querySelector('.ao-check').textContent = el.classList.contains('sel') ? '✓' : '';
+  }
+  function selSweet(el, label) {
+    const wrap = el.closest('.item-customizer');
+    wrap.querySelectorAll('.sweet-opt').forEach(s => s.classList.remove('sel'));
+    el.classList.add('sel');
+    const inp = wrap.querySelector('.sweet-custom-in');
+    if (label === 'Custom') { inp.classList.add('show'); inp.focus(); }
+    else inp.classList.remove('show');
+  }
+
+  function addToCart(btn) {
+    const panel = btn.closest('.item-customizer');
+    const itemName = panel.dataset.itemName;
+    const basePrice = parseInt(panel.dataset.basePrice);
+
+    // Size
+    const sizeEl = panel.querySelector('.size-opt.sel');
+    const sizeName = sizeEl.childNodes[0].textContent.trim();
+    const sizeExtra = parseInt(sizeEl.getAttribute('onclick').match(/selSize\(this,(\d+)\)/)[1]);
+
+    // Add-ons
+    let addons = [], addonTotal = 0;
+    panel.querySelectorAll('.addon-opt.sel').forEach(el => {
+      const name = el.querySelector('span').textContent;
+      const price = parseInt(el.getAttribute('onclick').match(/togAddon\(this,(\d+)\)/)[1]);
+      addons.push({ name, price });
+      addonTotal += price;
+    });
+
+    // Sweetness
+    const sweetEl = panel.querySelector('.sweet-opt.sel');
+    let sweetness = sweetEl ? sweetEl.textContent : 'Normal Sweet';
+    if (sweetness === 'Custom') {
+      const v = panel.querySelector('.sweet-custom-in').value.trim();
+      sweetness = v ? 'Custom: ' + v : 'Custom';
+    }
+
+    const total = basePrice + sizeExtra + addonTotal;
+    cart.push({ itemName, sizeName, sizeExtra, addons, sweetness, basePrice, total });
+
+    // close panel
+    panel.classList.remove('open');
+    panel.previousElementSibling.classList.remove('open');
+
+    updateSummary();
+  }
+
+  function removeCartItem(idx) {
+    cart.splice(idx, 1);
     updateSummary();
   }
 
   // ── SUMMARY ──
   function updateSummary() {
-    const items = Object.entries(cart).filter(([k, v]) => v.qty > 0);
     const summaryItems = document.getElementById('summaryItems');
     const summaryEmpty = document.getElementById('summaryEmpty');
     const summaryDivider = document.getElementById('summaryDivider');
     const summaryMeta = document.getElementById('summaryMeta');
     const summaryTotal = document.getElementById('summaryTotal');
 
-    if (items.length === 0) {
+    if (cart.length === 0) {
       summaryEmpty.style.display = 'block';
       summaryItems.style.display = 'none';
       summaryDivider.style.display = 'none';
@@ -1001,21 +1218,22 @@
       summaryMeta.style.display = 'block';
       summaryTotal.style.display = 'flex';
 
-      let html = '';
-      let total = 0;
-      items.forEach(([name, {qty, price}]) => {
-        const sub = qty * price;
-        total += sub;
+      let html = '', grandTotal = 0;
+      cart.forEach((item, idx) => {
+        grandTotal += item.total;
+        const addonTags = item.addons.map(a => `<span class="s-tag">${a.name} +₱${a.price}</span>`).join('');
         html += `<div class="summary-item">
-          <div>
-            <span class="summary-item-name">${name}</span>
-            <span class="summary-item-qty">x${qty} @ ₱${price}</span>
+          <div style="flex:1;">
+            <span class="summary-item-name">${item.itemName}</span>
+            <span class="summary-item-qty">${item.sizeName} · ${item.sweetness}</span>
+            <div class="summary-item-meta">${addonTags}</div>
+            <button class="summary-item-remove" onclick="removeCartItem(${idx})">✕ Remove</button>
           </div>
-          <span class="summary-item-price">₱${sub}</span>
+          <span class="summary-item-price">₱${item.total}</span>
         </div>`;
       });
       summaryItems.innerHTML = html;
-      document.getElementById('sTotalAmt').textContent = '₱' + total;
+      document.getElementById('sTotalAmt').textContent = '₱' + grandTotal;
     }
 
     document.getElementById('sBranch').textContent = selectedBranch || '—';
@@ -1030,13 +1248,12 @@
     const address = document.getElementById('deliveryAddress').value.trim();
     const notes = document.getElementById('specialInstructions').value.trim();
 
-    const items = Object.entries(cart).filter(([k,v]) => v.qty > 0);
     let total = 0;
     let orderLines = '';
-    items.forEach(([itemName, {qty, price}], i) => {
-      const sub = qty * price;
-      total += sub;
-      orderLines += `${i+1}. ${itemName}  x${qty}\n   Price: ₱${sub}.00\n`;
+    cart.forEach((item, i) => {
+      total += item.total;
+      const addonStr = item.addons.length ? '\n   Add-ons: ' + item.addons.map(a => `${a.name} (+₱${a.price})`).join(', ') : '';
+      orderLines += `${i+1}. ${item.itemName} (${item.sizeName})${addonStr}\n   Sweetness: ${item.sweetness}\n   Price: ₱${item.total}\n`;
     });
 
     let extra = '';
@@ -1054,7 +1271,7 @@
 
 📋 Order Details:
 ${orderLines}
-💰 Total: ₱${total}.00
+💰 Total: ₱${total}
 
 💳 Payment Method:
 ${selectedPayment}
@@ -1066,8 +1283,7 @@ Please confirm my order! 🎉`;
   function validateForm() {
     const name = document.getElementById('custName').value.trim();
     const phone = document.getElementById('custPhone').value.trim();
-    const items = Object.entries(cart).filter(([k,v]) => v.qty > 0);
-    if (!selectedBranch || !selectedService || !selectedPayment || !name || !phone || items.length === 0) return false;
+    if (!selectedBranch || !selectedService || !selectedPayment || !name || !phone || cart.length === 0) return false;
     if (selectedService === 'Delivery' && !document.getElementById('deliveryAddress').value.trim()) return false;
     return true;
   }
@@ -1092,16 +1308,13 @@ Please confirm my order! 🎉`;
     document.body.style.overflow = '';
   }
 
-  // ── SEND TO FACEBOOK ──
   function sendToFacebook() {
     const msg = buildOrderMessage();
     const pageId = FB_PAGES[selectedBranch] || FB_PAGES['Roxas City'];
-    const encoded = encodeURIComponent(msg);
-    const url = `https://m.me/${pageId}?text=${encoded}`;
+    const url = `https://m.me/${pageId}?text=${encodeURIComponent(msg)}`;
     window.open(url, '_blank');
   }
 
-  // ── COPY ──
   function copyOrder() {
     const msg = buildOrderMessage();
     navigator.clipboard.writeText(msg).then(() => {
@@ -1111,12 +1324,10 @@ Please confirm my order! 🎉`;
     });
   }
 
-  // Close modal on overlay click
   document.getElementById('confirmModal').addEventListener('click', function(e) {
     if (e.target === this) closeModal();
   });
 
-  // Initial summary render
   updateSummary();
 </script>
 </body>
