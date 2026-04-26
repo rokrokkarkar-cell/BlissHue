@@ -1563,7 +1563,7 @@ Please confirm my order! 🎉`;
     return /iPhone|iPad|iPod/i.test(navigator.userAgent);
   }
 
-  function sendOrder() {
+  function sendToFacebook() {
     const msg = buildOrderMessage();
     const pageId = FB_PAGES[selectedBranch] || FB_PAGES['Roxas City'];
     const messengerUrl = `https://m.me/${pageId}?text=${encodeURIComponent(msg)}`;
@@ -1582,7 +1582,7 @@ Please confirm my order! 🎉`;
     }
   }
 
-  function copyOnly() {
+  function copyAndGuide() {
     const msg = buildOrderMessage();
     const btn = document.getElementById('copyBtn');
     navigator.clipboard.writeText(msg).then(() => {
