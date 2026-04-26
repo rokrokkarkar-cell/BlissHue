@@ -1087,13 +1087,16 @@
     if (e.key === 'Escape') closeAdminLogin();
   });
 
-  // Open admin login if URL has ?admin query
-  (function checkAdminUrl() {
-    if (window.location.search.includes('admin')) {
-      openAdminLogin();
-      // Clean ?admin from URL bar
-      history.replaceState(null, '', window.location.pathname);
-    }
+  // Admin login: triple-tap/click the header logo within 1.5s
+  (function setupAdminTrigger() {
+    let _taps = 0, _tapTimer = null;
+    const logo = document.querySelector('.header-logo img');
+    if (logo) logo.addEventListener('click', function() {
+      _taps++;
+      clearTimeout(_tapTimer);
+      if (_taps >= 3) { _taps = 0; openAdminLogin(); return; }
+      _tapTimer = setTimeout(() => { _taps = 0; }, 1500);
+    });
   })();
 
   function openAdminLogin() {
