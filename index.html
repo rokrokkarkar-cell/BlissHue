@@ -303,8 +303,11 @@
 
   .menu-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 2px;
+  }
+  @media (max-width: 480px) {
+    .menu-grid { grid-template-columns: 1fr 1fr; }
   }
   .menu-item {
     background: var(--card); padding: 28px 24px;
@@ -567,34 +570,46 @@
   body.admin-mode .watch-btn { border-color: rgba(201,168,76,.35); }
 
   /* admin url input popup */
-  .video-url-popup {
-    display: none !important; position: absolute; bottom: 110%; left: 0; right: 0; z-index: 200;
+  /* admin video editor — single shared overlay */
+  .admin-video-editor {
+    display: none; position: fixed; inset: 0; z-index: 700;
+    background: rgba(0,0,0,.75); backdrop-filter: blur(6px);
+    align-items: center; justify-content: center; padding: 24px;
+  }
+  .admin-video-editor.open { display: flex; }
+  .ave-box {
     background: var(--dark); border: 1px solid var(--gold);
-    border-radius: 4px; padding: 10px;
-    box-shadow: 0 8px 32px rgba(0,0,0,.6);
+    border-radius: 6px; padding: 24px; width: 100%; max-width: 460px;
+    box-shadow: 0 16px 48px rgba(0,0,0,.8);
   }
-  .video-url-popup.open { display: block !important; }
-  .video-url-popup input {
-    width: 100%; padding: 8px 10px;
+  .ave-title {
+    font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem;
+    letter-spacing: .12em; color: var(--white); margin-bottom: 4px;
+  }
+  .ave-drink { color: var(--gold); font-size: .75rem; letter-spacing: .08em; margin-bottom: 16px; }
+  .ave-label { font-size: .62rem; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 6px; }
+  .ave-input {
+    width: 100%; padding: 10px 12px;
     background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.15);
-    color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: .78rem;
-    border-radius: 2px; outline: none; margin-bottom: 6px;
+    color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: .85rem;
+    border-radius: 3px; outline: none; margin-bottom: 14px;
   }
-  .video-url-popup input:focus { border-color: var(--gold); }
-  .video-url-popup-actions { display: flex; gap: 6px; }
-  .vup-save {
-    flex: 1; padding: 7px; background: var(--gold); color: var(--black);
-    font-family: 'DM Sans',sans-serif; font-size: .72rem; font-weight: 700;
-    letter-spacing: .1em; text-transform: uppercase; border: none;
-    border-radius: 2px; cursor: pointer;
+  .ave-input:focus { border-color: var(--gold); }
+  .ave-actions { display: flex; gap: 8px; }
+  .ave-save {
+    flex: 1; padding: 10px; background: var(--gold); color: var(--black);
+    font-family: 'DM Sans', sans-serif; font-size: .78rem; font-weight: 700;
+    letter-spacing: .12em; text-transform: uppercase; border: none;
+    border-radius: 3px; cursor: pointer; transition: background .2s;
   }
-  .vup-cancel {
-    padding: 7px 12px; background: transparent;
+  .ave-save:hover { background: var(--gold-light); }
+  .ave-cancel {
+    padding: 10px 18px; background: transparent;
     border: 1px solid rgba(255,255,255,.15); color: var(--muted);
-    font-family: 'DM Sans',sans-serif; font-size: .72rem;
-    border-radius: 2px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: .78rem;
+    border-radius: 3px; cursor: pointer; transition: all .2s;
   }
-  .vup-label { font-size: .62rem; color: var(--muted); margin-bottom: 5px; letter-spacing: .08em; }
+  .ave-cancel:hover { border-color: rgba(255,255,255,.3); color: var(--cream); }
 
   /* ── VIDEO MODAL ── */
   .video-modal-overlay {
@@ -756,14 +771,6 @@
         <button class="watch-btn" id="watch-sig-1" onclick="openVideoModal(event, 'sig-1', this)">
           <span class="play-icon">▶</span>
           <span class="watch-label">Watch how it's made</span>
-          <div class="video-url-popup" id="vup-sig-1">
-            <div class="vup-label">YouTube Video URL</div>
-            <input type="url" id="vurl-sig-1" placeholder="https://www.youtube.com/watch?v=..." />
-            <div class="video-url-popup-actions">
-              <button class="vup-save" onclick="saveVideoUrl(event, 'sig-1')">Save</button>
-              <button class="vup-cancel" onclick="closeUrlPopup(event, 'sig-1')">Cancel</button>
-            </div>
-          </div>
         </button>
       </div>
       <div class="menu-item">
@@ -773,14 +780,6 @@
         <button class="watch-btn" id="watch-sig-2" onclick="openVideoModal(event, 'sig-2', this)">
           <span class="play-icon">▶</span>
           <span class="watch-label">Watch how it's made</span>
-          <div class="video-url-popup" id="vup-sig-2">
-            <div class="vup-label">YouTube Video URL</div>
-            <input type="url" id="vurl-sig-2" placeholder="https://www.youtube.com/watch?v=..." />
-            <div class="video-url-popup-actions">
-              <button class="vup-save" onclick="saveVideoUrl(event, 'sig-2')">Save</button>
-              <button class="vup-cancel" onclick="closeUrlPopup(event, 'sig-2')">Cancel</button>
-            </div>
-          </div>
         </button>
       </div>
       <div class="menu-item">
@@ -790,14 +789,6 @@
         <button class="watch-btn" id="watch-sig-3" onclick="openVideoModal(event, 'sig-3', this)">
           <span class="play-icon">▶</span>
           <span class="watch-label">Watch how it's made</span>
-          <div class="video-url-popup" id="vup-sig-3">
-            <div class="vup-label">YouTube Video URL</div>
-            <input type="url" id="vurl-sig-3" placeholder="https://www.youtube.com/watch?v=..." />
-            <div class="video-url-popup-actions">
-              <button class="vup-save" onclick="saveVideoUrl(event, 'sig-3')">Save</button>
-              <button class="vup-cancel" onclick="closeUrlPopup(event, 'sig-3')">Cancel</button>
-            </div>
-          </div>
         </button>
       </div>
       <div class="menu-item">
@@ -807,14 +798,6 @@
         <button class="watch-btn" id="watch-sig-4" onclick="openVideoModal(event, 'sig-4', this)">
           <span class="play-icon">▶</span>
           <span class="watch-label">Watch how it's made</span>
-          <div class="video-url-popup" id="vup-sig-4">
-            <div class="vup-label">YouTube Video URL</div>
-            <input type="url" id="vurl-sig-4" placeholder="https://www.youtube.com/watch?v=..." />
-            <div class="video-url-popup-actions">
-              <button class="vup-save" onclick="saveVideoUrl(event, 'sig-4')">Save</button>
-              <button class="vup-cancel" onclick="closeUrlPopup(event, 'sig-4')">Cancel</button>
-            </div>
-          </div>
         </button>
       </div>
     </div>
@@ -830,14 +813,6 @@
         <button class="watch-btn" id="watch-ck-1" onclick="openVideoModal(event, 'ck-1', this)">
           <span class="play-icon">▶</span>
           <span class="watch-label">Watch how it's made</span>
-          <div class="video-url-popup" id="vup-ck-1">
-            <div class="vup-label">YouTube Video URL</div>
-            <input type="url" id="vurl-ck-1" placeholder="https://www.youtube.com/watch?v=..." />
-            <div class="video-url-popup-actions">
-              <button class="vup-save" onclick="saveVideoUrl(event, 'ck-1')">Save</button>
-              <button class="vup-cancel" onclick="closeUrlPopup(event, 'ck-1')">Cancel</button>
-            </div>
-          </div>
         </button>
       </div>
       <div class="menu-item">
@@ -847,14 +822,6 @@
         <button class="watch-btn" id="watch-ck-2" onclick="openVideoModal(event, 'ck-2', this)">
           <span class="play-icon">▶</span>
           <span class="watch-label">Watch how it's made</span>
-          <div class="video-url-popup" id="vup-ck-2">
-            <div class="vup-label">YouTube Video URL</div>
-            <input type="url" id="vurl-ck-2" placeholder="https://www.youtube.com/watch?v=..." />
-            <div class="video-url-popup-actions">
-              <button class="vup-save" onclick="saveVideoUrl(event, 'ck-2')">Save</button>
-              <button class="vup-cancel" onclick="closeUrlPopup(event, 'ck-2')">Cancel</button>
-            </div>
-          </div>
         </button>
       </div>
       <div class="menu-item">
@@ -864,14 +831,6 @@
         <button class="watch-btn" id="watch-ck-3" onclick="openVideoModal(event, 'ck-3', this)">
           <span class="play-icon">▶</span>
           <span class="watch-label">Watch how it's made</span>
-          <div class="video-url-popup" id="vup-ck-3">
-            <div class="vup-label">YouTube Video URL</div>
-            <input type="url" id="vurl-ck-3" placeholder="https://www.youtube.com/watch?v=..." />
-            <div class="video-url-popup-actions">
-              <button class="vup-save" onclick="saveVideoUrl(event, 'ck-3')">Save</button>
-              <button class="vup-cancel" onclick="closeUrlPopup(event, 'ck-3')">Cancel</button>
-            </div>
-          </div>
         </button>
       </div>
       <div class="menu-item">
@@ -881,14 +840,6 @@
         <button class="watch-btn" id="watch-ck-4" onclick="openVideoModal(event, 'ck-4', this)">
           <span class="play-icon">▶</span>
           <span class="watch-label">Watch how it's made</span>
-          <div class="video-url-popup" id="vup-ck-4">
-            <div class="vup-label">YouTube Video URL</div>
-            <input type="url" id="vurl-ck-4" placeholder="https://www.youtube.com/watch?v=..." />
-            <div class="video-url-popup-actions">
-              <button class="vup-save" onclick="saveVideoUrl(event, 'ck-4')">Save</button>
-              <button class="vup-cancel" onclick="closeUrlPopup(event, 'ck-4')">Cancel</button>
-            </div>
-          </div>
         </button>
       </div>
     </div>
@@ -904,14 +855,6 @@
         <button class="watch-btn" id="watch-nt-1" onclick="openVideoModal(event, 'nt-1', this)">
           <span class="play-icon">▶</span>
           <span class="watch-label">Watch how it's made</span>
-          <div class="video-url-popup" id="vup-nt-1">
-            <div class="vup-label">YouTube Video URL</div>
-            <input type="url" id="vurl-nt-1" placeholder="https://www.youtube.com/watch?v=..." />
-            <div class="video-url-popup-actions">
-              <button class="vup-save" onclick="saveVideoUrl(event, 'nt-1')">Save</button>
-              <button class="vup-cancel" onclick="closeUrlPopup(event, 'nt-1')">Cancel</button>
-            </div>
-          </div>
         </button>
       </div>
       <div class="menu-item">
@@ -921,14 +864,6 @@
         <button class="watch-btn" id="watch-nt-2" onclick="openVideoModal(event, 'nt-2', this)">
           <span class="play-icon">▶</span>
           <span class="watch-label">Watch how it's made</span>
-          <div class="video-url-popup" id="vup-nt-2">
-            <div class="vup-label">YouTube Video URL</div>
-            <input type="url" id="vurl-nt-2" placeholder="https://www.youtube.com/watch?v=..." />
-            <div class="video-url-popup-actions">
-              <button class="vup-save" onclick="saveVideoUrl(event, 'nt-2')">Save</button>
-              <button class="vup-cancel" onclick="closeUrlPopup(event, 'nt-2')">Cancel</button>
-            </div>
-          </div>
         </button>
       </div>
       <div class="menu-item">
@@ -938,14 +873,6 @@
         <button class="watch-btn" id="watch-nt-3" onclick="openVideoModal(event, 'nt-3', this)">
           <span class="play-icon">▶</span>
           <span class="watch-label">Watch how it's made</span>
-          <div class="video-url-popup" id="vup-nt-3">
-            <div class="vup-label">YouTube Video URL</div>
-            <input type="url" id="vurl-nt-3" placeholder="https://www.youtube.com/watch?v=..." />
-            <div class="video-url-popup-actions">
-              <button class="vup-save" onclick="saveVideoUrl(event, 'nt-3')">Save</button>
-              <button class="vup-cancel" onclick="closeUrlPopup(event, 'nt-3')">Cancel</button>
-            </div>
-          </div>
         </button>
       </div>
       <div class="menu-item">
@@ -955,14 +882,6 @@
         <button class="watch-btn" id="watch-nt-4" onclick="openVideoModal(event, 'nt-4', this)">
           <span class="play-icon">▶</span>
           <span class="watch-label">Watch how it's made</span>
-          <div class="video-url-popup" id="vup-nt-4">
-            <div class="vup-label">YouTube Video URL</div>
-            <input type="url" id="vurl-nt-4" placeholder="https://www.youtube.com/watch?v=..." />
-            <div class="video-url-popup-actions">
-              <button class="vup-save" onclick="saveVideoUrl(event, 'nt-4')">Save</button>
-              <button class="vup-cancel" onclick="closeUrlPopup(event, 'nt-4')">Cancel</button>
-            </div>
-          </div>
         </button>
       </div>
     </div>
@@ -978,14 +897,6 @@
         <button class="watch-btn" id="watch-cf-1" onclick="openVideoModal(event, 'cf-1', this)">
           <span class="play-icon">▶</span>
           <span class="watch-label">Watch how it's made</span>
-          <div class="video-url-popup" id="vup-cf-1">
-            <div class="vup-label">YouTube Video URL</div>
-            <input type="url" id="vurl-cf-1" placeholder="https://www.youtube.com/watch?v=..." />
-            <div class="video-url-popup-actions">
-              <button class="vup-save" onclick="saveVideoUrl(event, 'cf-1')">Save</button>
-              <button class="vup-cancel" onclick="closeUrlPopup(event, 'cf-1')">Cancel</button>
-            </div>
-          </div>
         </button>
       </div>
       <div class="menu-item">
@@ -995,14 +906,6 @@
         <button class="watch-btn" id="watch-cf-2" onclick="openVideoModal(event, 'cf-2', this)">
           <span class="play-icon">▶</span>
           <span class="watch-label">Watch how it's made</span>
-          <div class="video-url-popup" id="vup-cf-2">
-            <div class="vup-label">YouTube Video URL</div>
-            <input type="url" id="vurl-cf-2" placeholder="https://www.youtube.com/watch?v=..." />
-            <div class="video-url-popup-actions">
-              <button class="vup-save" onclick="saveVideoUrl(event, 'cf-2')">Save</button>
-              <button class="vup-cancel" onclick="closeUrlPopup(event, 'cf-2')">Cancel</button>
-            </div>
-          </div>
         </button>
       </div>
       <div class="menu-item">
@@ -1012,14 +915,6 @@
         <button class="watch-btn" id="watch-cf-3" onclick="openVideoModal(event, 'cf-3', this)">
           <span class="play-icon">▶</span>
           <span class="watch-label">Watch how it's made</span>
-          <div class="video-url-popup" id="vup-cf-3">
-            <div class="vup-label">YouTube Video URL</div>
-            <input type="url" id="vurl-cf-3" placeholder="https://www.youtube.com/watch?v=..." />
-            <div class="video-url-popup-actions">
-              <button class="vup-save" onclick="saveVideoUrl(event, 'cf-3')">Save</button>
-              <button class="vup-cancel" onclick="closeUrlPopup(event, 'cf-3')">Cancel</button>
-            </div>
-          </div>
         </button>
       </div>
     </div>
@@ -1350,6 +1245,20 @@
   loadSavedEdits();
 </script>
 
+
+<!-- ADMIN VIDEO URL EDITOR -->
+<div class="admin-video-editor" id="adminVideoEditor">
+  <div class="ave-box">
+    <div class="ave-title">🎬 Edit Video Link</div>
+    <div class="ave-drink" id="avedrinkName"></div>
+    <div class="ave-label">YouTube Video URL</div>
+    <input class="ave-input" id="aveInput" type="url" placeholder="https://www.youtube.com/watch?v=..." />
+    <div class="ave-actions">
+      <button class="ave-save" onclick="saveAdminVideo()">Save Link</button>
+      <button class="ave-cancel" onclick="closeAdminVideoEditor()">Cancel</button>
+    </div>
+  </div>
+</div>
 <!-- VIDEO POPUP MODAL -->
 <div class="video-modal-overlay" id="videoModal" onclick="closeVideoModal(event)">
   <div class="video-modal-box">
