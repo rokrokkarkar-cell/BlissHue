@@ -1202,7 +1202,7 @@
   let cart = [];
 
   const FB_PAGES = {
-    'Roxas City': '100087951589602',
+    'Roxas City': 'Blisshuecaferxs',
     'Las Piñas': '100090357404367'
   };
 
@@ -1551,7 +1551,7 @@ Please confirm my order! 🎉`;
     document.getElementById('orderPreviewText').innerText = msg;
     document.getElementById('confirmModal').classList.add('show');
     document.body.style.overflow = 'hidden';
-    document.getElementById('iosTip').style.display = isIOS() ? 'block' : 'none';
+    document.getElementById('iosTip').style.display = 'none';
   }
 
   function closeModal() {
@@ -1563,54 +1563,33 @@ Please confirm my order! 🎉`;
     return /iPhone|iPad|iPod/i.test(navigator.userAgent);
   }
 
-  function sendToFacebook() {
+  function sendOrder() {
     const msg = buildOrderMessage();
     const pageId = FB_PAGES[selectedBranch] || FB_PAGES['Roxas City'];
+    const messengerUrl = `https://m.me/${pageId}?text=${encodeURIComponent(msg)}`;
 
     if (isIOS()) {
-      // On iOS: copy text first, then try to open Messenger
-      // m.me pre-filled text is unreliable on iOS Safari
+      // On iOS: copy the text first so they can paste it,
+      // then open m.me — pre-filled text works on newer iOS but paste is the fallback
       navigator.clipboard.writeText(msg).catch(() => {});
       document.getElementById('iosTip').style.display = 'block';
-      // Try Messenger deep link first, fall back to m.me
-      const messengerApp = `fb-messenger://user-thread/${pageId}`;
-      const messengerWeb = `https://m.me/${pageId}`;
-      // Use a short timeout trick: try app link, if still here after 1.5s open web
-      window.location.href = messengerApp;
-      setTimeout(() => { window.open(messengerWeb, '_blank'); }, 1500);
+      // Small delay so clipboard write completes before opening Messenger
+      setTimeout(() => {
+        window.location.href = messengerUrl;
+      }, 300);
     } else {
-      const url = `https://m.me/${pageId}?text=${encodeURIComponent(msg)}`;
-      window.open(url, '_blank');
+      window.open(messengerUrl, '_blank');
     }
   }
 
-  function copyAndGuide() {
+  function copyOnly() {
     const msg = buildOrderMessage();
-    const pageId = FB_PAGES[selectedBranch] || FB_PAGES['Roxas City'];
     const btn = document.getElementById('copyBtn');
-
     navigator.clipboard.writeText(msg).then(() => {
-      btn.textContent = '✅ Copied! Opening Messenger…';
-      btn.classList.add('copied');
-      document.getElementById('iosTip').style.display = 'block';
-      setTimeout(() => {
-        // Open Messenger without pre-filled text (more reliable on iOS)
-        const url = isIOS()
-          ? `fb-messenger://user-thread/${pageId}`
-          : `https://m.me/${pageId}`;
-        window.open(url, '_blank');
-        // Fallback to web if app not installed
-        setTimeout(() => {
-          window.open(`https://m.me/${pageId}`, '_blank');
-        }, 1800);
-      }, 600);
-      setTimeout(() => {
-        btn.innerHTML = '📋 &nbsp;Copy Order & Open Messenger';
-        btn.classList.remove('copied');
-      }, 3500);
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => { btn.innerHTML = '📋 &nbsp;Copy Order Text'; }, 2500);
     }).catch(() => {
-      // Clipboard not available — show manual copy fallback
-      btn.textContent = 'Please copy the text below manually';
+      btn.textContent = 'Please copy the preview below';
     });
   }
 
