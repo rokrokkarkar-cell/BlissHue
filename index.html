@@ -652,19 +652,30 @@
   }
   .video-modal-fullscreen:hover { background: rgba(255,255,255,.15); }
 
-  /* Video wrapper — fills frame, click to play/pause */
+  /* Video wrapper — portrait default for MP4 shorts */
   .video-modal-frame {
     position: relative; width: 100%;
     aspect-ratio: 9/16; max-height: 68vh;
     background: #000; overflow: hidden; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
   }
+  /* YouTube mode — landscape 16:9 */
+  .video-modal-frame.yt-mode {
+    aspect-ratio: 16/9;
+    max-height: none;
+  }
   .video-modal-frame video {
     width: 100%; height: 100%; object-fit: contain; display: block;
     background: #000;
   }
+  /* YouTube iframe — letterboxed, no zoom/crop */
   .video-modal-frame iframe {
-    position: absolute; inset: 0; width: 100%; height: 100%; border: none; display: block;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border: none; display: block;
   }
 
   /* Big centre play/pause flash */
@@ -1578,10 +1589,11 @@ function openVideoModal(event, drinkId, btn) {
     if (embedUrl) {
       const iframe = document.createElement('iframe');
       iframe.src = embedUrl;
-      iframe.allow = 'autoplay; encrypted-media';
+      iframe.allow = 'autoplay; encrypted-media; fullscreen';
       iframe.allowFullscreen = true;
       iframe.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:none;';
       frame.insertBefore(iframe, frame.querySelector('.vm-tap-flash'));
+      frame.classList.add('yt-mode');
     } else { placeholder.style.display = 'flex'; }
   } else {
     placeholder.style.display = 'flex';
@@ -1600,6 +1612,7 @@ function closeVideoModalDirect() {
   cancelAnimationFrame(_vmRAF);
   _vmVideo = null;
   const frame = document.getElementById('videoFrame');
+  frame.classList.remove('yt-mode');
   frame.querySelectorAll('iframe, video').forEach(el => { if (el.tagName === 'VIDEO') el.pause(); el.remove(); });
   document.getElementById('vmProgressFill').style.width = '0%';
   document.getElementById('vmProgressWrap').style.display = 'none';
@@ -1635,14 +1648,16 @@ function saveAdminVideo() {
 
 // ── FULLSCREEN ──
 function toggleVideoFullscreen() {
-  const frame = document.getElementById('videoFrame');
+  const box = document.getElementById('videoModalBox');
   const btn = document.querySelector('.video-modal-fullscreen');
   if (!document.fullscreenElement) {
-    (frame.requestFullscreen || frame.webkitRequestFullscreen || frame.mozRequestFullScreen).call(frame);
+    const reqFS = box.requestFullscreen || box.webkitRequestFullscreen || box.mozRequestFullScreen;
+    if (reqFS) reqFS.call(box);
     btn.textContent = '⊠';
     btn.title = 'Exit Fullscreen';
   } else {
-    (document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen).call(document);
+    const exitFS = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen;
+    if (exitFS) exitFS.call(document);
     btn.textContent = '⛶';
     btn.title = 'Fullscreen';
   }
@@ -1651,6 +1666,15 @@ document.addEventListener('fullscreenchange', () => {
   const btn = document.querySelector('.video-modal-fullscreen');
   if (!document.fullscreenElement) { btn.textContent = '⛶'; btn.title = 'Fullscreen'; }
 });
+// Make modal box fill screen when fullscreen
+const fsStyle = document.createElement('style');
+fsStyle.textContent = `
+  #videoModalBox:fullscreen { max-width:100vw; width:100vw; height:100vh; border-radius:0; display:flex; flex-direction:column; }
+  #videoModalBox:fullscreen .video-modal-frame { flex:1; aspect-ratio:unset; max-height:none; }
+  #videoModalBox:-webkit-full-screen { max-width:100vw; width:100vw; height:100vh; border-radius:0; display:flex; flex-direction:column; }
+  #videoModalBox:-webkit-full-screen .video-modal-frame { flex:1; aspect-ratio:unset; max-height:none; }
+`;
+document.head.appendChild(fsStyle);
 
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { closeVideoModalDirect(); closeAdminVideoEditor(); }
