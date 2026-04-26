@@ -1500,9 +1500,24 @@
 
 <script>
 // ── VIDEO SYSTEM ──
-let videoLinks = {};
+// ✅ Videos are hardcoded here so they work for ALL visitors on ALL devices.
+// To add/change a video: use Admin mode (pencil icon) — it updates this list and saves to the file.
+// OR manually edit the URL strings below directly.
+let videoLinks = {
+  // 'sig-1': 'https://youtube.com/shorts/YOUR_VIDEO_ID',
+  // 'sig-2': 'https://youtube.com/shorts/YOUR_VIDEO_ID',
+};
+
+// Also merge any locally-saved admin edits (backwards compat)
 (function loadVideoLinks() {
-  try { const r = localStorage.getItem('blisshue_videos'); if (r) videoLinks = JSON.parse(r); } catch(e) {}
+  try {
+    const r = localStorage.getItem('blisshue_videos');
+    if (r) {
+      const saved = JSON.parse(r);
+      // Merge: hardcoded takes priority unless admin explicitly set a value
+      videoLinks = Object.assign({}, videoLinks, saved);
+    }
+  } catch(e) {}
 })();
 function saveVideoLinks() { localStorage.setItem('blisshue_videos', JSON.stringify(videoLinks)); }
 
@@ -1679,12 +1694,40 @@ function saveAdminVideo() {
   const val = document.getElementById('aveInput').value.trim();
   if (val) videoLinks[_currentEditDrinkId] = val; else delete videoLinks[_currentEditDrinkId];
   saveVideoLinks();
+
+  // Patch the hardcoded videoLinks block in the page's own HTML so
+  // downloading the page captures the new URLs for all visitors.
+  try {
+    const scripts = document.querySelectorAll('script');
+    for (const s of scripts) {
+      if (s.textContent.includes('let videoLinks = {')) {
+        const entries = Object.entries(videoLinks)
+          .map(([k,v]) => `  '${k}': '${v}'`)
+          .join(',\n');
+        s.textContent = s.textContent.replace(
+          /let videoLinks = \{[\s\S]*?\};/,
+          `let videoLinks = {\n${entries ? entries + ',\n' : ''}};`
+        );
+        break;
+      }
+    }
+  } catch(e) {}
+
   closeAdminVideoEditor();
   const btn = document.getElementById('watch-' + _currentEditDrinkId);
   if (btn) {
     btn.style.borderColor = 'var(--gold)'; btn.style.color = 'var(--gold)';
     setTimeout(() => { btn.style.borderColor = ''; btn.style.color = ''; }, 1500);
   }
+
+  // Remind admin to re-download/re-upload the file so all visitors get the video
+  setTimeout(() => {
+    if (confirm('✅ Video saved!\n\nTo make it visible to ALL visitors, re-download this page (File → Save As) and re-upload it to your host.\n\nDownload now?')) {
+      const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      a.download = 'index.html'; a.click();
+    }
+  }, 200);
 }
 
 // ── VOLUME CONTROL ──
