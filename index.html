@@ -1250,7 +1250,7 @@
 <div class="admin-video-editor" id="adminVideoEditor">
   <div class="ave-box">
     <div class="ave-title">🎬 Edit Video Link</div>
-    <div class="ave-drink" id="avedrinkName"></div>
+    <div class="ave-drink" id="aveDrinkName"></div>
     <div class="ave-label">YouTube Video URL</div>
     <input class="ave-input" id="aveInput" type="url" placeholder="https://www.youtube.com/watch?v=..." />
     <div class="ave-actions">
@@ -1259,6 +1259,7 @@
     </div>
   </div>
 </div>
+
 <!-- VIDEO POPUP MODAL -->
 <div class="video-modal-overlay" id="videoModal" onclick="closeVideoModal(event)">
   <div class="video-modal-box">
@@ -1267,7 +1268,7 @@
       <div class="video-modal-placeholder" id="videoPlaceholder">
         <div class="ph-icon">🎬</div>
         <div class="ph-text">Video Coming Soon</div>
-        <div class="ph-sub">Admin can add a YouTube link</div>
+        <div class="ph-sub">Click the ✏️ pencil on the Watch button (in admin mode) to add a YouTube link</div>
       </div>
     </div>
     <div class="video-modal-info">
@@ -1279,5 +1280,143 @@
     </div>
   </div>
 </div>
+
+<script>
+// ── VIDEO SYSTEM ──
+// videoLinks stores { drinkId: youtubeUrl } and persists in localStorage
+let videoLinks = {};
+(function loadVideoLinks() {
+  try {
+    const raw = localStorage.getItem('blisshue_videos');
+    if (raw) videoLinks = JSON.parse(raw);
+  } catch(e) {}
+})();
+
+function saveVideoLinks() {
+  localStorage.setItem('blisshue_videos', JSON.stringify(videoLinks));
+}
+
+// Convert any YouTube URL to an embed URL
+function toEmbedUrl(url) {
+  if (!url) return null;
+  // Already an embed
+  if (url.includes('youtube.com/embed/')) return url;
+  // youtu.be/ID
+  let m = url.match(/youtu\.be\/([^?&]+)/);
+  if (m) return 'https://www.youtube.com/embed/' + m[1] + '?autoplay=1&rel=0';
+  // youtube.com/watch?v=ID
+  m = url.match(/[?&]v=([^&]+)/);
+  if (m) return 'https://www.youtube.com/embed/' + m[1] + '?autoplay=1&rel=0';
+  // youtube.com/shorts/ID
+  m = url.match(/youtube\.com\/shorts\/([^?&]+)/);
+  if (m) return 'https://www.youtube.com/embed/' + m[1] + '?autoplay=1&rel=0';
+  return null;
+}
+
+// Get drink name + desc from a watch button
+function getDrinkInfo(btn) {
+  const card = btn.closest('.menu-item');
+  const name = card ? card.querySelector('.item-name')?.textContent.trim() : '';
+  const desc = card ? card.querySelector('.item-desc')?.textContent.trim() : '';
+  return { name, desc };
+}
+
+// Called when user clicks "Watch how it's made"
+function openVideoModal(event, drinkId, btn) {
+  event.stopPropagation();
+
+  // If in admin mode, open the link editor instead
+  if (document.body.classList.contains('admin-mode')) {
+    openAdminVideoEditor(drinkId, btn);
+    return;
+  }
+
+  const { name, desc } = getDrinkInfo(btn);
+  document.getElementById('videoModalName').textContent = name || drinkId;
+  document.getElementById('videoModalDesc').textContent = desc || '';
+
+  const frame = document.getElementById('videoFrame');
+  const placeholder = document.getElementById('videoPlaceholder');
+  const url = videoLinks[drinkId];
+  const embedUrl = toEmbedUrl(url);
+
+  // Clear any previous iframe
+  const oldIframe = frame.querySelector('iframe');
+  if (oldIframe) oldIframe.remove();
+
+  if (embedUrl) {
+    placeholder.style.display = 'none';
+    const iframe = document.createElement('iframe');
+    iframe.src = embedUrl;
+    iframe.allow = 'autoplay; encrypted-media';
+    iframe.allowFullscreen = true;
+    frame.appendChild(iframe);
+  } else {
+    placeholder.style.display = 'flex';
+  }
+
+  document.getElementById('videoModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeVideoModal(event) {
+  if (event.target === document.getElementById('videoModal')) {
+    closeVideoModalDirect();
+  }
+}
+
+function closeVideoModalDirect() {
+  document.getElementById('videoModal').classList.remove('open');
+  document.body.style.overflow = '';
+  // Stop video by removing iframe
+  const frame = document.getElementById('videoFrame');
+  const iframe = frame.querySelector('iframe');
+  if (iframe) iframe.remove();
+}
+
+// ── ADMIN VIDEO EDITOR ──
+let _currentEditDrinkId = null;
+
+function openAdminVideoEditor(drinkId, btn) {
+  _currentEditDrinkId = drinkId;
+  const { name } = getDrinkInfo(btn);
+  document.getElementById('aveDrinkName').textContent = name || drinkId;
+  document.getElementById('aveInput').value = videoLinks[drinkId] || '';
+  document.getElementById('adminVideoEditor').classList.add('open');
+  setTimeout(() => document.getElementById('aveInput').focus(), 100);
+}
+
+function closeAdminVideoEditor() {
+  document.getElementById('adminVideoEditor').classList.remove('open');
+  _currentEditDrinkId = null;
+}
+
+function saveAdminVideo() {
+  if (!_currentEditDrinkId) return;
+  const url = document.getElementById('aveInput').value.trim();
+  if (url) {
+    videoLinks[_currentEditDrinkId] = url;
+  } else {
+    delete videoLinks[_currentEditDrinkId];
+  }
+  saveVideoLinks();
+  closeAdminVideoEditor();
+  // Visual feedback: flash the watch button green
+  const btn = document.getElementById('watch-' + _currentEditDrinkId);
+  if (btn) {
+    btn.style.borderColor = 'var(--gold)';
+    btn.style.color = 'var(--gold)';
+    setTimeout(() => { btn.style.borderColor = ''; btn.style.color = ''; }, 1500);
+  }
+}
+
+// Close video modal on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeVideoModalDirect();
+    closeAdminVideoEditor();
+  }
+});
+</script>
 </body>
 </html>
