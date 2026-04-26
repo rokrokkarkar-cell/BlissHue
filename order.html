@@ -1087,14 +1087,12 @@
     if (e.key === 'Escape') closeAdminLogin();
   });
 
-  // Open admin login if URL ends with /admin
+  // Open admin login if URL has ?admin query
   (function checkAdminUrl() {
-    const path = window.location.pathname;
-    const search = window.location.search;
-    if (path.endsWith('/admin') || path.endsWith('/admin.html') || search.includes('?admin')) {
+    if (window.location.search.includes('admin')) {
       openAdminLogin();
-      const cleanUrl = path.replace(/\/admin(\.html)?$/, '') || '/';
-      history.replaceState(null, '', cleanUrl);
+      // Clean ?admin from URL bar
+      history.replaceState(null, '', window.location.pathname);
     }
   })();
 
