@@ -3,450 +3,464 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Order Now — Bliss Hue Café</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Caveat:wght@500;600&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+<title>Bliss Hue Café</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Black+Han+Sans&family=Caveat:wght@500;600&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
 <style>
   :root {
     --black: #080808;
     --dark: #0e0e0e;
     --card: #141414;
-    --card2: #1a1a1a;
     --gold: #c9a84c;
     --gold-light: #e8c97a;
     --cream: #f5ead6;
     --white: #ffffff;
     --muted: #777;
-    --border: rgba(255,255,255,0.07);
-    --gold-border: rgba(201,168,76,0.25);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-
   body {
     background: var(--black);
     color: var(--cream);
     font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
     overflow-x: hidden;
   }
 
-  /* ── HEADER ── */
-  header {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(8,8,8,0.97);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 14px 5%;
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 5%;
+    background: linear-gradient(to bottom, rgba(8,8,8,.98), transparent);
+    backdrop-filter: blur(4px);
   }
-  .header-logo {
+  .nav-logo {
     display: flex; align-items: center; gap: 12px;
   }
-  .header-logo img {
-    width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
+  .nav-logo img {
+    width: 48px; height: 48px; border-radius: 50%;
+    object-fit: cover;
   }
-  .header-logo-text {
+  .nav-logo-text {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.4rem; letter-spacing: .12em; color: var(--white);
+    font-size: 1.5rem; letter-spacing: .14em;
+    color: var(--white); line-height: 1;
   }
-  .header-logo-text span { color: var(--gold); }
-  .header-logo-sub {
-    font-size: .65rem; letter-spacing: .3em; color: var(--muted);
-    text-transform: uppercase; display: block; margin-top: 1px;
+  .nav-logo-text span { color: var(--gold); }
+  .nav-logo-sub {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: .75rem; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--muted); display: block; margin-top: 1px;
   }
-  .header-back {
-    display: flex; align-items: center; gap: 7px;
-    color: var(--muted); text-decoration: none; font-size: .78rem;
-    letter-spacing: .1em; text-transform: uppercase; font-weight: 500;
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    color: var(--cream); text-decoration: none;
+    font-size: .78rem; letter-spacing: .14em; text-transform: uppercase;
+    opacity: .65; transition: opacity .2s, color .2s;
+    font-weight: 500;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold); }
+
+  /* hamburger */
+  .nav-hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  .nav-hamburger span {
+    display: block; width: 26px; height: 2px;
+    background: var(--cream); border-radius: 2px;
+    transition: all .3s;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+  /* Mobile menu */
+  .mobile-menu {
+    display: none; position: fixed; inset: 0; z-index: 99;
+    background: rgba(8,8,8,.97);
+    flex-direction: column; align-items: center; justify-content: center; gap: 36px;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem; letter-spacing: .1em;
+    color: var(--cream); text-decoration: none;
     transition: color .2s;
   }
-  .header-back:hover { color: var(--gold); }
-  .header-back svg { width: 14px; height: 14px; }
+  .mobile-menu a:hover { color: var(--gold); }
 
-  /* ── LAYOUT ── */
-  .page-wrap {
-    max-width: 1100px; margin: 0 auto;
-    padding: 40px 5% 80px;
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
     display: grid;
-    grid-template-columns: 1fr 380px;
-    gap: 32px;
-    align-items: start;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 100px 5% 60px;
+    position: relative;
+    overflow: hidden;
+    gap: 40px;
   }
 
-  /* ── STEP HEADER ── */
-  .step-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: .66rem; letter-spacing: .3em; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 8px; font-weight: 600;
+  /* dark grain */
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    background-size: 200px;
+    opacity: .3; pointer-events: none;
+    animation: grain 8s steps(10) infinite;
   }
-  .step-badge::before { content:''; width:20px; height:1px; background:var(--gold); }
+  @keyframes grain {
+    0%,100%{transform:translate(0,0)}
+    10%{transform:translate(-2%,-3%)}
+    30%{transform:translate(3%,2%)}
+    50%{transform:translate(-1%,4%)}
+    70%{transform:translate(4%,-2%)}
+    90%{transform:translate(-3%,1%)}
+  }
 
-  .section-heading {
+  /* gold radial left */
+  .hero-glow {
+    position: absolute; left: -200px; top: 50%;
+    transform: translateY(-50%);
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(201,168,76,.10) 0%, transparent 65%);
+    pointer-events: none;
+    animation: pulse 5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100%{ opacity:.5; transform:translateY(-50%) scale(1); }
+    50%{ opacity:1; transform:translateY(-50%) scale(1.08); }
+  }
+
+  .hero-left { position: relative; z-index: 1; }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-bottom: 24px;
+    animation: fadeUp .7s ease both;
+  }
+  .hero-eyebrow-line {
+    width: 32px; height: 1px; background: var(--gold);
+  }
+  .hero-eyebrow-text {
+    font-size: .7rem; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--gold); font-weight: 500;
+  }
+
+  .hero-logo-display {
+    margin-bottom: 12px;
+    animation: fadeUp .8s .05s ease both;
+  }
+  .hero-logo-display img {
+    width: 110px; height: 110px; border-radius: 50%;
+    display: block;
+  }
+
+  .hero-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    letter-spacing: .08em; color: var(--white);
-    line-height: 1; margin-bottom: 28px;
+    font-size: clamp(4.5rem, 10vw, 9rem);
+    line-height: .88; letter-spacing: .06em;
+    color: var(--white);
+    animation: fadeUp .9s .1s ease both;
+  }
+  .hero-title .accent { color: var(--gold); }
+  .hero-title .cafe-sub {
+    display: block;
+    font-size: clamp(1.2rem, 2.5vw, 2rem);
+    color: var(--muted); letter-spacing: .35em;
+    margin-top: 4px;
   }
 
-  /* ── CARDS ── */
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    padding: 28px;
-    margin-bottom: 20px;
-    border-radius: 3px;
-    transition: border-color .3s;
+  .hero-tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(.95rem, 2vw, 1.2rem);
+    color: var(--muted);
+    margin-top: 20px; margin-bottom: 40px;
+    letter-spacing: .02em;
+    animation: fadeUp 1s .2s ease both;
   }
-  .card:hover { border-color: var(--gold-border); }
-  .card-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.2rem; letter-spacing: .1em;
-    color: var(--gold); margin-bottom: 20px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .card-title svg { width: 16px; height: 16px; fill: var(--gold); }
+  .hero-tagline strong { color: var(--gold-light); font-style: normal; font-weight: 500; }
 
-  /* ── BRANCH SELECTOR ── */
-  .branch-grid {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  .hero-cta {
+    display: flex; gap: 14px; flex-wrap: wrap;
+    animation: fadeUp 1s .3s ease both;
   }
-  .branch-btn {
-    padding: 16px; border: 1px solid var(--border);
-    background: transparent; color: var(--cream);
-    cursor: pointer; border-radius: 2px; text-align: left;
-    transition: all .2s; font-family: 'DM Sans', sans-serif;
-  }
-  .branch-btn:hover { border-color: var(--gold-border); }
-  .branch-btn.selected {
-    border-color: var(--gold);
-    background: rgba(201,168,76,0.08);
-  }
-  .branch-btn-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.1rem; letter-spacing: .08em; color: var(--white);
-    display: block; margin-bottom: 3px;
-  }
-  .branch-btn.selected .branch-btn-name { color: var(--gold); }
-  .branch-btn-loc { font-size: .72rem; color: var(--muted); line-height: 1.4; }
-
-  /* ── SERVICE TYPE ── */
-  .service-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
-  }
-  .service-btn {
-    padding: 18px 10px; border: 1px solid var(--border);
-    background: transparent; cursor: pointer; border-radius: 2px;
-    text-align: center; transition: all .2s;
+  .btn {
+    padding: 13px 30px;
     font-family: 'DM Sans', sans-serif;
+    font-size: .78rem; letter-spacing: .15em; text-transform: uppercase;
+    text-decoration: none; border-radius: 2px;
+    transition: all .25s; cursor: pointer; border: none; font-weight: 600;
   }
-  .service-btn:hover { border-color: var(--gold-border); }
-  .service-btn.selected {
-    border-color: var(--gold); background: rgba(201,168,76,0.08);
+  .btn-gold { background: var(--gold); color: var(--black); }
+  .btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid rgba(201,168,76,.45);
+    color: var(--gold);
   }
-  .service-icon { font-size: 1.6rem; display: block; margin-bottom: 6px; }
-  .service-label {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: .95rem; letter-spacing: .1em; color: var(--white); display: block;
-  }
-  .service-btn.selected .service-label { color: var(--gold); }
+  .btn-outline:hover { border-color: var(--gold); background: rgba(201,168,76,.08); transform: translateY(-2px); }
 
-  /* ── INPUTS ── */
-  .form-group { margin-bottom: 16px; }
-  .form-group label {
-    display: block; font-size: .7rem; letter-spacing: .15em; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 7px; font-weight: 500;
+  /* Hero right — drinks photo */
+  .hero-right {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; justify-content: center;
+    animation: fadeUp 1s .15s ease both;
   }
-  .form-group label span { color: var(--gold); }
-  .form-input {
-    width: 100%; padding: 12px 14px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: .9rem;
-    border-radius: 2px; outline: none; transition: border-color .2s;
-    -webkit-appearance: none;
+  .hero-drinks-wrap {
+    position: relative; width: 100%;
+    border-radius: 4px; overflow: hidden;
   }
-  .form-input:focus { border-color: rgba(201,168,76,0.5); }
-  .form-input::placeholder { color: #444; }
-  textarea.form-input { resize: vertical; min-height: 80px; line-height: 1.6; }
+  .hero-drinks-wrap::before {
+    content: '';
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(to right, var(--black) 0%, transparent 18%, transparent 82%, var(--black) 100%),
+                linear-gradient(to bottom, transparent 0%, transparent 80%, var(--black) 100%);
+  }
+  .hero-drinks-wrap img {
+    width: 100%; display: block;
+    filter: brightness(.92) contrast(1.05) saturate(1.1);
+  }
+  /* floating drink labels */
+  .drink-badge {
+    position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+    z-index: 2;
+    display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
+  }
+  .drink-tag {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: .75rem; letter-spacing: .15em;
+    color: var(--gold); background: rgba(8,8,8,.75);
+    border: 1px solid rgba(201,168,76,.25);
+    padding: 4px 10px; border-radius: 2px;
+    backdrop-filter: blur(4px);
+  }
+
+  .hero-scroll {
+    position: absolute; bottom: 28px; left: 0; right: 0;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    color: var(--muted); font-size: .68rem; letter-spacing: .2em; text-transform: uppercase;
+    animation: fadeUp 1s .5s ease both;
+    z-index: 2;
+  }
+  .scroll-line {
+    width: 1px; height: 48px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+    transform-origin: top;
+  }
+  @keyframes scrollLine {
+    0%,100%{ transform: scaleY(1); opacity:1; }
+    50%{ transform: scaleY(.5); opacity:.3; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTION BASE ── */
+  section { padding: 100px 5%; }
+  .section-label {
+    display: flex; align-items: center; gap: 10px;
+    font-size: .68rem; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 10px; font-weight: 500;
+  }
+  .section-label::before {
+    content: ''; width: 24px; height: 1px; background: var(--gold);
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.8rem, 6vw, 5.5rem);
+    line-height: .95; letter-spacing: .06em;
+    color: var(--white); margin-bottom: 52px;
+  }
 
   /* ── MENU ── */
+  #menu { background: var(--dark); }
+
   .menu-tabs {
-    display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 20px;
+    display: flex; gap: 3px; flex-wrap: wrap;
+    margin-bottom: 44px;
   }
-  .menu-tab {
-    padding: 8px 18px;
+  .tab {
+    padding: 10px 26px;
     background: transparent;
-    border: 1px solid var(--border);
+    border: 1px solid rgba(255,255,255,.08);
     color: var(--muted);
     font-family: 'DM Sans', sans-serif;
-    font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
-    cursor: pointer; border-radius: 2px; font-weight: 600;
+    font-size: .76rem; letter-spacing: .14em; text-transform: uppercase;
+    cursor: pointer; border-radius: 2px; font-weight: 500;
     transition: all .2s;
   }
-  .menu-tab.active, .menu-tab:hover {
-    background: var(--gold); color: var(--black); border-color: var(--gold);
+  .tab.active, .tab:hover {
+    background: var(--gold); color: var(--black);
+    border-color: var(--gold); font-weight: 700;
   }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 2px;
+  }
+  .menu-item {
+    background: var(--card); padding: 28px 24px;
+    position: relative; overflow: hidden;
+    transition: transform .2s, border-color .2s;
+    border: 1px solid rgba(255,255,255,.04);
+  }
+  .menu-item:hover { transform: translateY(-4px); border-color: rgba(201,168,76,.2); }
+  .menu-item::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 0; background: var(--gold);
+    transition: height .3s;
+  }
+  .menu-item:hover::before { height: 100%; }
+
+  .item-name {
+    font-family: 'Caveat', cursive;
+    font-size: 1.75rem; letter-spacing: .02em;
+    color: var(--white); margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .item-desc { font-size: .78rem; color: var(--muted); line-height: 1.55; margin-bottom: 18px; }
+  .item-price { font-size: .92rem; font-weight: 600; color: var(--gold-light); }
   .menu-panel { display: none; }
   .menu-panel.active { display: block; }
-  .menu-items { display: flex; flex-direction: column; gap: 2px; }
 
-  .menu-item-row {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 16px;
-    background: var(--card2);
-    border: 1px solid var(--border);
-    border-radius: 2px; transition: border-color .2s;
-    gap: 12px;
+  /* ── ABOUT ── */
+  #about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
   }
-  .menu-item-row:hover { border-color: var(--gold-border); }
-  .menu-item-info { flex: 1; }
-  .menu-item-name {
-    font-family: 'Caveat', cursive;
-    font-size: 1.25rem; color: var(--white); font-weight: 600;
-    display: block; margin-bottom: 2px;
+  .about-text .section-title { margin-bottom: 20px; }
+  .about-body {
+    color: var(--muted); line-height: 1.9; font-size: .93rem; margin-bottom: 36px;
   }
-  .menu-item-desc { font-size: .73rem; color: var(--muted); }
-  .menu-item-price {
-    font-size: .85rem; font-weight: 600; color: var(--gold-light);
-    white-space: nowrap; margin-right: 12px;
-  }
-  .qty-ctrl {
-    display: flex; align-items: center; gap: 0;
-    border: 1px solid var(--gold-border); border-radius: 2px; overflow: hidden;
-  }
-  .qty-btn {
-    width: 32px; height: 32px; background: transparent;
-    border: none; color: var(--gold); font-size: 1.1rem;
-    cursor: pointer; transition: background .15s;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'DM Sans', sans-serif;
-  }
-  .qty-btn:hover { background: rgba(201,168,76,0.15); }
-  .qty-val {
-    width: 30px; text-align: center; font-size: .85rem;
-    color: var(--white); font-weight: 600; pointer-events: none;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  /* ── PAYMENT ── */
-  .payment-option {
-    display: flex; align-items: flex-start; gap: 14px;
-    padding: 16px;
-    border: 1px solid var(--border);
-    border-radius: 2px; cursor: pointer;
-    margin-bottom: 8px; transition: all .2s; background: var(--card2);
-  }
-  .payment-option:hover { border-color: var(--gold-border); }
-  .payment-option.selected {
-    border-color: var(--gold); background: rgba(201,168,76,0.06);
-  }
-  .payment-radio {
-    width: 18px; height: 18px; border-radius: 50%;
-    border: 2px solid var(--muted); flex-shrink: 0; margin-top: 2px;
-    transition: all .2s; display: flex; align-items: center; justify-content: center;
-  }
-  .payment-option.selected .payment-radio {
-    border-color: var(--gold); background: var(--gold);
-  }
-  .payment-option.selected .payment-radio::after {
-    content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--black);
-  }
-  .payment-qr {
-    width: 56px; height: 56px; background: #fff;
-    border-radius: 2px; display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; overflow: hidden; font-size: .5rem; color: #333; text-align: center;
-    padding: 4px;
-  }
-  .payment-qr img { width: 100%; height: 100%; object-fit: contain; }
-  .payment-qr-placeholder {
-    width: 100%; height: 100%; background: #eee;
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column; gap: 3px;
-    font-size: .5rem; color: #999; text-align: center;
-  }
-  .payment-name {
-    font-weight: 600; font-size: .88rem; color: var(--white); display: block; margin-bottom: 3px;
-  }
-  .payment-option.selected .payment-name { color: var(--gold); }
-  .payment-desc { font-size: .73rem; color: var(--muted); line-height: 1.5; }
-  .payment-number {
+  .about-stats { display: flex; gap: 44px; }
+  .stat-num {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.3rem; letter-spacing: .08em; color: var(--gold-light);
-    display: block; margin-bottom: 2px;
+    font-size: 3.2rem; color: var(--gold); line-height: 1;
   }
-
-  /* ── ORDER SUMMARY (sticky right) ── */
-  .summary-wrap {
-    position: sticky; top: 90px; display: flex; flex-direction: column;
+  .stat-label {
+    font-size: .7rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--muted); margin-top: 4px;
   }
-  .summary-card { display: flex; flex-direction: column; flex: 1; }
-  .summary-card {
+  .about-visual { position: relative; }
+  .about-card {
     background: var(--card);
-    border: 1px solid var(--gold-border);
-    padding: 24px; border-radius: 3px;
+    border: 1px solid rgba(201,168,76,.18);
+    padding: 52px 40px;
+    text-align: center; position: relative; overflow: hidden;
   }
-  .summary-title {
+  .about-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at center, rgba(201,168,76,.06) 0%, transparent 70%);
+  }
+  .about-logo {
+    width: 88px; height: 88px; border-radius: 50%;
+    margin: 0 auto 24px; display: block;
+    opacity: .9;
+  }
+  .tagline-big {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.4rem; letter-spacing: .1em; color: var(--white);
-    margin-bottom: 20px; padding-bottom: 14px;
-    border-bottom: 1px solid var(--border);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    line-height: 1.2; color: var(--white);
   }
-  .summary-empty {
-    text-align: center; padding: 28px 0;
-    color: var(--muted); font-size: .82rem;
-    font-style: italic;
+  .tagline-big .eq { color: var(--gold); margin: 6px 0; display: block; }
+  .tagline-emoji { font-size: 2rem; margin: 8px 0; display: block; }
+
+  /* ── BRANCHES ── */
+  #branches { background: var(--dark); }
+  .branches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2px;
   }
-  .summary-items { margin-bottom: 16px; }
-  .summary-item {
+  .branch-card {
+    background: var(--card); padding: 36px 28px;
+    border: 1px solid rgba(255,255,255,.04);
+    position: relative; overflow: hidden; transition: border-color .3s;
+  }
+  .branch-card:hover { border-color: rgba(201,168,76,.3); }
+  .branch-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem; color: rgba(201,168,76,.07);
+    line-height: 1; position: absolute; top: 12px; right: 20px;
+  }
+  .branch-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem; letter-spacing: .06em;
+    color: var(--white); margin-bottom: 8px;
+  }
+  .branch-location {
+    font-size: .8rem; color: var(--muted); line-height: 1.6;
+    margin-bottom: 24px; min-height: 48px;
+  }
+  .branch-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .branch-link {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 9px 18px;
+    border: 1px solid rgba(201,168,76,.3);
+    color: var(--gold); text-decoration: none;
+    font-size: .73rem; letter-spacing: .1em; text-transform: uppercase;
+    border-radius: 2px; transition: all .2s; font-weight: 500;
+  }
+  .branch-link:hover { background: var(--gold); color: var(--black); border-color: var(--gold); }
+  .branch-link svg { width: 14px; height: 14px; fill: currentColor; }
+  .coming-soon {
+    display: inline-block; font-size: .7rem; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--muted); border: 1px dashed rgba(255,255,255,.15);
+    padding: 6px 14px; border-radius: 2px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #040404; padding: 60px 5% 32px;
+    border-top: 1px solid rgba(255,255,255,.05);
+  }
+  .footer-top {
     display: flex; justify-content: space-between; align-items: flex-start;
-    margin-bottom: 10px; gap: 12px;
+    margin-bottom: 48px; flex-wrap: wrap; gap: 32px;
   }
-  .summary-item-name {
-    font-family: 'Caveat', cursive; font-size: 1rem;
-    color: var(--cream); flex: 1;
+  .footer-brand { display: flex; align-items: center; gap: 16px; }
+  .footer-brand img {
+    width: 56px; height: 56px; border-radius: 50%;
+    opacity: .9;
   }
-  .summary-item-qty {
-    font-size: .72rem; color: var(--muted); display: block;
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem; color: var(--white); letter-spacing: .12em; line-height: 1;
   }
-  .summary-item-price {
-    font-size: .82rem; font-weight: 600; color: var(--gold-light);
-    white-space: nowrap;
+  .footer-logo span { color: var(--gold); }
+  .footer-logo-cafe {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: .9rem; letter-spacing: .35em; color: var(--muted);
+    text-transform: uppercase; display: block; margin-top: 2px;
   }
-  .summary-divider {
-    border: none; border-top: 1px solid var(--border); margin: 16px 0;
+  .footer-sub { color: var(--muted); font-size: .78rem; margin-top: 3px; }
+  .footer-social { display: flex; gap: 10px; flex-wrap: wrap; }
+  .social-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 20px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.07);
+    color: var(--cream); text-decoration: none;
+    font-size: .74rem; letter-spacing: .1em; text-transform: uppercase;
+    border-radius: 2px; transition: all .2s; font-weight: 500;
   }
-  .summary-row {
-    display: flex; justify-content: space-between;
-    font-size: .8rem; color: var(--muted); margin-bottom: 8px;
-  }
-  .summary-total {
+  .social-btn:hover { background: var(--gold); color: var(--black); border-color: var(--gold); }
+  .social-btn svg { width: 15px; height: 15px; fill: currentColor; }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,.05); padding-top: 24px;
     display: flex; justify-content: space-between; align-items: center;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.5rem; letter-spacing: .06em; color: var(--white);
-    margin-top: 12px;
+    flex-wrap: wrap; gap: 12px;
   }
-  .summary-total-val { color: var(--gold); }
-  .summary-info {
-    margin-top: 16px; padding-top: 16px;
-    border-top: 1px solid var(--border);
-    font-size: .73rem; color: var(--muted); line-height: 1.7;
-  }
-  .summary-info-row { display: flex; gap: 8px; margin-bottom: 4px; }
-  .summary-info-label { color: var(--gold); font-weight: 600; min-width: 70px; }
-
-  /* ── PLACE ORDER BTN ── */
-  .place-order-btn {
-    width: 100%; padding: 15px;
-    background: var(--gold); color: var(--black);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.1rem; letter-spacing: .15em;
-    border: none; border-radius: 2px; cursor: pointer;
-    transition: all .2s; margin-top: 16px;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
-  .place-order-btn:hover { background: var(--gold-light); transform: translateY(-1px); }
-  .place-order-btn:disabled {
-    background: #333; color: #666; cursor: not-allowed; transform: none;
-  }
-  .place-order-btn svg { width: 18px; height: 18px; fill: var(--black); }
-
-  /* ── VALIDATION NOTICE ── */
-  .validation-msg {
-    font-size: .72rem; color: #e05555; margin-top: 8px;
-    display: none; letter-spacing: .05em;
-  }
-  .validation-msg.show { display: block; }
-
-  /* ── CONFIRMATION MODAL ── */
-  .modal-overlay {
-    display: none; position: fixed; inset: 0; z-index: 9999;
-    background: rgba(0,0,0,0.9); backdrop-filter: blur(12px);
-    align-items: center; justify-content: center; padding: 20px;
-  }
-  .modal-overlay.show { display: flex; }
-  .modal-box {
-    background: var(--card);
-    border: 1px solid var(--gold-border);
-    padding: 40px 36px; width: 100%; max-width: 480px;
-    border-radius: 4px; position: relative;
-    animation: modalIn .3s ease;
-  }
-  @keyframes modalIn {
-    from { opacity: 0; transform: translateY(20px) scale(.97); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-  }
-  .modal-icon {
-    width: 64px; height: 64px; border-radius: 50%;
-    background: rgba(201,168,76,0.12); border: 1px solid var(--gold-border);
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 20px; font-size: 1.8rem;
-  }
-  .modal-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2rem; letter-spacing: .1em; color: var(--white);
-    text-align: center; margin-bottom: 8px;
-  }
-  .modal-subtitle {
-    font-size: .82rem; color: var(--muted); text-align: center;
-    margin-bottom: 28px; line-height: 1.6;
-  }
-  .order-preview {
-    background: #0a0a0a;
-    border: 1px solid var(--border);
-    border-radius: 3px; padding: 18px;
-    font-size: .78rem; color: var(--cream);
-    line-height: 1.8; margin-bottom: 24px;
-    font-family: 'DM Sans', monospace;
-    max-height: 240px; overflow-y: auto;
-  }
-  .order-preview-label {
-    font-size: .65rem; letter-spacing: .2em; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 10px; display: block; font-weight: 600;
-  }
-  .modal-actions { display: flex; flex-direction: column; gap: 10px; }
-  .btn-fb {
-    width: 100%; padding: 14px;
-    background: #1877f2; color: #fff;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1rem; letter-spacing: .12em;
-    border: none; border-radius: 2px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    transition: background .2s;
-  }
-  .btn-fb:hover { background: #1565d8; }
-  .btn-fb svg { width: 20px; height: 20px; fill: #fff; }
-
-  .modal-ios-tip {
-    background: rgba(201,168,76,.08);
-    border: 1px solid rgba(201,168,76,.25);
-    border-radius: 6px; padding: 14px 16px; margin: 4px 0;
-    text-align: left;
-  }
-  .ios-tip-title { color: var(--gold); font-weight: 700; font-size: .8rem; margin-bottom: 6px; letter-spacing: .05em; }
-  .ios-tip-body { color: var(--cream); font-size: .82rem; line-height: 1.7; }
-  .btn-copy {
-    background: transparent;
-    border: 1px solid rgba(201,168,76,.4);
-    color: var(--gold);
-    padding: 14px; border-radius: 4px; font-family: 'DM Sans', sans-serif;
-    font-size: .82rem; font-weight: 600; letter-spacing: .08em;
-    cursor: pointer; transition: all .2s; width: 100%;
-  }
-  .btn-copy:hover { background: rgba(201,168,76,.1); }
-  .btn-copy.copied { background: rgba(201,168,76,.15); border-color: var(--gold); }
-
-  .modal-note {
-    font-size: .7rem; color: var(--muted); text-align: center;
-    margin-top: 14px; line-height: 1.6;
-  }
-  .modal-note strong { color: var(--gold-light); }
-  .modal-close {
-    position: absolute; top: 14px; right: 18px;
-    background: none; border: none; color: var(--muted);
-    font-size: 1.2rem; cursor: pointer; transition: color .2s; line-height: 1;
-  }
-  .modal-close:hover { color: var(--cream); }
+  .footer-copy { font-size: .73rem; color: var(--muted); }
 
   /* ── ADMIN ── */
   .admin-login-overlay {
@@ -491,6 +505,8 @@
     cursor: pointer; line-height: 1; transition: color .2s;
   }
   .admin-close:hover { color: var(--cream); }
+
+  /* admin active bar */
   .admin-bar {
     display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 9998;
     background: var(--gold); color: var(--black);
@@ -510,538 +526,627 @@
   .admin-exit-btn { background: transparent; color: var(--black); }
   .admin-exit-btn:hover { background: rgba(0,0,0,.15); }
   body.admin-mode [data-editable] {
-    outline: 1px dashed rgba(201,168,76,.5);
+    outline: 1px dashed rgba(201,168,76,.4);
     cursor: text; border-radius: 1px; min-height: 1em;
   }
-  body.admin-mode [data-editable]:hover { outline-color: var(--gold); background: rgba(201,168,76,.04); }
+  body.admin-mode [data-editable]:hover { outline-color: var(--gold); }
   body.admin-mode [data-editable]:focus { outline: 2px solid var(--gold); }
 
 
-    .page-wrap { grid-template-columns: 1fr; }
-    .summary-wrap { position: static; order: -1; }
-  }
-  @media (max-width: 520px) {
-    .branch-grid { grid-template-columns: 1fr; }
-    .service-grid { gap: 8px; }
-    .service-btn { padding: 14px 8px; }
-  }
-
-  /* ── CUSTOMIZER DROPDOWN ── */
-  .menu-item-row { flex-wrap: wrap; }
-  .item-expand-btn {
-    background: rgba(201,168,76,.12);
-    border: 1px solid rgba(201,168,76,.3);
-    color: var(--gold);
-    font-family: 'DM Sans', sans-serif;
-    font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 600;
-    padding: 6px 14px; border-radius: 2px; cursor: pointer;
-    transition: all .2s; white-space: nowrap;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .item-expand-btn:hover { background: rgba(201,168,76,.22); border-color: var(--gold); }
-  .item-expand-btn .expand-icon { font-size: 1rem; font-weight: 900; line-height: 1; transition: transform .2s; }
-  .item-expand-btn.open .expand-icon { transform: rotate(45deg); }
-
-  .item-customizer {
-    display: none; width: 100%;
-    background: rgba(255,255,255,.02);
-    border: 1px solid rgba(201,168,76,.15);
-    border-top: none; padding: 16px;
-    animation: cfadeIn .2s ease;
-  }
-  @keyframes cfadeIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
-  .item-customizer.open { display: block; }
-
-  .cust-row { margin-bottom: 14px; }
-  .cust-row:last-child { margin-bottom: 0; }
-  .cust-row-label {
-    font-size: .62rem; letter-spacing: .22em; text-transform: uppercase;
-    color: var(--gold); font-weight: 600; margin-bottom: 8px;
-  }
-
-  /* Size */
-  .size-opts { display: flex; gap: 8px; }
-  .size-opt {
-    flex: 1; padding: 9px 8px; text-align: center;
-    background: rgba(255,255,255,.04); border: 1px solid var(--border);
-    color: var(--cream); font-family: 'DM Sans', sans-serif;
-    font-size: .74rem; cursor: pointer; border-radius: 2px;
-    transition: all .15s; line-height: 1.3;
-  }
-  .size-opt small { display: block; font-size: .62rem; color: var(--muted); margin-top: 2px; }
-  .size-opt.sel, .size-opt:hover { background: var(--gold); color: var(--black); border-color: var(--gold); }
-  .size-opt.sel small { color: rgba(0,0,0,.55); }
-
-  /* Add-ons */
-  .addon-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-  .addon-opt {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 7px 10px;
-    background: rgba(255,255,255,.03); border: 1px solid var(--border);
-    color: var(--cream); font-family: 'DM Sans', sans-serif;
-    font-size: .72rem; cursor: pointer; border-radius: 2px; transition: all .15s;
-  }
-  .addon-opt .ao-price { color: var(--muted); font-size: .66rem; }
-  .addon-opt .ao-check {
-    width: 14px; height: 14px; border-radius: 2px;
-    border: 1px solid rgba(255,255,255,.2); flex-shrink: 0;
-    margin-left: 6px; display: flex; align-items: center; justify-content: center;
-    font-size: .6rem; transition: all .15s;
-  }
-  .addon-opt.sel { background: rgba(201,168,76,.12); border-color: rgba(201,168,76,.45); color: var(--gold-light); }
-  .addon-opt.sel .ao-price { color: var(--gold); }
-  .addon-opt.sel .ao-check { background: var(--gold); border-color: var(--gold); color: var(--black); }
-
-  /* Sweetness */
-  .sweet-opts { display: flex; gap: 5px; flex-wrap: wrap; }
-  .sweet-opt {
-    padding: 7px 12px;
-    background: rgba(255,255,255,.03); border: 1px solid var(--border);
-    color: var(--cream); font-family: 'DM Sans', sans-serif;
-    font-size: .72rem; cursor: pointer; border-radius: 2px; transition: all .15s;
-  }
-  .sweet-opt.sel, .sweet-opt:hover { background: rgba(201,168,76,.12); border-color: rgba(201,168,76,.45); color: var(--gold-light); }
-  .sweet-custom-in {
-    display: none; width: 100%; margin-top: 7px; padding: 8px 12px;
-    background: rgba(255,255,255,.04); border: 1px solid var(--border);
-    color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: .8rem;
-    border-radius: 2px; outline: none; transition: border-color .2s;
-  }
-  .sweet-custom-in:focus { border-color: rgba(201,168,76,.5); }
-  .sweet-custom-in.show { display: block; }
-
-  /* Add to cart btn */
-  .add-cart-btn {
+  /* ── VIDEO WATCH BUTTON ── */
+  .watch-btn {
+    display: flex; align-items: center; gap: 7px;
     margin-top: 14px; width: 100%;
-    padding: 10px; background: var(--gold); color: var(--black);
-    font-family: 'DM Sans', sans-serif; font-size: .76rem; font-weight: 700;
-    letter-spacing: .14em; text-transform: uppercase;
-    border: none; border-radius: 2px; cursor: pointer; transition: background .2s;
+    padding: 9px 14px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,.12);
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 600;
+    border-radius: 2px; cursor: pointer; transition: all .25s;
+    position: relative;
   }
-  .add-cart-btn:hover { background: var(--gold-light); }
+  .watch-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .watch-btn .play-icon {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: rgba(201,168,76,.15); border: 1px solid rgba(201,168,76,.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: .65rem; color: var(--gold); flex-shrink: 0;
+    transition: all .25s;
+  }
+  .watch-btn:hover .play-icon { background: var(--gold); color: var(--black); }
+  .watch-btn .watch-label { flex: 1; }
 
-  /* Summary item meta tags */
-  .summary-item-meta { margin-top: 3px; }
-  .s-tag {
-    display: inline-block; background: rgba(201,168,76,.1);
-    border: 1px solid rgba(201,168,76,.2); color: var(--gold);
-    font-size: .58rem; letter-spacing: .06em; padding: 1px 6px;
-    border-radius: 2px; margin: 1px 2px 0 0;
+  /* admin edit pencil on watch btn */
+  body.admin-mode .watch-btn::after {
+    content: '✏️'; position: absolute; top: -8px; right: -8px;
+    font-size: .75rem; background: var(--gold); border-radius: 50%;
+    width: 20px; height: 20px; display: flex; align-items: center;
+    justify-content: center; cursor: pointer;
   }
-  .summary-item-remove {
-    background: none; border: none; color: var(--muted);
-    font-size: .65rem; cursor: pointer; padding: 0; margin-top: 4px;
-    letter-spacing: .06em; text-transform: uppercase;
-    transition: color .2s; display: block;
-  }
-  .summary-item-remove:hover { color: #e05555; }
+  body.admin-mode .watch-btn { border-color: rgba(201,168,76,.35); }
 
-  /* ── STICKY BOTTOM ORDER BAR ── */
-  .sticky-order-bar {
-    position: fixed; bottom: 0; left: 0; right: 0; z-index: 500;
-    background: rgba(14,14,14,0.97);
-    border-top: 1px solid rgba(201,168,76,0.3);
-    backdrop-filter: blur(12px);
-    padding: 14px 5%;
-    transform: translateY(100%);
-    transition: transform .3s ease;
+  /* admin url input popup */
+  .video-url-popup {
+    display: none; position: absolute; bottom: 110%; left: 0; right: 0; z-index: 200;
+    background: var(--dark); border: 1px solid var(--gold);
+    border-radius: 4px; padding: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.6);
   }
-  .sticky-order-bar.visible { transform: translateY(0); }
-  .sticky-order-inner {
-    max-width: 1100px; margin: 0 auto;
-    display: flex; align-items: center; gap: 20px;
+  .video-url-popup.open { display: block; }
+  .video-url-popup input {
+    width: 100%; padding: 8px 10px;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.15);
+    color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: .78rem;
+    border-radius: 2px; outline: none; margin-bottom: 6px;
   }
-  .sticky-order-info { flex: 1; background: none; border: none; text-align: left; cursor: pointer; padding: 6px 10px; border-radius: 4px; transition: background .2s; }
-  .sticky-order-info:hover { background: rgba(201,168,76,.08); }
-  .sticky-order-label {
-    display: block; font-size: .65rem; letter-spacing: .2em;
-    text-transform: uppercase; color: var(--muted); font-weight: 600;
+  .video-url-popup input:focus { border-color: var(--gold); }
+  .video-url-popup-actions { display: flex; gap: 6px; }
+  .vup-save {
+    flex: 1; padding: 7px; background: var(--gold); color: var(--black);
+    font-family: 'DM Sans',sans-serif; font-size: .72rem; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase; border: none;
+    border-radius: 2px; cursor: pointer;
   }
-  .sticky-order-count {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.1rem; letter-spacing: .08em; color: var(--cream);
+  .vup-cancel {
+    padding: 7px 12px; background: transparent;
+    border: 1px solid rgba(255,255,255,.15); color: var(--muted);
+    font-family: 'DM Sans',sans-serif; font-size: .72rem;
+    border-radius: 2px; cursor: pointer;
   }
-  .sticky-order-total {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.6rem; letter-spacing: .06em; color: var(--gold);
-    white-space: nowrap;
-  }
-  .sticky-place-btn {
-    margin-top: 0; width: auto; padding: 13px 28px; white-space: nowrap;
-    flex-shrink: 0;
-  }
-  @media (max-width: 520px) {
-    .sticky-order-inner { flex-wrap: wrap; gap: 10px; }
-    .sticky-place-btn { width: 100%; }
-  }
+  .vup-label { font-size: .62rem; color: var(--muted); margin-bottom: 5px; letter-spacing: .08em; }
 
-  /* ── ORDER PEEK MODAL ── */
-  .peek-overlay {
-    display: none; position: fixed; inset: 0; z-index: 490;
-    background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+  /* ── VIDEO MODAL ── */
+  .video-modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 600;
+    background: rgba(0,0,0,.92); backdrop-filter: blur(8px);
+    align-items: center; justify-content: center; padding: 20px;
   }
-  .peek-overlay.open { display: block; }
-  .peek-drawer {
-    position: fixed; bottom: 0; left: 0; right: 0; z-index: 495;
+  .video-modal-overlay.open { display: flex; }
+  .video-modal-box {
+    width: 100%; max-width: 680px;
     background: var(--card);
-    border-top: 1px solid rgba(201,168,76,0.3);
-    border-radius: 16px 16px 0 0;
-    padding: 0 0 120px;
-    max-height: 75vh; overflow-y: auto;
-    transform: translateY(100%);
-    transition: transform .35s cubic-bezier(.32,.72,0,1);
+    border: 1px solid rgba(201,168,76,.2);
+    border-radius: 6px; overflow: hidden;
+    animation: vmFade .25s ease;
+    position: relative;
   }
-  .peek-drawer.open { transform: translateY(0); }
-  .peek-handle-wrap {
-    position: sticky; top: 0; background: var(--card);
-    padding: 14px 20px 12px;
-    border-bottom: 1px solid rgba(255,255,255,.06);
-    display: flex; align-items: center; justify-content: space-between;
-    z-index: 2;
+  @keyframes vmFade { from { opacity:0; transform:scale(.96); } to { opacity:1; transform:scale(1); } }
+  .video-modal-close {
+    position: absolute; top: 12px; right: 14px; z-index: 10;
+    background: rgba(0,0,0,.6); border: 1px solid rgba(255,255,255,.15);
+    color: var(--cream); font-size: 1rem; width: 32px; height: 32px;
+    border-radius: 50%; cursor: pointer; display: flex;
+    align-items: center; justify-content: center; transition: all .2s;
   }
-  .peek-handle {
-    width: 36px; height: 4px; background: rgba(255,255,255,.15);
-    border-radius: 4px; margin: 0 auto 12px;
-    position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+  .video-modal-close:hover { background: rgba(255,255,255,.15); }
+  .video-modal-frame {
+    position: relative; width: 100%; padding-bottom: 56.25%; background: #000;
   }
-  .peek-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.2rem; letter-spacing: .1em; color: var(--white);
+  .video-modal-frame iframe {
+    position: absolute; inset: 0; width: 100%; height: 100%; border: none;
   }
-  .peek-close {
-    background: none; border: none; color: var(--muted);
-    font-size: 1.1rem; cursor: pointer; line-height: 1;
-    transition: color .2s; padding: 4px 8px; border-radius: 2px;
+  .video-modal-placeholder {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #0e0e0e, #1a1a1a);
+    color: var(--muted);
   }
-  .peek-close:hover { color: var(--cream); }
-  .peek-list { padding: 14px 20px; display: flex; flex-direction: column; gap: 10px; }
-  .peek-item {
-    display: flex; align-items: flex-start; justify-content: space-between;
-    background: rgba(255,255,255,.03);
-    border: 1px solid rgba(255,255,255,.07);
-    border-radius: 3px; padding: 14px 16px; gap: 12px;
-    animation: cfadeIn .2s ease;
+  .video-modal-placeholder .ph-icon { font-size: 3rem; margin-bottom: 12px; opacity: .4; }
+  .video-modal-placeholder .ph-text { font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; }
+  .video-modal-placeholder .ph-sub { font-size: .7rem; color: rgba(255,255,255,.2); margin-top: 6px; }
+  .video-modal-info {
+    padding: 20px 24px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    flex-wrap: wrap;
   }
-  .peek-item-left { flex: 1; }
-  .peek-item-name {
-    font-family: 'Caveat', cursive; font-size: 1.2rem;
-    color: var(--white); font-weight: 600; display: block; margin-bottom: 3px;
+  .video-modal-name {
+    font-family: 'Caveat', cursive; font-size: 1.8rem;
+    color: var(--white); font-weight: 600; line-height: 1;
   }
-  .peek-item-meta { font-size: .72rem; color: var(--muted); line-height: 1.6; }
-  .peek-item-tag {
-    display: inline-block; background: rgba(201,168,76,.1);
-    border: 1px solid rgba(201,168,76,.2); color: var(--gold);
-    font-size: .6rem; letter-spacing: .06em;
-    padding: 1px 7px; border-radius: 2px; margin: 2px 2px 0 0;
+  .video-modal-desc { font-size: .8rem; color: var(--muted); margin-top: 4px; }
+  .video-modal-order {
+    padding: 12px 24px; background: var(--gold); color: var(--black);
+    font-family: 'DM Sans', sans-serif; font-size: .78rem; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase;
+    border: none; border-radius: 2px; cursor: pointer;
+    transition: background .2s; white-space: nowrap; text-decoration: none;
+    display: inline-block;
   }
-  .peek-item-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
-  .peek-item-price { font-size: .9rem; font-weight: 700; color: var(--gold-light); white-space: nowrap; }
-  .peek-remove-btn {
-    background: none; border: 1px solid rgba(255,255,255,.1);
-    color: var(--muted); font-size: .62rem; letter-spacing: .08em;
-    text-transform: uppercase; padding: 4px 10px; border-radius: 2px;
-    cursor: pointer; transition: all .2s; white-space: nowrap;
+  .video-modal-order:hover { background: var(--gold-light); }
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; text-align: center; padding-bottom: 120px; }
+    .hero-eyebrow { justify-content: center; }
+    .hero-cta { justify-content: center; }
+    .hero-logo-display img { margin: 0 auto; }
+    .hero-right { order: -1; max-width: 500px; margin: 0 auto; }
   }
-  .peek-remove-btn:hover { border-color: #e05555; color: #e05555; }
-  .peek-empty {
-    text-align: center; padding: 40px 20px;
-    color: var(--muted); font-size: .85rem;
+  @media (max-width: 768px) {
+    #about { grid-template-columns: 1fr; gap: 44px; }
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
   }
-  .peek-empty span { font-size: 2rem; display: block; margin-bottom: 10px; opacity: .4; }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-logo">
-    <img src="logo.jpg" alt="Logo" onerror="this.style.display='none'">
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <img src="logo.jpg" alt="Bliss Hue Café Logo">
     <div>
-      <div class="header-logo-text">Bliss <span>Hue</span></div>
-      <span class="header-logo-sub">Café</span>
+      <div class="nav-logo-text">Bliss <span>Hue</span></div>
+      <span class="nav-logo-sub">Café</span>
     </div>
   </div>
-  <a href="index.html" class="header-back">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-    Back to Site
-  </a>
-</header>
+  <ul class="nav-links">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#branches">Find Us</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
 
-<div class="page-wrap">
-
-  <!-- LEFT COLUMN -->
-  <div class="left-col">
-
-    <div class="step-badge">Online Ordering</div>
-    <div class="section-heading">Place Your Order</div>
-
-    <!-- BRANCH -->
-    <div class="card">
-      <div class="card-title">
-        <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-        Select Branch <span style="color:var(--gold);margin-left:4px;">*</span>
-      </div>
-      <div class="branch-grid">
-        <button class="branch-btn" data-branch="Roxas City" onclick="selectBranch(this)">
-          <span class="branch-btn-name" data-editable="order-br-1-name">Roxas City</span>
-          <span class="branch-btn-loc" data-editable="order-br-1-loc">CoOzy Food Park, Arnaldo Blvd., Roxas City 5800</span>
-        </button>
-        <button class="branch-btn" data-branch="Las Piñas" onclick="selectBranch(this)">
-          <span class="branch-btn-name" data-editable="order-br-2-name">Las Piñas</span>
-          <span class="branch-btn-loc" data-editable="order-br-2-loc">Location coming soon — inquire via Facebook</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- CUSTOMER INFO -->
-    <div class="card">
-      <div class="card-title">
-        <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
-        Customer Information
-      </div>
-      <div class="form-group">
-        <label>Full Name <span>*</span></label>
-        <input class="form-input" id="custName" type="text" placeholder="Enter your full name">
-      </div>
-      <div class="form-group">
-        <label>Contact Number <span>*</span></label>
-        <input class="form-input" id="custPhone" type="tel" placeholder="09XX XXX XXXX">
-      </div>
-
-      <!-- SERVICE TYPE -->
-      <div class="form-group" style="margin-top:24px;">
-        <label>Service Type <span>*</span></label>
-        <div class="service-grid" style="grid-template-columns: repeat(2,1fr);">
-          <button class="service-btn" data-service="Pickup" onclick="selectService(this)">
-            <span class="service-icon">🚶</span>
-            <span class="service-label">Pickup</span>
-          </button>
-          <button class="service-btn" data-service="Delivery" onclick="selectService(this)">
-            <span class="service-icon">🛵</span>
-            <span class="service-label">Delivery</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- CONDITIONAL: Address for Delivery -->
-      <div class="form-group" id="addressGroup" style="display:none;">
-        <label>Delivery Address <span>*</span></label>
-        <textarea class="form-input" id="deliveryAddress" rows="2" placeholder="Street, Barangay, City..."></textarea>
-      </div>
-
-      <div class="form-group">
-        <label>Special Instructions</label>
-        <textarea class="form-input" id="specialInstructions" placeholder="Any special requests or notes..."></textarea>
-      </div>
-    </div>
-
-    <!-- MENU -->
-    <div class="card">
-      <div class="card-title">
-        <svg viewBox="0 0 24 24"><path d="M8.1 13.34l2.83-2.83L3.91 3.5c-1.56 1.56-1.56 4.09 0 5.65l4.19 4.19zm6.78-1.81c1.53.71 3.68.21 5.27-1.38 1.91-1.91 2.28-4.65.81-6.12-1.46-1.46-4.2-1.1-6.12.81-1.59 1.59-2.09 3.74-1.38 5.27L3.7 19.87l1.41 1.41L12 14.41l6.88 6.88 1.41-1.41L13.41 13l1.47-1.47z"/></svg>
-        Choose Your Order
-      </div>
-
-      <div class="menu-tabs">
-        <button class="menu-tab active" onclick="switchMenuTab(event,'signature')">Signature Frappe</button>
-        <button class="menu-tab" onclick="switchMenuTab(event,'cookies')">Cookies</button>
-        <button class="menu-tab" onclick="switchMenuTab(event,'nutella')">Nutella</button>
-        <button class="menu-tab" onclick="switchMenuTab(event,'coffee')">Coffee</button>
-      </div>
-
-      <!-- Signature Frappe -->
-      <div class="menu-panel active" id="menu-signature">
-        <div class="menu-items">
-          <div class="menu-item-row" id="row-Yummie"><div class="menu-item-info"><span class="menu-item-name">Yummie</span><span class="menu-item-desc">Signature blended frappe</span></div><span class="menu-item-price">₱119</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Yummie',119)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
-          <div class="menu-item-row" id="row-Valmond"><div class="menu-item-info"><span class="menu-item-name">Valmond</span><span class="menu-item-desc">Vanilla almond frappe</span></div><span class="menu-item-price">₱119</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Valmond',119)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
-          <div class="menu-item-row" id="row-Tarow"><div class="menu-item-info"><span class="menu-item-name">Tarow</span><span class="menu-item-desc">Taro quezo almonds</span></div><span class="menu-item-price">₱119</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Tarow',119)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
-          <div class="menu-item-row" id="row-Velto"><div class="menu-item-info"><span class="menu-item-name">Velto</span><span class="menu-item-desc">Refreshing Ube Quezo</span></div><span class="menu-item-price">₱119</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Velto',119)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
-        </div>
-      </div>
-
-      <!-- Cookies -->
-      <div class="menu-panel" id="menu-cookies">
-        <div class="menu-items">
-          <div class="menu-item-row" id="row-Biscoff"><div class="menu-item-info"><span class="menu-item-name">Biscoff</span><span class="menu-item-desc">Lotus Biscoff blend</span></div><span class="menu-item-price">₱169</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Biscoff',169)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
-          <div class="menu-item-row" id="row-Ochee"><div class="menu-item-info"><span class="menu-item-name">Ochee</span><span class="menu-item-desc">Oreo Cheesecake</span></div><span class="menu-item-price">₱119</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Ochee',119)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
-          <div class="menu-item-row" id="row-Darko"><div class="menu-item-info"><span class="menu-item-name">Darko</span><span class="menu-item-desc">Dark Choco Drink</span></div><span class="menu-item-price">₱119</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Darko',119)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
-          <div class="menu-item-row" id="row-Cookie"><div class="menu-item-info"><span class="menu-item-name">Cookie</span><span class="menu-item-desc">Cookies &amp; Crème</span></div><span class="menu-item-price">₱119</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Cookie',119)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
-        </div>
-      </div>
-
-      <!-- Nutella -->
-      <div class="menu-panel" id="menu-nutella">
-        <div class="menu-items">
-          <div class="menu-item-row" id="row-NutellaCashew"><div class="menu-item-info"><span class="menu-item-name">Cashew</span><span class="menu-item-desc">Caramel Cashew blend</span></div><span class="menu-item-price">₱159</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Cashew',159)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
-          <div class="menu-item-row" id="row-Tella"><div class="menu-item-info"><span class="menu-item-name">Tella</span><span class="menu-item-desc">Dark Choco Nutella Cashew</span></div><span class="menu-item-price">₱119</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Tella',119)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
-          <div class="menu-item-row" id="row-Vella"><div class="menu-item-info"><span class="menu-item-name">Vella</span><span class="menu-item-desc">Nutella Fudge</span></div><span class="menu-item-price">₱119</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Vella',119)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
-          <div class="menu-item-row" id="row-Muckie"><div class="menu-item-info"><span class="menu-item-name">Muckie</span><span class="menu-item-desc">Milk Nutella Fudge</span></div><span class="menu-item-price">₱119</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Muckie',119)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
-        </div>
-      </div>
-
-      <!-- Coffee -->
-      <div class="menu-panel" id="menu-coffee">
-        <div class="menu-items">
-          <div class="menu-item-row" id="row-CarmelMac"><div class="menu-item-info"><span class="menu-item-name">Carmel Mac</span><span class="menu-item-desc">Caramel Macchiato</span></div><span class="menu-item-price">₱129</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Carmel Mac',129)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
-          <div class="menu-item-row" id="row-Mocha"><div class="menu-item-info"><span class="menu-item-name">Mocha</span><span class="menu-item-desc">Dark Mocha blend</span></div><span class="menu-item-price">₱129</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Mocha',129)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
-          <div class="menu-item-row" id="row-JavaC"><div class="menu-item-info"><span class="menu-item-name">Java C.</span><span class="menu-item-desc">Dark Mocha Java</span></div><span class="menu-item-price">₱139</span><button class="item-expand-btn" onclick="toggleCustomizer(this,'Java C.',139)"><span class="expand-icon">+</span> Customize</button><div class="item-customizer"></div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAYMENT -->
-    <div class="card">
-      <div class="card-title">
-        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
-        Payment Method <span style="color:var(--gold);margin-left:4px;">*</span>
-      </div>
-
-      <div class="payment-option" onclick="selectPayment(this,'GCash QR')">
-        <div class="payment-radio"></div>
-        <div class="payment-qr">
-          <!-- TO ADD YOUR QR: replace this div with <img src="your-gcash-qr.jpg" alt="GCash QR"> -->
-          <div class="payment-qr-placeholder" style="background:#1a1a1a;border:1px dashed rgba(201,168,76,0.4);border-radius:2px;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(201,168,76,0.5)"><path d="M3 11h8V3H3v8zm2-6h4v4H5V5zm8-2v8h8V3h-8zm6 6h-4V5h4v4zM3 21h8v-8H3v8zm2-6h4v4H5v-4zm13 0h-2v2h2v-2zm-4 0h-2v2h2v-2zm4 4h-2v2h2v-2zm-4 0h-2v2h2v-2z"/></svg>
-            <span style="font-size:.42rem;color:rgba(201,168,76,0.6);text-align:center;line-height:1.3;">GCash QR<br>📷 Add image</span>
-          </div>
-        </div>
-        <div>
-          <span class="payment-name" data-editable="pay-1-name">GCash Only</span>
-          <span class="payment-desc" data-editable="pay-1-desc">Scan and pay after placing your order.<br>Send screenshot alongside your order details.</span>
-        </div>
-      </div>
-
-      <div class="payment-option" onclick="selectPayment(this,'QR Ph')">
-        <div class="payment-radio"></div>
-        <div class="payment-qr">
-          <!-- TO ADD YOUR QR: replace this div with <img src="your-qrph.jpg" alt="QR Ph"> -->
-          <div class="payment-qr-placeholder" style="background:#1a1a1a;border:1px dashed rgba(201,168,76,0.4);border-radius:2px;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(201,168,76,0.5)"><path d="M3 11h8V3H3v8zm2-6h4v4H5V5zm8-2v8h8V3h-8zm6 6h-4V5h4v4zM3 21h8v-8H3v8zm2-6h4v4H5v-4zm13 0h-2v2h2v-2zm-4 0h-2v2h2v-2zm4 4h-2v2h2v-2zm-4 0h-2v2h2v-2z"/></svg>
-            <span style="font-size:.42rem;color:rgba(201,168,76,0.6);text-align:center;line-height:1.3;">QR Ph<br>📷 Add image</span>
-          </div>
-        </div>
-        <div>
-          <span class="payment-name" data-editable="pay-2-name">QR Ph</span>
-          <span class="payment-desc" data-editable="pay-2-desc">Scan with any PH bank or e-wallet.<br>(BPI, BDO, Maya, GCash, UnionBank, etc.)</span>
-        </div>
-      </div>
-
-      <div class="payment-option" onclick="selectPayment(this,'GCash Number (09126499445)')">
-        <div class="payment-radio"></div>
-        <div style="width:56px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--gold)"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
-        </div>
-        <div>
-          <span class="payment-number" data-editable="pay-3-number">09126499445</span>
-          <span class="payment-name" data-editable="pay-3-name" style="font-size:.75rem;font-family:'DM Sans',sans-serif;font-weight:400;">Copy &amp; send to this GCash number</span>
-          <span class="payment-desc" data-editable="pay-3-desc">Send payment screenshot with your order.</span>
-        </div>
-      </div>
-
-      <div class="payment-option" onclick="selectPayment(this,'Cash on Pickup/Delivery')">
-        <div class="payment-radio"></div>
-        <div style="width:56px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="var(--gold)"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
-        </div>
-        <div>
-          <span class="payment-name" data-editable="pay-4-name">Cash on Pickup / Delivery</span>
-          <span class="payment-desc" data-editable="pay-4-desc">Pay when you pick up or upon delivery.</span>
-        </div>
-      </div>
-    </div>
-
-    <div id="validationMsg" class="validation-msg">⚠ Please fill in all required fields before placing your order.</div>
-
-  </div><!-- end left-col -->
-
-  <!-- RIGHT COLUMN — ORDER SUMMARY -->
-  <div class="summary-wrap">
-    <div class="summary-card">
-      <div class="summary-title">📋 &nbsp;Order Summary</div>
-
-      <div id="summaryEmpty" class="summary-empty">No items added yet.<br>Start selecting from the menu! ☕</div>
-
-      <div class="summary-items" id="summaryItems" style="display:none;"></div>
-
-      <hr class="summary-divider" id="summaryDivider" style="display:none;">
-
-      <div id="summaryMeta" style="display:none;">
-        <div class="summary-row"><span>Branch</span><span id="sBranch" style="color:var(--cream);">—</span></div>
-        <div class="summary-row"><span>Service</span><span id="sService" style="color:var(--cream);">—</span></div>
-        <div class="summary-row"><span>Payment</span><span id="sPayment" style="color:var(--cream);">—</span></div>
-      </div>
-
-      <div class="summary-total" id="summaryTotal" style="display:none;">
-        <span>Total</span>
-        <span class="summary-total-val" id="sTotalAmt">₱0</span>
-      </div>
-
-    </div>
-  </div>
-
-</div><!-- end page-wrap -->
-
-<!-- STICKY BOTTOM ORDER BAR -->
-<div class="sticky-order-bar" id="stickyOrderBar">
-  <div class="sticky-order-inner">
-    <button class="sticky-order-info" onclick="togglePeek()" aria-label="View your order">
-      <span class="sticky-order-label">Your Order <span style="color:var(--gold);font-size:.55rem;">▲ tap to review</span></span>
-      <span class="sticky-order-count" id="stickyCount">0 items</span>
-    </button>
-    <div class="sticky-order-total" id="stickyTotal">₱0</div>
-    <button class="place-order-btn sticky-place-btn" onclick="placeOrder()">
-      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-      Send Order to Facebook
-    </button>
-  </div>
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#menu" onclick="closeMenu()">Menu</a>
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#branches" onclick="closeMenu()">Find Us</a>
 </div>
 
-<!-- ORDER PEEK OVERLAY -->
-<div class="peek-overlay" id="peekOverlay" onclick="closePeek()"></div>
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-glow"></div>
 
-<!-- ORDER PEEK DRAWER -->
-<div class="peek-drawer" id="peekDrawer">
-  <div class="peek-handle-wrap">
-    <div class="peek-handle"></div>
-    <div class="peek-title">🧋 Your Order</div>
-    <button class="peek-close" onclick="closePeek()">✕</button>
-  </div>
-  <div class="peek-list" id="peekList"></div>
-</div>
-
-<!-- CONFIRMATION MODAL -->
-<div class="modal-overlay" id="confirmModal">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-icon">☕</div>
-    <div class="modal-title">Order Ready!</div>
-    <div class="modal-subtitle">Choose how to send your order to Bliss Hue:</div>
-
-    <div class="modal-actions">
-      <button class="btn-fb" onclick="sendToFacebook()">
-        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-        Open Facebook Messenger
-      </button>
-      <button class="btn-copy" id="copyBtn" onclick="copyAndGuide()">📋 &nbsp;Copy Order &amp; Open Messenger</button>
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <div class="hero-eyebrow-text">Signature Frappe & More</div>
     </div>
-
-    <div class="modal-ios-tip" id="iosTip" style="display:none;">
-      <div class="ios-tip-title">📱 iPhone tip</div>
-      <div class="ios-tip-body">If Messenger doesn't open automatically:<br>
-        <strong>1.</strong> Tap <strong>"Copy Order &amp; Open Messenger"</strong> above<br>
-        <strong>2.</strong> Paste it in the chat and hit <strong>Send</strong> ✅
-      </div>
+    <div class="hero-logo-display">
+      <img src="logo.jpg" alt="Bliss Hue Café">
     </div>
-
-    <div class="order-preview">
-      <span class="order-preview-label">Message Preview</span>
-      <div id="orderPreviewText"></div>
-    </div>
-
-    <p class="modal-note">
-      We'll confirm your order right away! 🎉
+    <h1 class="hero-title">
+      BLISS<span class="accent">HUE</span>
+      <span class="cafe-sub">C &nbsp; A &nbsp; F &nbsp; É</span>
+    </h1>
+    <p class="hero-tagline" data-editable="hero-tagline">
+      <strong>sad me</strong> &nbsp;+&nbsp; Bliss Hue &nbsp;=&nbsp; <strong>happy me</strong>
     </p>
+    <div class="hero-cta">
+      <a href="order.html" class="btn btn-gold">Order Now</a>
+      <a href="#menu" class="btn btn-outline">See Our Menu</a>
+    </div>
   </div>
-</div>
+
+  <div class="hero-right">
+    <div class="hero-drinks-wrap">
+      <img src="background.jpg" alt="Bliss Hue Café drinks">
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    scroll
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="section-label">What We Serve</div>
+  <div class="section-title">Our Menu</div>
+
+  <div class="menu-tabs">
+    <button class="tab active" onclick="switchTab(event,'signature')">Signature Frappe</button>
+    <button class="tab" onclick="switchTab(event,'cookies')">Cookies</button>
+    <button class="tab" onclick="switchTab(event,'nutella')">Nutella</button>
+    <button class="tab" onclick="switchTab(event,'coffee')">Coffee</button>
+  </div>
+
+  <!-- Signature Frappe -->
+  <div class="menu-panel active" id="tab-signature">
+    <div class="menu-grid">
+      <div class="menu-item">
+        <div class="item-name" data-editable="sig-1-name">Yummie</div>
+        <div class="item-desc" data-editable="sig-1-desc">Signature blended frappe</div>
+        <div class="item-price" data-editable="sig-1-price">₱119</div>
+        <button class="watch-btn" id="watch-sig-1" onclick="openVideoModal(event, 'sig-1', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-sig-1">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-sig-1" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'sig-1')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'sig-1')">Cancel</button>
+            </div>
+          </div>
+        </button>
+      </div>
+      <div class="menu-item">
+        <div class="item-name" data-editable="sig-2-name">Valmond</div>
+        <div class="item-desc" data-editable="sig-2-desc">Vanilla almond frappe</div>
+        <div class="item-price" data-editable="sig-2-price">₱119</div>
+        <button class="watch-btn" id="watch-sig-2" onclick="openVideoModal(event, 'sig-2', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-sig-2">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-sig-2" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'sig-2')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'sig-2')">Cancel</button>
+            </div>
+          </div>
+        </button>
+      </div>
+      <div class="menu-item">
+        <div class="item-name" data-editable="sig-3-name">Tarow</div>
+        <div class="item-desc" data-editable="sig-3-desc">Taro quezo almonds</div>
+        <div class="item-price" data-editable="sig-3-price">₱119</div>
+        <button class="watch-btn" id="watch-sig-3" onclick="openVideoModal(event, 'sig-3', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-sig-3">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-sig-3" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'sig-3')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'sig-3')">Cancel</button>
+            </div>
+          </div>
+        </button>
+      </div>
+      <div class="menu-item">
+        <div class="item-name" data-editable="sig-4-name">Velto</div>
+        <div class="item-desc" data-editable="sig-4-desc">Refreshing Ube Quezo</div>
+        <div class="item-price" data-editable="sig-4-price">₱119</div>
+        <button class="watch-btn" id="watch-sig-4" onclick="openVideoModal(event, 'sig-4', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-sig-4">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-sig-4" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'sig-4')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'sig-4')">Cancel</button>
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cookies -->
+  <div class="menu-panel" id="tab-cookies">
+    <div class="menu-grid">
+      <div class="menu-item">
+        <div class="item-name" data-editable="ck-1-name">Biscoff</div>
+        <div class="item-desc" data-editable="ck-1-desc">Lotus Biscoff blend</div>
+        <div class="item-price" data-editable="ck-1-price">₱169</div>
+        <button class="watch-btn" id="watch-ck-1" onclick="openVideoModal(event, 'ck-1', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-ck-1">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-ck-1" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'ck-1')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'ck-1')">Cancel</button>
+            </div>
+          </div>
+        </button>
+      </div>
+      <div class="menu-item">
+        <div class="item-name" data-editable="ck-2-name">Ochee</div>
+        <div class="item-desc" data-editable="ck-2-desc">Oreo Cheesecake</div>
+        <div class="item-price" data-editable="ck-2-price">₱119</div>
+        <button class="watch-btn" id="watch-ck-2" onclick="openVideoModal(event, 'ck-2', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-ck-2">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-ck-2" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'ck-2')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'ck-2')">Cancel</button>
+            </div>
+          </div>
+        </button>
+      </div>
+      <div class="menu-item">
+        <div class="item-name" data-editable="ck-3-name">Darko</div>
+        <div class="item-desc" data-editable="ck-3-desc">Dark Choco Drink</div>
+        <div class="item-price" data-editable="ck-3-price">₱119</div>
+        <button class="watch-btn" id="watch-ck-3" onclick="openVideoModal(event, 'ck-3', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-ck-3">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-ck-3" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'ck-3')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'ck-3')">Cancel</button>
+            </div>
+          </div>
+        </button>
+      </div>
+      <div class="menu-item">
+        <div class="item-name" data-editable="ck-4-name">Cookie</div>
+        <div class="item-desc" data-editable="ck-4-desc">Cookies & Crème</div>
+        <div class="item-price" data-editable="ck-4-price">₱119</div>
+        <button class="watch-btn" id="watch-ck-4" onclick="openVideoModal(event, 'ck-4', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-ck-4">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-ck-4" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'ck-4')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'ck-4')">Cancel</button>
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nutella -->
+  <div class="menu-panel" id="tab-nutella">
+    <div class="menu-grid">
+      <div class="menu-item">
+        <div class="item-name" data-editable="nt-1-name">Cashew</div>
+        <div class="item-desc" data-editable="nt-1-desc">Caramel Cashew blend</div>
+        <div class="item-price" data-editable="nt-1-price">₱159</div>
+        <button class="watch-btn" id="watch-nt-1" onclick="openVideoModal(event, 'nt-1', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-nt-1">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-nt-1" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'nt-1')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'nt-1')">Cancel</button>
+            </div>
+          </div>
+        </button>
+      </div>
+      <div class="menu-item">
+        <div class="item-name" data-editable="nt-2-name">Tella</div>
+        <div class="item-desc" data-editable="nt-2-desc">Dark Choco Nutella Cashew</div>
+        <div class="item-price" data-editable="nt-2-price">₱119</div>
+        <button class="watch-btn" id="watch-nt-2" onclick="openVideoModal(event, 'nt-2', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-nt-2">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-nt-2" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'nt-2')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'nt-2')">Cancel</button>
+            </div>
+          </div>
+        </button>
+      </div>
+      <div class="menu-item">
+        <div class="item-name" data-editable="nt-3-name">Vella</div>
+        <div class="item-desc" data-editable="nt-3-desc">Nutella Fudge</div>
+        <div class="item-price" data-editable="nt-3-price">₱119</div>
+        <button class="watch-btn" id="watch-nt-3" onclick="openVideoModal(event, 'nt-3', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-nt-3">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-nt-3" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'nt-3')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'nt-3')">Cancel</button>
+            </div>
+          </div>
+        </button>
+      </div>
+      <div class="menu-item">
+        <div class="item-name" data-editable="nt-4-name">Muckie</div>
+        <div class="item-desc" data-editable="nt-4-desc">Milk Nutella Fudge</div>
+        <div class="item-price" data-editable="nt-4-price">₱119</div>
+        <button class="watch-btn" id="watch-nt-4" onclick="openVideoModal(event, 'nt-4', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-nt-4">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-nt-4" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'nt-4')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'nt-4')">Cancel</button>
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Coffee -->
+  <div class="menu-panel" id="tab-coffee">
+    <div class="menu-grid">
+      <div class="menu-item">
+        <div class="item-name" data-editable="cf-1-name">Carmel Mac</div>
+        <div class="item-desc" data-editable="cf-1-desc">Caramel Macchiato</div>
+        <div class="item-price" data-editable="cf-1-price">₱129</div>
+        <button class="watch-btn" id="watch-cf-1" onclick="openVideoModal(event, 'cf-1', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-cf-1">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-cf-1" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'cf-1')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'cf-1')">Cancel</button>
+            </div>
+          </div>
+        </button>
+      </div>
+      <div class="menu-item">
+        <div class="item-name" data-editable="cf-2-name">Mocha</div>
+        <div class="item-desc" data-editable="cf-2-desc">Dark Mocha blend</div>
+        <div class="item-price" data-editable="cf-2-price">₱129</div>
+        <button class="watch-btn" id="watch-cf-2" onclick="openVideoModal(event, 'cf-2', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-cf-2">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-cf-2" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'cf-2')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'cf-2')">Cancel</button>
+            </div>
+          </div>
+        </button>
+      </div>
+      <div class="menu-item">
+        <div class="item-name" data-editable="cf-3-name">Java C.</div>
+        <div class="item-desc" data-editable="cf-3-desc">Dark Mocha Java</div>
+        <div class="item-price" data-editable="cf-3-price">₱139</div>
+        <button class="watch-btn" id="watch-cf-3" onclick="openVideoModal(event, 'cf-3', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-cf-3">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-cf-3" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'cf-3')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'cf-3')">Cancel</button>
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <p style="margin-top:32px; font-size:.78rem; color:var(--muted); font-style:italic; text-align:center;">* Menu and prices may vary per branch. Updated menu coming soon.</p>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-text">
+    <div class="section-label">Our Story</div>
+    <div class="section-title">Born on the<br>Streets,<br>Built for You</div>
+    <p class="about-body" data-editable="about-body">
+      Bliss Hue Café started as a roadside stall with one simple mission — to turn your bad days into good ones, one frappe at a time. From humble beginnings to multiple branches, we've stayed true to our roots: premium quality drinks that everyone can enjoy, right on your way home.
+    </p>
+    <div class="about-stats">
+      <div>
+        <div class="stat-num" data-editable="stat-1-num">4</div>
+        <div class="stat-label" data-editable="stat-1-label">Branches</div>
+      </div>
+      <div>
+        <div class="stat-num" data-editable="stat-2-num">15+</div>
+        <div class="stat-label" data-editable="stat-2-label">Flavors</div>
+      </div>
+      <div>
+        <div class="stat-num" data-editable="stat-3-num">100%</div>
+        <div class="stat-label" data-editable="stat-3-label">Bliss</div>
+      </div>
+    </div>
+  </div>
+  <div class="about-visual">
+    <div class="about-card">
+      <img src="logo.jpg" alt="Bliss Hue Logo" class="about-logo">
+           <span class="tagline-emoji">☹️</span>
+      <div class="tagline-big">SAD ME</div>
+      <span class="tagline-big eq">+ &nbsp;BLISS HUE&nbsp; =</span>
+      <span class="tagline-emoji">😊</span>
+      <div class="tagline-big" style="color:var(--gold)">HAPPY ME</div>
+    </div>
+  </div>
+</section>
+
+<!-- BRANCHES -->
+<section id="branches">
+  <div class="section-label">Where to Find Us</div>
+  <div class="section-title">Our Branches</div>
+
+  <div class="branches-grid">
+    <div class="branch-card">
+      <div class="branch-num">01</div>
+      <div class="branch-name" data-editable="br-1-name">Roxas City</div>
+      <div class="branch-location" data-editable="br-1-loc">CoOzy Food Park, Arnaldo Blvd.,<br>Roxas City, Philippines 5800</div>
+      <div class="branch-links">
+        <a href="https://www.facebook.com/profile.php?id=100087951589602" target="_blank" class="branch-link">
+          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          Facebook
+        </a>
+        <a href="https://foodpanda.go.link/cjV9I" target="_blank" class="branch-link">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          FoodPanda
+        </a>
+      </div>
+    </div>
+
+    <div class="branch-card">
+      <div class="branch-num">02</div>
+      <div class="branch-name" data-editable="br-2-name">Las Piñas</div>
+      <div class="branch-location" data-editable="br-2-loc" style="color:var(--muted);font-style:italic;">Location coming soon</div>
+      <div class="branch-links">
+        <a href="https://www.facebook.com/profile.php?id=100090357404367" target="_blank" class="branch-link">
+          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          Facebook
+        </a>
+      </div>
+    </div>
+
+    <div class="branch-card">
+      <div class="branch-num">03</div>
+      <div class="branch-name" data-editable="br-3-name">Branch 3</div>
+      <div class="branch-location" data-editable="br-3-loc" style="color:var(--muted);font-style:italic;">Location coming soon</div>
+      <div class="branch-links">
+        <a href="https://foodpanda.go.link/jvkV3" target="_blank" class="branch-link">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          FoodPanda
+        </a>
+      </div>
+    </div>
+
+    <div class="branch-card">
+      <div class="branch-num">04</div>
+      <div class="branch-name" data-editable="br-4-name">Branch 4</div>
+      <div class="branch-location" data-editable="br-4-loc" style="color:var(--muted);font-style:italic;">Details coming soon</div>
+      <div class="branch-links">
+        <span class="coming-soon">Stay Tuned</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <img src="logo.jpg" alt="Bliss Hue Logo">
+      <div>
+        <div class="footer-logo">Bliss <span>Hue</span></div>
+        <span class="footer-logo-cafe">Café</span>
+        <div class="footer-sub" data-editable="footer-tagline">sad me + Bliss Hue = happy me</div>
+      </div>
+    </div>
+    <div class="footer-social">
+      <a href="https://www.facebook.com/profile.php?id=100087951589602" target="_blank" class="social-btn">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        Roxas City FB
+      </a>
+      <a href="https://www.facebook.com/profile.php?id=100090357404367" target="_blank" class="social-btn">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        Las Piñas FB
+      </a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy" data-editable="footer-copy">© 2025 Bliss Hue Café. All rights reserved.</div>
+    <div class="footer-copy">Made with ☕ & bliss</div>
+  </div>
+</footer>
 
 <!-- ADMIN LOGIN MODAL -->
 <div class="admin-login-overlay" id="adminOverlay">
@@ -1073,22 +1178,72 @@
 </div>
 
 <script>
-  // ── ADMIN SYSTEM (order.html) ──
+  function switchTab(event, name) {
+    document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  function toggleMenu() {
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  }
+
+  function closeMenu() {
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.menu-item, .branch-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity .5s ease, transform .5s ease';
+    observer.observe(el);
+  });
+
+  // ── ADMIN SYSTEM ──
+  // Credentials stored as SHA-256 hashes only — plain text never exists at runtime
   const _uh = '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918';
   const _ph = '002d8b4beee88cb94d944ac12cb84ed367fe939c717984b722c674a1aa3b8e4f';
-  let _failCount = 0, _lockUntil = 0;
+
+  let _failCount = 0;
+  let _lockUntil = 0;
 
   async function _hash(str) {
     const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
   }
 
   document.addEventListener('keydown', function(e) {
-    if (e.altKey && e.key === '5') {
-      document.body.classList.contains('admin-mode') ? exitAdmin() : openAdminLogin();
-    }
     if (e.key === 'Escape') closeAdminLogin();
   });
+
+  // Open admin login if URL ends with /admin
+  (function checkAdminUrl() {
+    const path = window.location.pathname;
+    const search = window.location.search;
+    if (path.endsWith('/admin') || path.endsWith('/admin.html') || search.includes('?admin')) {
+      openAdminLogin();
+      // Clean the URL bar so /admin doesn't stay visible
+      const cleanUrl = path.replace(/\/admin(\.html)?$/, '') || '/';
+      history.replaceState(null, '', cleanUrl);
+    }
+  })();
 
   function openAdminLogin() {
     document.getElementById('adminOverlay').classList.add('show');
@@ -1106,7 +1261,8 @@
       const secs = Math.ceil((_lockUntil - now) / 1000);
       const errEl = document.getElementById('adminError');
       errEl.textContent = `Too many attempts. Try again in ${secs}s.`;
-      errEl.classList.add('show'); return;
+      errEl.classList.add('show');
+      return;
     }
     const u = document.getElementById('adminUser').value.trim();
     const p = document.getElementById('adminPass').value;
@@ -1119,10 +1275,11 @@
       document.getElementById('adminPass').value = '';
       const errEl = document.getElementById('adminError');
       if (_failCount >= 3) {
-        _lockUntil = Date.now() + 30000; _failCount = 0;
+        _lockUntil = Date.now() + 30000;
+        _failCount = 0;
         errEl.textContent = 'Too many attempts. Locked for 30s.';
       } else {
-        errEl.textContent = `Incorrect username or password. (${3-_failCount} attempt${3-_failCount!==1?'s':''} left)`;
+        errEl.textContent = `Incorrect username or password. (${3 - _failCount} attempt${3 - _failCount !== 1 ? 's' : ''} left)`;
       }
       errEl.classList.add('show');
       document.getElementById('adminPass').focus();
@@ -1142,7 +1299,8 @@
     document.querySelectorAll('[data-editable]').forEach(el => el.removeAttribute('contenteditable'));
   }
   // ── KV API ──
-  const KV_API = 'https://blisshue-admin-api.YOUR_SUBDOMAIN.workers.dev/api/edits?page=order';
+  // Change this to your deployed Worker URL after you deploy it
+  const KV_API = 'https://blisshue-admin-api.YOUR_SUBDOMAIN.workers.dev/api/edits?page=index';
 
   async function saveChanges() {
     const btn = document.querySelector('.admin-save-btn');
@@ -1159,7 +1317,8 @@
       });
       if (!res.ok) throw new Error('Server error');
       btn.textContent = '✓ Saved!';
-      localStorage.setItem('blisshue_order_edits', JSON.stringify(data));
+      // also cache locally as fallback
+      localStorage.setItem('blisshue_edits', JSON.stringify(data));
     } catch (err) {
       btn.textContent = '⚠ Save failed';
       console.error('KV save error:', err);
@@ -1169,15 +1328,21 @@
 
   async function loadSavedEdits() {
     let data = null;
+    // 1. Try cloud KV first
     try {
       const res = await fetch(KV_API);
-      if (res.ok) data = await res.json();
+      if (res.ok) {
+        data = await res.json();
+      }
     } catch (err) {
       console.warn('KV load failed, falling back to localStorage:', err);
     }
+    // 2. Fall back to localStorage if KV unreachable
     if (!data || Object.keys(data).length === 0) {
-      const raw = localStorage.getItem('blisshue_order_edits');
-      if (raw) { try { data = JSON.parse(raw); } catch(e) {} }
+      const raw = localStorage.getItem('blisshue_edits');
+      if (raw) {
+        try { data = JSON.parse(raw); } catch(e) {}
+      }
     }
     if (!data) return;
     Object.keys(data).forEach(key => {
@@ -1188,431 +1353,25 @@
   loadSavedEdits();
 </script>
 
-<script>
-  let selectedBranch = '';
-  let selectedService = '';
-  let selectedPayment = '';
-  // cart is now an array of line items (each with name, size, addons, sweetness, total)
-  let cart = [];
-
-  const FB_PAGES = {
-    'Roxas City': '100087951589602',
-    'Las Piñas': '100090357404367'
-  };
-
-  const ADDONS = [
-    { name: 'Oreo', price: 15 }, { name: 'Fudge', price: 15 },
-    { name: 'Grahams', price: 15 }, { name: 'Nata', price: 15 },
-    { name: 'Chips', price: 20 }, { name: 'Queso', price: 20 },
-    { name: 'Cashew', price: 25 }, { name: 'Almonds', price: 25 },
-    { name: 'Whipped Cream', price: 25 }, { name: 'Kitkat', price: 30 },
-    { name: 'Nutella', price: 30 }
-  ];
-
-  // ── SELECTORS ──
-  function selectBranch(btn) {
-    document.querySelectorAll('.branch-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    selectedBranch = btn.dataset.branch;
-    updateSummary();
-  }
-  function selectService(btn) {
-    document.querySelectorAll('.service-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-    selectedService = btn.dataset.service;
-    document.getElementById('addressGroup').style.display = selectedService === 'Delivery' ? 'block' : 'none';
-    updateSummary();
-  }
-  function selectPayment(el, name) {
-    document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
-    el.classList.add('selected');
-    selectedPayment = name;
-    updateSummary();
-  }
-
-  // ── MENU TABS ──
-  function switchMenuTab(e, name) {
-    document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
-    e.target.classList.add('active');
-    document.getElementById('menu-' + name).classList.add('active');
-  }
-
-  // ── CUSTOMIZER ──
-  function buildCustomizerHTML() {
-    const sizeHTML = `
-      <div class="size-opt sel" onclick="selSize(this,0)">16oz<small>Normal</small></div>
-      <div class="size-opt" onclick="selSize(this,20)">22oz<small>+₱20</small></div>`;
-
-    const addonHTML = ADDONS.map(a =>
-      `<div class="addon-opt" onclick="togAddon(this,${a.price})">
-        <span>${a.name}</span><span class="ao-price">+₱${a.price}</span>
-        <span class="ao-check"></span>
-      </div>`).join('');
-
-    const sweetHTML = ['Less Sweet','Normal Sweet','Extra Sweet','Custom'].map((s,i) =>
-      `<div class="sweet-opt${i===1?' sel':''}" onclick="selSweet(this,'${s}')">${s}</div>`).join('');
-
-    return `
-      <div class="cust-row">
-        <div class="cust-row-label">Size</div>
-        <div class="size-opts">${sizeHTML}</div>
+<!-- VIDEO POPUP MODAL -->
+<div class="video-modal-overlay" id="videoModal" onclick="closeVideoModal(event)">
+  <div class="video-modal-box">
+    <button class="video-modal-close" onclick="closeVideoModalDirect()">✕</button>
+    <div class="video-modal-frame" id="videoFrame">
+      <div class="video-modal-placeholder" id="videoPlaceholder">
+        <div class="ph-icon">🎬</div>
+        <div class="ph-text">Video Coming Soon</div>
+        <div class="ph-sub">Admin can add a YouTube link</div>
       </div>
-      <div class="cust-row">
-        <div class="cust-row-label">Add-ons</div>
-        <div class="addon-grid">${addonHTML}</div>
+    </div>
+    <div class="video-modal-info">
+      <div>
+        <div class="video-modal-name" id="videoModalName">Drink Name</div>
+        <div class="video-modal-desc" id="videoModalDesc">Description</div>
       </div>
-      <div class="cust-row">
-        <div class="cust-row-label">Sweetness</div>
-        <div class="sweet-opts">${sweetHTML}</div>
-        <input class="sweet-custom-in" placeholder="Describe your sweetness preference…" />
-      </div>
-      <button class="add-cart-btn" onclick="addToCart(this)">Add to Order →</button>`;
-  }
-
-  function toggleCustomizer(btn, name, basePrice) {
-    const panel = btn.nextElementSibling;
-    const isOpen = panel.classList.contains('open');
-
-    // close all others
-    document.querySelectorAll('.item-customizer.open').forEach(p => {
-      p.classList.remove('open');
-      p.previousElementSibling.classList.remove('open');
-    });
-
-    if (!isOpen) {
-      if (!panel.dataset.built) {
-        panel.innerHTML = buildCustomizerHTML();
-        panel.dataset.itemName = name;
-        panel.dataset.basePrice = basePrice;
-        panel.dataset.built = '1';
-      }
-      panel.classList.add('open');
-      btn.classList.add('open');
-      setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 60);
-    }
-  }
-
-  function recalcLivePrice(panel) {
-    const basePrice = parseInt(panel.dataset.basePrice);
-    const sizeEl = panel.querySelector('.size-opt.sel');
-    const sizeExtra = sizeEl ? parseInt(sizeEl.getAttribute('onclick').match(/selSize\(this,(\d+)\)/)[1]) : 0;
-    let addonTotal = 0;
-    panel.querySelectorAll('.addon-opt.sel').forEach(el => {
-      addonTotal += parseInt(el.getAttribute('onclick').match(/togAddon\(this,(\d+)\)/)[1]);
-    });
-    const priceEl = panel.closest('.menu-item-row').querySelector('.menu-item-price');
-    if (priceEl) priceEl.textContent = '\u20b1' + (basePrice + sizeExtra + addonTotal);
-  }
-
-  function selSize(el, extra) {
-    el.closest('.size-opts').querySelectorAll('.size-opt').forEach(s => s.classList.remove('sel'));
-    el.classList.add('sel');
-    recalcLivePrice(el.closest('.item-customizer'));
-  }
-  function togAddon(el, price) {
-    el.classList.toggle('sel');
-    el.querySelector('.ao-check').textContent = el.classList.contains('sel') ? '\u2713' : '';
-    recalcLivePrice(el.closest('.item-customizer'));
-  }
-  function selSweet(el, label) {
-    const wrap = el.closest('.item-customizer');
-    wrap.querySelectorAll('.sweet-opt').forEach(s => s.classList.remove('sel'));
-    el.classList.add('sel');
-    const inp = wrap.querySelector('.sweet-custom-in');
-    if (label === 'Custom') { inp.classList.add('show'); inp.focus(); }
-    else inp.classList.remove('show');
-  }
-
-  function addToCart(btn) {
-    const panel = btn.closest('.item-customizer');
-    const itemName = panel.dataset.itemName;
-    const basePrice = parseInt(panel.dataset.basePrice);
-
-    // Size
-    const sizeEl = panel.querySelector('.size-opt.sel');
-    const sizeName = sizeEl.childNodes[0].textContent.trim();
-    const sizeExtra = parseInt(sizeEl.getAttribute('onclick').match(/selSize\(this,(\d+)\)/)[1]);
-
-    // Add-ons
-    let addons = [], addonTotal = 0;
-    panel.querySelectorAll('.addon-opt.sel').forEach(el => {
-      const name = el.querySelector('span').textContent;
-      const price = parseInt(el.getAttribute('onclick').match(/togAddon\(this,(\d+)\)/)[1]);
-      addons.push({ name, price });
-      addonTotal += price;
-    });
-
-    // Sweetness
-    const sweetEl = panel.querySelector('.sweet-opt.sel');
-    let sweetness = sweetEl ? sweetEl.textContent : 'Normal Sweet';
-    if (sweetness === 'Custom') {
-      const v = panel.querySelector('.sweet-custom-in').value.trim();
-      sweetness = v ? 'Custom: ' + v : 'Custom';
-    }
-
-    const total = basePrice + sizeExtra + addonTotal;
-    cart.push({ itemName, sizeName, sizeExtra, addons, sweetness, basePrice, total });
-
-    // reset price display to base price
-    const priceEl = panel.closest('.menu-item-row').querySelector('.menu-item-price');
-    if (priceEl) priceEl.textContent = '\u20b1' + basePrice;
-
-    // close panel and reset customizer so it's fresh next time
-    panel.classList.remove('open');
-    panel.previousElementSibling.classList.remove('open');
-    panel.dataset.built = '';
-    panel.innerHTML = '';
-
-    updateSummary();
-  }
-
-
-  // ── ORDER PEEK ──
-  function renderPeek() {
-    const list = document.getElementById('peekList');
-    if (cart.length === 0) {
-      list.innerHTML = '<div class="peek-empty"><span>☕</span>No items yet.</div>';
-      return;
-    }
-    list.innerHTML = cart.map((item, idx) => {
-      const addonTags = item.addons.map(a => `<span class="peek-item-tag">${a.name} +₱${a.price}</span>`).join('');
-      return `<div class="peek-item">
-        <div class="peek-item-left">
-          <span class="peek-item-name">${item.itemName}</span>
-          <div class="peek-item-meta">
-            <span class="peek-item-tag">${item.sizeName}</span>
-            <span class="peek-item-tag">${item.sweetness}</span>
-            ${addonTags}
-          </div>
-        </div>
-        <div class="peek-item-right">
-          <span class="peek-item-price">₱${item.total}</span>
-          <button class="peek-remove-btn" onclick="peekRemove(${idx})">✕ Remove</button>
-        </div>
-      </div>`;
-    }).join('');
-  }
-
-  function togglePeek() {
-    const drawer = document.getElementById('peekDrawer');
-    const overlay = document.getElementById('peekOverlay');
-    const info = document.querySelector('.sticky-order-info');
-    if (drawer.classList.contains('open')) {
-      closePeek();
-    } else {
-      renderPeek();
-      drawer.classList.add('open');
-      overlay.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-  }
-
-  function closePeek() {
-    document.getElementById('peekDrawer').classList.remove('open');
-    document.getElementById('peekOverlay').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  function peekRemove(idx) {
-    cart.splice(idx, 1);
-    updateSummary();
-    if (cart.length === 0) { closePeek(); return; }
-    renderPeek();
-  }
-
-  function updateStickyBar() {
-    const bar = document.getElementById('stickyOrderBar');
-    const count = document.getElementById('stickyCount');
-    const total = document.getElementById('stickyTotal');
-    if (cart.length === 0) {
-      bar.classList.remove('visible');
-    } else {
-      bar.classList.add('visible');
-      count.textContent = cart.length + ' item' + (cart.length !== 1 ? 's' : '');
-      const grandTotal = cart.reduce((sum, item) => sum + item.total, 0);
-      total.textContent = '\u20b1' + grandTotal;
-    }
-  }
-
-  function removeCartItem(idx) {
-    cart.splice(idx, 1);
-    updateSummary();
-  }
-
-  // ── SUMMARY ──
-  function updateSummary() {
-    const summaryItems = document.getElementById('summaryItems');
-    const summaryEmpty = document.getElementById('summaryEmpty');
-    const summaryDivider = document.getElementById('summaryDivider');
-    const summaryMeta = document.getElementById('summaryMeta');
-    const summaryTotal = document.getElementById('summaryTotal');
-
-    if (cart.length === 0) {
-      summaryEmpty.style.display = 'block';
-      summaryItems.style.display = 'none';
-      summaryDivider.style.display = 'none';
-      summaryMeta.style.display = 'none';
-      summaryTotal.style.display = 'none';
-    } else {
-      summaryEmpty.style.display = 'none';
-      summaryItems.style.display = 'block';
-      summaryDivider.style.display = 'block';
-      summaryMeta.style.display = 'block';
-      summaryTotal.style.display = 'flex';
-
-      let html = '', grandTotal = 0;
-      cart.forEach((item, idx) => {
-        grandTotal += item.total;
-        const addonTags = item.addons.map(a => `<span class="s-tag">${a.name} +₱${a.price}</span>`).join('');
-        html += `<div class="summary-item">
-          <div style="flex:1;">
-            <span class="summary-item-name">${item.itemName}</span>
-            <span class="summary-item-qty">${item.sizeName} · ${item.sweetness}</span>
-            <div class="summary-item-meta">${addonTags}</div>
-            <button class="summary-item-remove" onclick="removeCartItem(${idx})">✕ Remove</button>
-          </div>
-          <span class="summary-item-price">₱${item.total}</span>
-        </div>`;
-      });
-      summaryItems.innerHTML = html;
-      document.getElementById('sTotalAmt').textContent = '₱' + grandTotal;
-    }
-
-    document.getElementById('sBranch').textContent = selectedBranch || '—';
-    document.getElementById('sService').textContent = selectedService || '—';
-    document.getElementById('sPayment').textContent = selectedPayment || '—';
-    updateStickyBar();
-  }
-
-  // ── BUILD ORDER MESSAGE ──
-  function buildOrderMessage() {
-    const name = document.getElementById('custName').value.trim();
-    const phone = document.getElementById('custPhone').value.trim();
-    const address = document.getElementById('deliveryAddress').value.trim();
-    const notes = document.getElementById('specialInstructions').value.trim();
-
-    let total = 0;
-    let orderLines = '';
-    cart.forEach((item, i) => {
-      total += item.total;
-      const addonStr = item.addons.length ? '\n   Add-ons: ' + item.addons.map(a => `${a.name} (+₱${a.price})`).join(', ') : '';
-      orderLines += `${i+1}. ${item.itemName} (${item.sizeName})${addonStr}\n   Sweetness: ${item.sweetness}\n   Price: ₱${item.total}\n`;
-    });
-
-    let extra = '';
-    if (selectedService === 'Delivery' && address) extra = `\n📍 Delivery Address:\n   ${address}`;
-    if (notes) extra += `\n📝 Notes: ${notes}`;
-
-    return `🧋 New Order from Bliss Hue Website
-
-📍 Branch: ${selectedBranch}
-🔖 Order Type: ${selectedService}${extra}
-
-👤 Customer Information:
-• Name: ${name}
-• Contact: ${phone}
-
-📋 Order Details:
-${orderLines}
-💰 Total: ₱${total}
-
-💳 Payment Method:
-${selectedPayment}
-
-Please confirm my order! 🎉`;
-  }
-
-  // ── VALIDATION ──
-  function validateForm() {
-    const name = document.getElementById('custName').value.trim();
-    const phone = document.getElementById('custPhone').value.trim();
-    if (!selectedBranch || !selectedService || !selectedPayment || !name || !phone || cart.length === 0) return false;
-    if (selectedService === 'Delivery' && !document.getElementById('deliveryAddress').value.trim()) return false;
-    return true;
-  }
-
-  // ── PLACE ORDER ──
-  function placeOrder() {
-    const validMsg = document.getElementById('validationMsg');
-    if (!validateForm()) {
-      validMsg.classList.add('show');
-      validMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-    validMsg.classList.remove('show');
-    const msg = buildOrderMessage();
-    document.getElementById('orderPreviewText').innerText = msg;
-    document.getElementById('confirmModal').classList.add('show');
-    document.body.style.overflow = 'hidden';
-    document.getElementById('iosTip').style.display = isIOS() ? 'block' : 'none';
-  }
-
-  function closeModal() {
-    document.getElementById('confirmModal').classList.remove('show');
-    document.body.style.overflow = '';
-  }
-
-  function isIOS() {
-    return /iPhone|iPad|iPod/i.test(navigator.userAgent);
-  }
-
-  function sendToFacebook() {
-    const msg = buildOrderMessage();
-    const pageId = FB_PAGES[selectedBranch] || FB_PAGES['Roxas City'];
-
-    if (isIOS()) {
-      // On iOS: copy text first, then try to open Messenger
-      // m.me pre-filled text is unreliable on iOS Safari
-      navigator.clipboard.writeText(msg).catch(() => {});
-      document.getElementById('iosTip').style.display = 'block';
-      // Try Messenger deep link first, fall back to m.me
-      const messengerApp = `fb-messenger://user-thread/${pageId}`;
-      const messengerWeb = `https://m.me/${pageId}`;
-      // Use a short timeout trick: try app link, if still here after 1.5s open web
-      window.location.href = messengerApp;
-      setTimeout(() => { window.open(messengerWeb, '_blank'); }, 1500);
-    } else {
-      const url = `https://m.me/${pageId}?text=${encodeURIComponent(msg)}`;
-      window.open(url, '_blank');
-    }
-  }
-
-  function copyAndGuide() {
-    const msg = buildOrderMessage();
-    const pageId = FB_PAGES[selectedBranch] || FB_PAGES['Roxas City'];
-    const btn = document.getElementById('copyBtn');
-
-    navigator.clipboard.writeText(msg).then(() => {
-      btn.textContent = '✅ Copied! Opening Messenger…';
-      btn.classList.add('copied');
-      document.getElementById('iosTip').style.display = 'block';
-      setTimeout(() => {
-        // Open Messenger without pre-filled text (more reliable on iOS)
-        const url = isIOS()
-          ? `fb-messenger://user-thread/${pageId}`
-          : `https://m.me/${pageId}`;
-        window.open(url, '_blank');
-        // Fallback to web if app not installed
-        setTimeout(() => {
-          window.open(`https://m.me/${pageId}`, '_blank');
-        }, 1800);
-      }, 600);
-      setTimeout(() => {
-        btn.innerHTML = '📋 &nbsp;Copy Order & Open Messenger';
-        btn.classList.remove('copied');
-      }, 3500);
-    }).catch(() => {
-      // Clipboard not available — show manual copy fallback
-      btn.textContent = 'Please copy the text below manually';
-    });
-  }
-
-  document.getElementById('confirmModal').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
-  });
-
-  updateSummary();
-</script>
+      <a href="order.html" class="video-modal-order">Order Now →</a>
+    </div>
+  </div>
+</div>
 </body>
 </html>
