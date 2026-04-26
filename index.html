@@ -614,61 +614,114 @@
   /* ── VIDEO MODAL ── */
   .video-modal-overlay {
     display: none; position: fixed; inset: 0; z-index: 600;
-    background: rgba(0,0,0,.92); backdrop-filter: blur(8px);
-    align-items: center; justify-content: center; padding: 20px;
+    background: rgba(0,0,0,.96); backdrop-filter: blur(16px);
+    align-items: center; justify-content: center; padding: 16px;
   }
   .video-modal-overlay.open { display: flex; }
+
+  /* Auto-layout: side-by-side on wide screens, stacked on mobile */
   .video-modal-box {
-    width: 100%; max-width: 680px;
-    background: var(--card);
-    border: 1px solid rgba(201,168,76,.2);
-    border-radius: 6px; overflow: hidden;
-    animation: vmFade .25s ease;
-    position: relative;
+    display: flex; flex-direction: row;
+    width: 100%; max-width: 880px; max-height: 92vh;
+    background: #0a0a0a;
+    border: 1px solid rgba(201,168,76,.18);
+    border-radius: 10px; overflow: hidden;
+    animation: vmFade .28s cubic-bezier(.22,.68,0,1.2);
+    position: relative; box-shadow: 0 32px 80px rgba(0,0,0,.8);
   }
-  @keyframes vmFade { from { opacity:0; transform:scale(.96); } to { opacity:1; transform:scale(1); } }
+  /* Vertical (Shorts) mode — narrow box */
+  .video-modal-box.is-vertical {
+    max-width: 420px; flex-direction: column;
+  }
+  @keyframes vmFade { from { opacity:0; transform:scale(.94) translateY(12px); } to { opacity:1; transform:scale(1) translateY(0); } }
+
   .video-modal-close {
-    position: absolute; top: 12px; right: 14px; z-index: 10;
-    background: rgba(0,0,0,.6); border: 1px solid rgba(255,255,255,.15);
-    color: var(--cream); font-size: 1rem; width: 32px; height: 32px;
+    position: absolute; top: 12px; right: 12px; z-index: 20;
+    background: rgba(0,0,0,.75); border: 1px solid rgba(255,255,255,.18);
+    color: #fff; font-size: .9rem; width: 34px; height: 34px;
     border-radius: 50%; cursor: pointer; display: flex;
     align-items: center; justify-content: center; transition: all .2s;
+    backdrop-filter: blur(4px);
   }
-  .video-modal-close:hover { background: rgba(255,255,255,.15); }
+  .video-modal-close:hover { background: rgba(255,255,255,.2); border-color: rgba(255,255,255,.4); }
+
+  /* Frame area */
   .video-modal-frame {
-    position: relative; width: 100%; padding-bottom: 56.25%; background: #000;
+    position: relative; background: #000; flex-shrink: 0;
+    /* default 16:9 */
+    width: 60%; padding-bottom: 0; aspect-ratio: 16/9; align-self: center;
+  }
+  .video-modal-box.is-vertical .video-modal-frame {
+    width: 100%; aspect-ratio: 9/16; max-height: 72vh;
   }
   .video-modal-frame iframe {
-    position: absolute; inset: 0; width: 100%; height: 100%; border: none;
+    position: absolute; inset: 0; width: 100%; height: 100%; border: none; display: block;
   }
   .video-modal-placeholder {
     position: absolute; inset: 0; display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    background: linear-gradient(135deg, #0e0e0e, #1a1a1a);
-    color: var(--muted);
+    background: linear-gradient(135deg, #0e0e0e, #141414);
+    color: var(--muted); padding: 24px; text-align: center;
   }
-  .video-modal-placeholder .ph-icon { font-size: 3rem; margin-bottom: 12px; opacity: .4; }
-  .video-modal-placeholder .ph-text { font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; }
-  .video-modal-placeholder .ph-sub { font-size: .7rem; color: rgba(255,255,255,.2); margin-top: 6px; }
+  .video-modal-placeholder .ph-icon { font-size: 3rem; margin-bottom: 14px; opacity: .35; }
+  .video-modal-placeholder .ph-text {
+    font-family: 'Bebas Neue', sans-serif; font-size: 1rem;
+    letter-spacing: .2em; color: rgba(255,255,255,.4); margin-bottom: 8px;
+  }
+  .video-modal-placeholder .ph-sub {
+    font-size: .72rem; color: rgba(255,255,255,.2); line-height: 1.6; max-width: 200px;
+  }
+
+  /* Info panel (right side for landscape, bottom for vertical) */
   .video-modal-info {
-    padding: 20px 24px 24px;
-    display: flex; align-items: center; justify-content: space-between; gap: 16px;
-    flex-wrap: wrap;
+    flex: 1; padding: 32px 28px;
+    display: flex; flex-direction: column; justify-content: center; gap: 20px;
+    border-left: 1px solid rgba(255,255,255,.06);
   }
+  .video-modal-box.is-vertical .video-modal-info {
+    flex-direction: row; align-items: center; justify-content: space-between;
+    padding: 18px 20px; border-left: none;
+    border-top: 1px solid rgba(255,255,255,.06);
+  }
+  .video-modal-drink-label {
+    font-size: .6rem; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--gold); font-weight: 600; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .video-modal-drink-label::before { content:''; width:18px; height:1px; background:var(--gold); }
   .video-modal-name {
-    font-family: 'Caveat', cursive; font-size: 1.8rem;
-    color: var(--white); font-weight: 600; line-height: 1;
+    font-family: 'Caveat', cursive; font-size: 2.4rem;
+    color: var(--white); font-weight: 600; line-height: 1; margin-bottom: 6px;
   }
-  .video-modal-desc { font-size: .8rem; color: var(--muted); margin-top: 4px; }
+  .video-modal-box.is-vertical .video-modal-name { font-size: 1.6rem; }
+  .video-modal-desc { font-size: .8rem; color: var(--muted); line-height: 1.6; margin-bottom: 8px; }
   .video-modal-order {
-    padding: 12px 24px; background: var(--gold); color: var(--black);
-    font-family: 'DM Sans', sans-serif; font-size: .78rem; font-weight: 700;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 22px; background: var(--gold); color: var(--black);
+    font-family: 'DM Sans', sans-serif; font-size: .76rem; font-weight: 700;
     letter-spacing: .14em; text-transform: uppercase;
     border: none; border-radius: 2px; cursor: pointer;
-    transition: background .2s; white-space: nowrap; text-decoration: none;
-    display: inline-block;
+    transition: all .2s; white-space: nowrap; text-decoration: none;
+    align-self: flex-start;
   }
-  .video-modal-order:hover { background: var(--gold-light); }
+  .video-modal-order:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  @media (max-width: 640px) {
+    .video-modal-box:not(.is-vertical) {
+      flex-direction: column; max-width: 100%;
+    }
+    .video-modal-box:not(.is-vertical) .video-modal-frame {
+      width: 100%; aspect-ratio: 16/9;
+    }
+    .video-modal-box:not(.is-vertical) .video-modal-info {
+      border-left: none; border-top: 1px solid rgba(255,255,255,.06);
+      padding: 18px 18px 22px; flex-direction: row; align-items: center;
+      justify-content: space-between;
+    }
+    .video-modal-box:not(.is-vertical) .video-modal-drink-label { display: none; }
+    .video-modal-box:not(.is-vertical) .video-modal-desc { display: none; }
+    .video-modal-box:not(.is-vertical) .video-modal-name { font-size: 1.8rem; margin-bottom: 0; }
+  }
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; text-align: center; padding-bottom: 120px; }
@@ -1262,7 +1315,7 @@
 
 <!-- VIDEO POPUP MODAL -->
 <div class="video-modal-overlay" id="videoModal" onclick="closeVideoModal(event)">
-  <div class="video-modal-box">
+  <div class="video-modal-box" id="videoModalBox">
     <button class="video-modal-close" onclick="closeVideoModalDirect()">✕</button>
     <div class="video-modal-frame" id="videoFrame">
       <div class="video-modal-placeholder" id="videoPlaceholder">
@@ -1273,6 +1326,7 @@
     </div>
     <div class="video-modal-info">
       <div>
+        <div class="video-modal-drink-label">Now Playing</div>
         <div class="video-modal-name" id="videoModalName">Drink Name</div>
         <div class="video-modal-desc" id="videoModalDesc">Description</div>
       </div>
@@ -1299,18 +1353,22 @@ function saveVideoLinks() {
 // Convert any YouTube URL to an embed URL
 function toEmbedUrl(url) {
   if (!url) return null;
-  // Already an embed
   if (url.includes('youtube.com/embed/')) return url;
+  let m, isShort = false;
   // youtu.be/ID
-  let m = url.match(/youtu\.be\/([^?&]+)/);
-  if (m) return 'https://www.youtube.com/embed/' + m[1] + '?autoplay=1&rel=0';
+  m = url.match(/youtu\.be\/([^?&]+)/);
+  if (m) return 'https://www.youtube.com/embed/' + m[1] + '?autoplay=1&rel=0&modestbranding=1';
   // youtube.com/watch?v=ID
   m = url.match(/[?&]v=([^&]+)/);
-  if (m) return 'https://www.youtube.com/embed/' + m[1] + '?autoplay=1&rel=0';
+  if (m) return 'https://www.youtube.com/embed/' + m[1] + '?autoplay=1&rel=0&modestbranding=1';
   // youtube.com/shorts/ID
   m = url.match(/youtube\.com\/shorts\/([^?&]+)/);
-  if (m) return 'https://www.youtube.com/embed/' + m[1] + '?autoplay=1&rel=0';
+  if (m) return 'https://www.youtube.com/embed/' + m[1] + '?autoplay=1&rel=0&modestbranding=1&shorts=1';
   return null;
+}
+
+function isVerticalUrl(url) {
+  return url && url.includes('/shorts/');
 }
 
 // Get drink name + desc from a watch button
@@ -1337,12 +1395,20 @@ function openVideoModal(event, drinkId, btn) {
 
   const frame = document.getElementById('videoFrame');
   const placeholder = document.getElementById('videoPlaceholder');
+  const modalBox = document.getElementById('videoModalBox');
   const url = videoLinks[drinkId];
   const embedUrl = toEmbedUrl(url);
 
   // Clear any previous iframe
   const oldIframe = frame.querySelector('iframe');
   if (oldIframe) oldIframe.remove();
+
+  // Vertical (Shorts) detection
+  if (isVerticalUrl(url)) {
+    modalBox.classList.add('is-vertical');
+  } else {
+    modalBox.classList.remove('is-vertical');
+  }
 
   if (embedUrl) {
     placeholder.style.display = 'none';
@@ -1352,6 +1418,7 @@ function openVideoModal(event, drinkId, btn) {
     iframe.allowFullscreen = true;
     frame.appendChild(iframe);
   } else {
+    modalBox.classList.remove('is-vertical');
     placeholder.style.display = 'flex';
   }
 
