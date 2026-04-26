@@ -1650,7 +1650,10 @@ function openVideoModal(event, drinkId, btn) {
     video.src = src.trim();
     video.autoplay = true;
     video.playsInline = true;
+    video.muted = false;
     video.loop = true;
+    // Start muted so mobile autoplay works, user can unmute via volume control
+    video.muted = true;
     // NO controls — fully custom
     video.style.cssText = 'width:100%;height:100%;object-fit:contain;background:#000;display:block;';
     frame.insertBefore(video, frame.querySelector('.vm-tap-flash'));
@@ -1660,6 +1663,11 @@ function openVideoModal(event, drinkId, btn) {
     video.addEventListener('play', () => vmStartProgress());
     video.addEventListener('pause', () => cancelAnimationFrame(_vmRAF));
     vmShowVolume();
+    // Start muted on mobile — show muted state in volume UI
+    const slider = document.getElementById('vmVolSlider');
+    slider.value = 0;
+    document.getElementById('vmVolIcon').textContent = '🔇';
+    slider.style.background = `linear-gradient(to right, var(--gold) 0%, var(--gold) 0%, rgba(255,255,255,.25) 0%)`;
 
   } else if (type === 'youtube') {
     const embedUrl = toEmbedUrl(src);
@@ -1779,7 +1787,10 @@ function vmSetVolume(val) {
   // Update icon
   icon.textContent = val === 0 ? '🔇' : val < 40 ? '🔉' : '🔊';
   // Apply to MP4
-  if (_vmVideo) { _vmVideo.volume = val / 100; _vmVideo.muted = false; }
+  if (_vmVideo) {
+    _vmVideo.muted = val === 0;
+    _vmVideo.volume = val === 0 ? 0 : val / 100;
+  }
   // Apply to YouTube iframe via postMessage
   const iframe = document.getElementById('videoFrame').querySelector('iframe');
   if (iframe) {
