@@ -1648,17 +1648,12 @@ function saveAdminVideo() {
 
 // ── FULLSCREEN ──
 function toggleVideoFullscreen() {
-  const frame = document.getElementById('videoFrame');
+  const overlay = document.getElementById('videoModal');
   const btn = document.querySelector('.video-modal-fullscreen');
 
-  // For YouTube: request fullscreen on the iframe so YouTube handles it natively
-  const iframe = frame.querySelector('iframe');
-  const mp4 = frame.querySelector('video');
-  const target = iframe || mp4 || frame;
-
   if (!document.fullscreenElement) {
-    const reqFS = target.requestFullscreen || target.webkitRequestFullscreen || target.mozRequestFullScreen;
-    if (reqFS) reqFS.call(target);
+    const reqFS = overlay.requestFullscreen || overlay.webkitRequestFullscreen || overlay.mozRequestFullScreen;
+    if (reqFS) reqFS.call(overlay);
     btn.textContent = '⊠';
     btn.title = 'Exit Fullscreen';
   } else {
@@ -1672,6 +1667,35 @@ document.addEventListener('fullscreenchange', () => {
   const btn = document.querySelector('.video-modal-fullscreen');
   if (!document.fullscreenElement) { btn.textContent = '⛶'; btn.title = 'Fullscreen'; }
 });
+// Fullscreen styles: modal fills screen, video box centered, iframe never zooms
+const fsStyle = document.createElement('style');
+fsStyle.textContent = `
+  #videoModal:fullscreen,
+  #videoModal:-webkit-full-screen {
+    display: flex; align-items: center; justify-content: center;
+    background: #000; padding: 0;
+  }
+  #videoModal:fullscreen #videoModalBox,
+  #videoModal:-webkit-full-screen #videoModalBox {
+    width: auto; max-width: 100vw;
+    height: 100vh; max-height: 100vh;
+    border-radius: 0; border: none;
+    display: flex; flex-direction: column;
+  }
+  #videoModal:fullscreen .video-modal-frame,
+  #videoModal:-webkit-full-screen .video-modal-frame {
+    flex: 1; width: auto;
+    /* portrait frame: fill height, let width be natural */
+    aspect-ratio: 9/16 !important;
+    max-height: calc(100vh - 72px);
+  }
+  #videoModal:fullscreen .video-modal-frame.yt-mode,
+  #videoModal:-webkit-full-screen .video-modal-frame.yt-mode {
+    aspect-ratio: 16/9 !important;
+    width: 100vw; max-height: 100vh;
+  }
+`;
+document.head.appendChild(fsStyle);
 
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { closeVideoModalDirect(); closeAdminVideoEditor(); }
