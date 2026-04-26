@@ -4,11 +4,14 @@
  * Routes:
  *   GET  /api/edits?page=index   → returns saved edits JSON for that page
  *   POST /api/edits?page=index   → saves edits JSON for that page
+ *   GET  /api/video/:filename    → proxies video from GitHub with correct headers
  * 
  * KV Binding: BLISSHUE_EDITS  (set in wrangler.toml or Cloudflare dashboard)
  */
 
 const ALLOWED_PAGES = ['index', 'order'];
+
+const GITHUB_RAW_BASE = 'https://raw.githubusercontent.com/rokrokkarkar-cell/BlissHue/main/';
 
 // ── CORS headers — update ALLOWED_ORIGIN to your actual Pages domain ──
 const ALLOWED_ORIGIN = 'https://your-site.pages.dev'; // ← CHANGE THIS
@@ -33,7 +36,45 @@ export default {
       return new Response(null, { status: 204, headers: corsHeaders(origin) });
     }
 
-    // Only handle /api/edits
+    // ── VIDEO PROXY: /api/video/Velto.mp4 ──
+    if (url.pathname.startsWith('/api/video/')) {
+      const filename = url.pathname.replace('/api/video/', '');
+      if (!filename || !/^[\w\-. ]+\.(mp4|webm|mov)$/i.test(filename)) {
+        return new Response('Invalid video file', { status: 400 });
+      }
+
+      const githubUrl = GITHUB_RAW_BASE + encodeURIComponent(filename);
+
+      // Forward Range header so seeking works
+      const rangeHeader = request.headers.get('Range');
+      const fetchHeaders = rangeHeader ? { Range: rangeHeader } : {};
+
+      const githubRes = await fetch(githubUrl, { headers: fetchHeaders });
+
+      if (!githubRes.ok && githubRes.status !== 206) {
+        return new Response('Video not found', { status: 404 });
+      }
+
+      const responseHeaders = {
+        'Content-Type': 'video/mp4',
+        'Accept-Ranges': 'bytes',
+        'Cache-Control': 'public, max-age=86400',
+        'Access-Control-Allow-Origin': '*',
+      };
+
+      // Forward content-range and content-length if present
+      const contentRange = githubRes.headers.get('Content-Range');
+      const contentLength = githubRes.headers.get('Content-Length');
+      if (contentRange) responseHeaders['Content-Range'] = contentRange;
+      if (contentLength) responseHeaders['Content-Length'] = contentLength;
+
+      return new Response(githubRes.body, {
+        status: githubRes.status,
+        headers: responseHeaders,
+      });
+    }
+
+    // Only handle /api/edits beyond this point
     if (url.pathname !== '/api/edits') {
       return new Response('Not found', { status: 404, headers: corsHeaders(origin) });
     }
