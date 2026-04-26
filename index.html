@@ -532,6 +532,128 @@
   body.admin-mode [data-editable]:hover { outline-color: var(--gold); }
   body.admin-mode [data-editable]:focus { outline: 2px solid var(--gold); }
 
+
+  /* ── VIDEO WATCH BUTTON ── */
+  .watch-btn {
+    display: flex; align-items: center; gap: 7px;
+    margin-top: 14px; width: 100%;
+    padding: 9px 14px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,.12);
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 600;
+    border-radius: 2px; cursor: pointer; transition: all .25s;
+    position: relative;
+  }
+  .watch-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .watch-btn .play-icon {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: rgba(201,168,76,.15); border: 1px solid rgba(201,168,76,.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: .65rem; color: var(--gold); flex-shrink: 0;
+    transition: all .25s;
+  }
+  .watch-btn:hover .play-icon { background: var(--gold); color: var(--black); }
+  .watch-btn .watch-label { flex: 1; }
+
+  /* admin edit pencil on watch btn */
+  body.admin-mode .watch-btn::after {
+    content: '✏️'; position: absolute; top: -8px; right: -8px;
+    font-size: .75rem; background: var(--gold); border-radius: 50%;
+    width: 20px; height: 20px; display: flex; align-items: center;
+    justify-content: center; cursor: pointer;
+  }
+  body.admin-mode .watch-btn { border-color: rgba(201,168,76,.35); }
+
+  /* admin url input popup */
+  .video-url-popup {
+    display: none; position: absolute; bottom: 110%; left: 0; right: 0; z-index: 200;
+    background: var(--dark); border: 1px solid var(--gold);
+    border-radius: 4px; padding: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.6);
+  }
+  .video-url-popup.open { display: block; }
+  .video-url-popup input {
+    width: 100%; padding: 8px 10px;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.15);
+    color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: .78rem;
+    border-radius: 2px; outline: none; margin-bottom: 6px;
+  }
+  .video-url-popup input:focus { border-color: var(--gold); }
+  .video-url-popup-actions { display: flex; gap: 6px; }
+  .vup-save {
+    flex: 1; padding: 7px; background: var(--gold); color: var(--black);
+    font-family: 'DM Sans',sans-serif; font-size: .72rem; font-weight: 700;
+    letter-spacing: .1em; text-transform: uppercase; border: none;
+    border-radius: 2px; cursor: pointer;
+  }
+  .vup-cancel {
+    padding: 7px 12px; background: transparent;
+    border: 1px solid rgba(255,255,255,.15); color: var(--muted);
+    font-family: 'DM Sans',sans-serif; font-size: .72rem;
+    border-radius: 2px; cursor: pointer;
+  }
+  .vup-label { font-size: .62rem; color: var(--muted); margin-bottom: 5px; letter-spacing: .08em; }
+
+  /* ── VIDEO MODAL ── */
+  .video-modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 600;
+    background: rgba(0,0,0,.92); backdrop-filter: blur(8px);
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .video-modal-overlay.open { display: flex; }
+  .video-modal-box {
+    width: 100%; max-width: 680px;
+    background: var(--card);
+    border: 1px solid rgba(201,168,76,.2);
+    border-radius: 6px; overflow: hidden;
+    animation: vmFade .25s ease;
+    position: relative;
+  }
+  @keyframes vmFade { from { opacity:0; transform:scale(.96); } to { opacity:1; transform:scale(1); } }
+  .video-modal-close {
+    position: absolute; top: 12px; right: 14px; z-index: 10;
+    background: rgba(0,0,0,.6); border: 1px solid rgba(255,255,255,.15);
+    color: var(--cream); font-size: 1rem; width: 32px; height: 32px;
+    border-radius: 50%; cursor: pointer; display: flex;
+    align-items: center; justify-content: center; transition: all .2s;
+  }
+  .video-modal-close:hover { background: rgba(255,255,255,.15); }
+  .video-modal-frame {
+    position: relative; width: 100%; padding-bottom: 56.25%; background: #000;
+  }
+  .video-modal-frame iframe {
+    position: absolute; inset: 0; width: 100%; height: 100%; border: none;
+  }
+  .video-modal-placeholder {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #0e0e0e, #1a1a1a);
+    color: var(--muted);
+  }
+  .video-modal-placeholder .ph-icon { font-size: 3rem; margin-bottom: 12px; opacity: .4; }
+  .video-modal-placeholder .ph-text { font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; }
+  .video-modal-placeholder .ph-sub { font-size: .7rem; color: rgba(255,255,255,.2); margin-top: 6px; }
+  .video-modal-info {
+    padding: 20px 24px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    flex-wrap: wrap;
+  }
+  .video-modal-name {
+    font-family: 'Caveat', cursive; font-size: 1.8rem;
+    color: var(--white); font-weight: 600; line-height: 1;
+  }
+  .video-modal-desc { font-size: .8rem; color: var(--muted); margin-top: 4px; }
+  .video-modal-order {
+    padding: 12px 24px; background: var(--gold); color: var(--black);
+    font-family: 'DM Sans', sans-serif; font-size: .78rem; font-weight: 700;
+    letter-spacing: .14em; text-transform: uppercase;
+    border: none; border-radius: 2px; cursor: pointer;
+    transition: background .2s; white-space: nowrap; text-decoration: none;
+    display: inline-block;
+  }
+  .video-modal-order:hover { background: var(--gold-light); }
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; text-align: center; padding-bottom: 120px; }
@@ -631,21 +753,69 @@
         <div class="item-name" data-editable="sig-1-name">Yummie</div>
         <div class="item-desc" data-editable="sig-1-desc">Signature blended frappe</div>
         <div class="item-price" data-editable="sig-1-price">₱119</div>
+        <button class="watch-btn" id="watch-sig-1" onclick="openVideoModal(event, 'sig-1', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-sig-1">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-sig-1" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'sig-1')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'sig-1')">Cancel</button>
+            </div>
+          </div>
+        </button>
       </div>
       <div class="menu-item">
         <div class="item-name" data-editable="sig-2-name">Valmond</div>
         <div class="item-desc" data-editable="sig-2-desc">Vanilla almond frappe</div>
         <div class="item-price" data-editable="sig-2-price">₱119</div>
+        <button class="watch-btn" id="watch-sig-2" onclick="openVideoModal(event, 'sig-2', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-sig-2">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-sig-2" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'sig-2')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'sig-2')">Cancel</button>
+            </div>
+          </div>
+        </button>
       </div>
       <div class="menu-item">
         <div class="item-name" data-editable="sig-3-name">Tarow</div>
         <div class="item-desc" data-editable="sig-3-desc">Taro quezo almonds</div>
         <div class="item-price" data-editable="sig-3-price">₱119</div>
+        <button class="watch-btn" id="watch-sig-3" onclick="openVideoModal(event, 'sig-3', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-sig-3">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-sig-3" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'sig-3')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'sig-3')">Cancel</button>
+            </div>
+          </div>
+        </button>
       </div>
       <div class="menu-item">
         <div class="item-name" data-editable="sig-4-name">Velto</div>
         <div class="item-desc" data-editable="sig-4-desc">Refreshing Ube Quezo</div>
         <div class="item-price" data-editable="sig-4-price">₱119</div>
+        <button class="watch-btn" id="watch-sig-4" onclick="openVideoModal(event, 'sig-4', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-sig-4">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-sig-4" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'sig-4')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'sig-4')">Cancel</button>
+            </div>
+          </div>
+        </button>
       </div>
     </div>
   </div>
@@ -657,21 +827,69 @@
         <div class="item-name" data-editable="ck-1-name">Biscoff</div>
         <div class="item-desc" data-editable="ck-1-desc">Lotus Biscoff blend</div>
         <div class="item-price" data-editable="ck-1-price">₱169</div>
+        <button class="watch-btn" id="watch-ck-1" onclick="openVideoModal(event, 'ck-1', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-ck-1">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-ck-1" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'ck-1')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'ck-1')">Cancel</button>
+            </div>
+          </div>
+        </button>
       </div>
       <div class="menu-item">
         <div class="item-name" data-editable="ck-2-name">Ochee</div>
         <div class="item-desc" data-editable="ck-2-desc">Oreo Cheesecake</div>
         <div class="item-price" data-editable="ck-2-price">₱119</div>
+        <button class="watch-btn" id="watch-ck-2" onclick="openVideoModal(event, 'ck-2', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-ck-2">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-ck-2" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'ck-2')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'ck-2')">Cancel</button>
+            </div>
+          </div>
+        </button>
       </div>
       <div class="menu-item">
         <div class="item-name" data-editable="ck-3-name">Darko</div>
         <div class="item-desc" data-editable="ck-3-desc">Dark Choco Drink</div>
         <div class="item-price" data-editable="ck-3-price">₱119</div>
+        <button class="watch-btn" id="watch-ck-3" onclick="openVideoModal(event, 'ck-3', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-ck-3">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-ck-3" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'ck-3')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'ck-3')">Cancel</button>
+            </div>
+          </div>
+        </button>
       </div>
       <div class="menu-item">
         <div class="item-name" data-editable="ck-4-name">Cookie</div>
         <div class="item-desc" data-editable="ck-4-desc">Cookies & Crème</div>
         <div class="item-price" data-editable="ck-4-price">₱119</div>
+        <button class="watch-btn" id="watch-ck-4" onclick="openVideoModal(event, 'ck-4', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-ck-4">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-ck-4" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'ck-4')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'ck-4')">Cancel</button>
+            </div>
+          </div>
+        </button>
       </div>
     </div>
   </div>
@@ -683,21 +901,69 @@
         <div class="item-name" data-editable="nt-1-name">Cashew</div>
         <div class="item-desc" data-editable="nt-1-desc">Caramel Cashew blend</div>
         <div class="item-price" data-editable="nt-1-price">₱159</div>
+        <button class="watch-btn" id="watch-nt-1" onclick="openVideoModal(event, 'nt-1', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-nt-1">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-nt-1" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'nt-1')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'nt-1')">Cancel</button>
+            </div>
+          </div>
+        </button>
       </div>
       <div class="menu-item">
         <div class="item-name" data-editable="nt-2-name">Tella</div>
         <div class="item-desc" data-editable="nt-2-desc">Dark Choco Nutella Cashew</div>
         <div class="item-price" data-editable="nt-2-price">₱119</div>
+        <button class="watch-btn" id="watch-nt-2" onclick="openVideoModal(event, 'nt-2', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-nt-2">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-nt-2" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'nt-2')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'nt-2')">Cancel</button>
+            </div>
+          </div>
+        </button>
       </div>
       <div class="menu-item">
         <div class="item-name" data-editable="nt-3-name">Vella</div>
         <div class="item-desc" data-editable="nt-3-desc">Nutella Fudge</div>
         <div class="item-price" data-editable="nt-3-price">₱119</div>
+        <button class="watch-btn" id="watch-nt-3" onclick="openVideoModal(event, 'nt-3', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-nt-3">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-nt-3" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'nt-3')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'nt-3')">Cancel</button>
+            </div>
+          </div>
+        </button>
       </div>
       <div class="menu-item">
         <div class="item-name" data-editable="nt-4-name">Muckie</div>
         <div class="item-desc" data-editable="nt-4-desc">Milk Nutella Fudge</div>
         <div class="item-price" data-editable="nt-4-price">₱119</div>
+        <button class="watch-btn" id="watch-nt-4" onclick="openVideoModal(event, 'nt-4', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-nt-4">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-nt-4" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'nt-4')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'nt-4')">Cancel</button>
+            </div>
+          </div>
+        </button>
       </div>
     </div>
   </div>
@@ -709,16 +975,52 @@
         <div class="item-name" data-editable="cf-1-name">Carmel Mac</div>
         <div class="item-desc" data-editable="cf-1-desc">Caramel Macchiato</div>
         <div class="item-price" data-editable="cf-1-price">₱129</div>
+        <button class="watch-btn" id="watch-cf-1" onclick="openVideoModal(event, 'cf-1', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-cf-1">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-cf-1" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'cf-1')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'cf-1')">Cancel</button>
+            </div>
+          </div>
+        </button>
       </div>
       <div class="menu-item">
         <div class="item-name" data-editable="cf-2-name">Mocha</div>
         <div class="item-desc" data-editable="cf-2-desc">Dark Mocha blend</div>
         <div class="item-price" data-editable="cf-2-price">₱129</div>
+        <button class="watch-btn" id="watch-cf-2" onclick="openVideoModal(event, 'cf-2', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-cf-2">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-cf-2" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'cf-2')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'cf-2')">Cancel</button>
+            </div>
+          </div>
+        </button>
       </div>
       <div class="menu-item">
         <div class="item-name" data-editable="cf-3-name">Java C.</div>
         <div class="item-desc" data-editable="cf-3-desc">Dark Mocha Java</div>
         <div class="item-price" data-editable="cf-3-price">₱139</div>
+        <button class="watch-btn" id="watch-cf-3" onclick="openVideoModal(event, 'cf-3', this)">
+          <span class="play-icon">▶</span>
+          <span class="watch-label">Watch how it's made</span>
+          <div class="video-url-popup" id="vup-cf-3">
+            <div class="vup-label">YouTube Video URL</div>
+            <input type="url" id="vurl-cf-3" placeholder="https://www.youtube.com/watch?v=..." />
+            <div class="video-url-popup-actions">
+              <button class="vup-save" onclick="saveVideoUrl(event, 'cf-3')">Save</button>
+              <button class="vup-cancel" onclick="closeUrlPopup(event, 'cf-3')">Cancel</button>
+            </div>
+          </div>
+        </button>
       </div>
     </div>
   </div>
@@ -928,11 +1230,17 @@
   }
 
   document.addEventListener('keydown', function(e) {
-    if (e.altKey && e.key === '5') {
-      document.body.classList.contains('admin-mode') ? exitAdmin() : openAdminLogin();
-    }
     if (e.key === 'Escape') closeAdminLogin();
   });
+
+  // Open admin login if URL has ?admin query
+  (function checkAdminUrl() {
+    if (window.location.search.includes('admin')) {
+      openAdminLogin();
+      // Clean ?admin from URL bar
+      history.replaceState(null, '', window.location.pathname);
+    }
+  })();
 
   function openAdminLogin() {
     document.getElementById('adminOverlay').classList.add('show');
@@ -1041,5 +1349,26 @@
   }
   loadSavedEdits();
 </script>
+
+<!-- VIDEO POPUP MODAL -->
+<div class="video-modal-overlay" id="videoModal" onclick="closeVideoModal(event)">
+  <div class="video-modal-box">
+    <button class="video-modal-close" onclick="closeVideoModalDirect()">✕</button>
+    <div class="video-modal-frame" id="videoFrame">
+      <div class="video-modal-placeholder" id="videoPlaceholder">
+        <div class="ph-icon">🎬</div>
+        <div class="ph-text">Video Coming Soon</div>
+        <div class="ph-sub">Admin can add a YouTube link</div>
+      </div>
+    </div>
+    <div class="video-modal-info">
+      <div>
+        <div class="video-modal-name" id="videoModalName">Drink Name</div>
+        <div class="video-modal-desc" id="videoModalDesc">Description</div>
+      </div>
+      <a href="order.html" class="video-modal-order">Order Now →</a>
+    </div>
+  </div>
+</div>
 </body>
 </html>
