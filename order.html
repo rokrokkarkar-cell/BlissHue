@@ -416,17 +416,26 @@
   }
   .btn-fb:hover { background: #1565d8; }
   .btn-fb svg { width: 20px; height: 20px; fill: #fff; }
-  .btn-copy {
-    width: 100%; padding: 12px;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
-    border-radius: 2px; cursor: pointer;
-    transition: all .2s; font-weight: 600;
+
+  .modal-ios-tip {
+    background: rgba(201,168,76,.08);
+    border: 1px solid rgba(201,168,76,.25);
+    border-radius: 6px; padding: 14px 16px; margin: 4px 0;
+    text-align: left;
   }
-  .btn-copy:hover { border-color: var(--gold-border); color: var(--gold); }
+  .ios-tip-title { color: var(--gold); font-weight: 700; font-size: .8rem; margin-bottom: 6px; letter-spacing: .05em; }
+  .ios-tip-body { color: var(--cream); font-size: .82rem; line-height: 1.7; }
+  .btn-copy {
+    background: transparent;
+    border: 1px solid rgba(201,168,76,.4);
+    color: var(--gold);
+    padding: 14px; border-radius: 4px; font-family: 'DM Sans', sans-serif;
+    font-size: .82rem; font-weight: 600; letter-spacing: .08em;
+    cursor: pointer; transition: all .2s; width: 100%;
+  }
+  .btn-copy:hover { background: rgba(201,168,76,.1); }
+  .btn-copy.copied { background: rgba(201,168,76,.15); border-color: var(--gold); }
+
   .modal-note {
     font-size: .7rem; color: var(--muted); text-align: center;
     margin-top: 14px; line-height: 1.6;
@@ -1005,23 +1014,31 @@
     <button class="modal-close" onclick="closeModal()">✕</button>
     <div class="modal-icon">☕</div>
     <div class="modal-title">Order Ready!</div>
-    <div class="modal-subtitle">Your order has been prepared. Click below to send it to our Facebook Page — we'll confirm it right away!</div>
+    <div class="modal-subtitle">Choose how to send your order to Bliss Hue:</div>
+
+    <div class="modal-actions">
+      <button class="btn-fb" onclick="sendToFacebook()">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        Open Facebook Messenger
+      </button>
+      <button class="btn-copy" id="copyBtn" onclick="copyAndGuide()">📋 &nbsp;Copy Order &amp; Open Messenger</button>
+    </div>
+
+    <div class="modal-ios-tip" id="iosTip" style="display:none;">
+      <div class="ios-tip-title">📱 iPhone tip</div>
+      <div class="ios-tip-body">If Messenger doesn't open automatically:<br>
+        <strong>1.</strong> Tap <strong>"Copy Order &amp; Open Messenger"</strong> above<br>
+        <strong>2.</strong> Paste it in the chat and hit <strong>Send</strong> ✅
+      </div>
+    </div>
 
     <div class="order-preview">
       <span class="order-preview-label">Message Preview</span>
       <div id="orderPreviewText"></div>
     </div>
 
-    <div class="modal-actions">
-      <button class="btn-fb" onclick="sendToFacebook()">
-        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-        Send to Bliss Hue Facebook Page
-      </button>
-      <button class="btn-copy" onclick="copyOrder()">📋 &nbsp;Copy Order Text</button>
-    </div>
     <p class="modal-note">
-      This will open Facebook Messenger with your order pre-filled.<br>
-      <strong>Just hit Send — we'll confirm your order ASAP! 🎉</strong>
+      We'll confirm your order right away! 🎉
     </p>
   </div>
 </div>
@@ -1528,6 +1545,7 @@ Please confirm my order! 🎉`;
     document.getElementById('orderPreviewText').innerText = msg;
     document.getElementById('confirmModal').classList.add('show');
     document.body.style.overflow = 'hidden';
+    document.getElementById('iosTip').style.display = isIOS() ? 'block' : 'none';
   }
 
   function closeModal() {
@@ -1535,19 +1553,58 @@ Please confirm my order! 🎉`;
     document.body.style.overflow = '';
   }
 
+  function isIOS() {
+    return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  }
+
   function sendToFacebook() {
     const msg = buildOrderMessage();
     const pageId = FB_PAGES[selectedBranch] || FB_PAGES['Roxas City'];
-    const url = `https://m.me/${pageId}?text=${encodeURIComponent(msg)}`;
-    window.open(url, '_blank');
+
+    if (isIOS()) {
+      // On iOS: copy text first, then try to open Messenger
+      // m.me pre-filled text is unreliable on iOS Safari
+      navigator.clipboard.writeText(msg).catch(() => {});
+      document.getElementById('iosTip').style.display = 'block';
+      // Try Messenger deep link first, fall back to m.me
+      const messengerApp = `fb-messenger://user-thread/${pageId}`;
+      const messengerWeb = `https://m.me/${pageId}`;
+      // Use a short timeout trick: try app link, if still here after 1.5s open web
+      window.location.href = messengerApp;
+      setTimeout(() => { window.open(messengerWeb, '_blank'); }, 1500);
+    } else {
+      const url = `https://m.me/${pageId}?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+    }
   }
 
-  function copyOrder() {
+  function copyAndGuide() {
     const msg = buildOrderMessage();
+    const pageId = FB_PAGES[selectedBranch] || FB_PAGES['Roxas City'];
+    const btn = document.getElementById('copyBtn');
+
     navigator.clipboard.writeText(msg).then(() => {
-      const btn = document.querySelector('.btn-copy');
-      btn.textContent = '✓ Copied!';
-      setTimeout(() => btn.textContent = '📋  Copy Order Text', 2000);
+      btn.textContent = '✅ Copied! Opening Messenger…';
+      btn.classList.add('copied');
+      document.getElementById('iosTip').style.display = 'block';
+      setTimeout(() => {
+        // Open Messenger without pre-filled text (more reliable on iOS)
+        const url = isIOS()
+          ? `fb-messenger://user-thread/${pageId}`
+          : `https://m.me/${pageId}`;
+        window.open(url, '_blank');
+        // Fallback to web if app not installed
+        setTimeout(() => {
+          window.open(`https://m.me/${pageId}`, '_blank');
+        }, 1800);
+      }, 600);
+      setTimeout(() => {
+        btn.innerHTML = '📋 &nbsp;Copy Order & Open Messenger';
+        btn.classList.remove('copied');
+      }, 3500);
+    }).catch(() => {
+      // Clipboard not available — show manual copy fallback
+      btn.textContent = 'Please copy the text below manually';
     });
   }
 
