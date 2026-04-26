@@ -1527,9 +1527,11 @@
 // To add/change a video: use Admin mode (pencil icon) — it updates this list and saves to the file.
 // OR manually edit the URL strings below directly.
 let videoLinks = {
-  // Full GitHub raw URLs — replace YOUR_USERNAME and YOUR_REPO with your actual values
-  // Example: 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/Velto.mp4'
-  'sig-4': 'Velto.mp4',
+  // ✅ IMPORTANT: Use full GitHub raw URLs so the video works for ALL visitors.
+  // Format: https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/Velto.mp4
+  // Replace YOUR_USERNAME and YOUR_REPO with your actual GitHub username and repo name.
+  // Example: 'https://raw.githubusercontent.com/jsmith/blisshue-cafe/main/Velto.mp4'
+  'sig-4': 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/Velto.mp4',
 };
 
 // Also merge any locally-saved admin edits (backwards compat)
