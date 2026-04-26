@@ -185,6 +185,7 @@
   .hero-cta {
     display: flex; gap: 14px; flex-wrap: wrap;
     animation: fadeUp 1s .3s ease both;
+    margin-bottom: 80px;
   }
   .btn {
     padding: 13px 30px;
@@ -907,7 +908,7 @@
     width: 100vw; max-height: 100vh;
   }
 </style></head>
-<body class="admin-mode">
+<body>
 
 <!-- NAV -->
 <nav>
@@ -1286,7 +1287,7 @@
 </div>
 
 <!-- ADMIN BAR -->
-<div class="admin-bar show" id="adminBar">
+<div class="admin-bar" id="adminBar">
   <span>✏️ &nbsp;Admin Mode — click any highlighted text to edit it</span>
   <div class="admin-bar-actions">
     <button class="admin-save-btn" onclick="saveChanges()">Save Changes</button>
@@ -1745,8 +1746,17 @@ function saveAdminVideo() {
 
   // Remind admin to re-download/re-upload the file so all visitors get the video
   setTimeout(() => {
-    if (confirm('✅ Video saved!\n\nTo make it visible to ALL visitors, re-download this page (File → Save As) and re-upload it to your host.\n\nDownload now?')) {
-      const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
+    if (confirm('✅ Video saved!\n\nTo make it visible to ALL visitors, re-download this page and re-upload it to your host.\n\nDownload now?')) {
+      // Clone and clean — strip admin-mode class and contenteditable before saving
+      const clone = document.documentElement.cloneNode(true);
+      clone.querySelector('body').classList.remove('admin-mode');
+      const adminBar = clone.getElementById ? clone.getElementById('adminBar') : clone.querySelector('#adminBar');
+      if (adminBar) adminBar.classList.remove('show');
+      clone.querySelectorAll('[contenteditable]').forEach(el => {
+        el.removeAttribute('contenteditable');
+        el.removeAttribute('spellcheck');
+      });
+      const blob = new Blob(['<!DOCTYPE html>\n' + clone.outerHTML], { type: 'text/html' });
       const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
       a.download = 'index.html'; a.click();
     }
